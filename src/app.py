@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, CompanyInfo
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -64,6 +64,15 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+@app.route('/companyinfo', methods= ['GET'])
+def company():
+    company= CompanyInfo.query.all()
+    all_company = list(map(lambda company: company.serialize(), company))
+    return (
+        jsonify({'data' : all_company})
+    )
+    
 
 
 # this only runs if `$ python src/main.py` is executed
