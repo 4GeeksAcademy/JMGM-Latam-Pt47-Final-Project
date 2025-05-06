@@ -76,6 +76,15 @@ class Clients(db.Model):
     phone: Mapped[str]= mapped_column(String(60), unique= True, nullable= False)
     company: Mapped['CompanyInfo']= relationship(back_populates= 'clients')
     compras: Mapped[list['Compras']]= relationship(back_populates= 'clientes')
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "company": self.company.name
+        }
 
     def __repr__(self):
         return self.name

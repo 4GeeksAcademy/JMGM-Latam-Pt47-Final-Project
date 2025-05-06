@@ -133,6 +133,92 @@ def compra(id_client):
     finally:
         db.session.close()
     
+#---- Endpoints de clientes ----- #
+@app.route('/clients', methods= ['GET'])
+def clients():
+    clientes = Clients.query.all()
+    all_clientes = list(map(lambda clientes: clientes.serialize(), clientes))
+    return jsonify({'clientes' : all_clientes})
+
+@app.route('/client/<int:id>', methods=['GET'])
+def client_id(id):
+    cliente= Clients.query.get(id)
+    if cliente is None:
+        return jsonify({'msg': 'Cliente no existe'}), 404
+    return jsonify({'cliente': cliente.serialize()})
+
+@app.route('/client/<int:id_company>', methods=['POST'])
+def add_client(id_company):
+    body= request.get_json(silent= True)
+    """
+    {
+    "nombre",
+    "email",
+    "phone",
+    }
+    """
+    if not body:
+        return jsonify({'msg': 'Debe agregar informacion en el body'}), 400
+    if 'nombre' not in body:
+        return jsonify({'msg': 'Debe agregar el nombre del cliente'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'Debe agregar el correo del cliente'}), 400
+    if 'telefono' not in body:
+        return jsonify({'Debe agregar el numero telefonico del cliente'}), 400
+    verify_client = Clients.query.filter_by(email= body['email']).first()
+    if verify_client:
+        return jsonify({'msg': 'El cliente ya existe'}), 400
+    new_client= Clients()
+    new_client.name= body['nombre']
+    new_client.email= body['email']
+    new_client.phone= body['telefono']
+    new_client.companyId= id_company
+    try:
+        db.session.add(new_client)
+        db.session.commit()
+        return jsonify(new_client.serialize()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al crear nuevo cliente', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+
+@app.route('/client/<int:id_client>', methods=['PUT'])
+def modify_client(id_client):
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'Cliente no existe'}), 400
+    data= request.get_json(silent= True)
+    if 'nombre' in data:
+        client.name= data['nombre']
+    if 'email' in data:
+        client.email= data['email']
+    if 'telefono' in data:
+        client.phone= data['telefono']
+    db.session.commit()
+    return jsonify({'msg': 'Cliente actualizado correctamente', 'cliente': client.serialize()})
+
+@app.route('/client/<int:id_client>', methods=['DELETE'])
+def delete_client(id_client):
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'El cliente no existe'}), 404
+    try:   
+        db.session.delete(client)
+        db.session.commit()
+        user_delete = Clients.query.all()
+        all_client = list(map(lambda clients: clients.serialize(), user_delete))
+        return jsonify({'msg': 'Cliente eliminado exitosamente', 'data': all_client}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al eliminar el cliente', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+    
+    
+
+
+    
 
     
  
