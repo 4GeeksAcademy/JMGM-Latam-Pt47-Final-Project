@@ -52,8 +52,7 @@ class Inventory(db.Model):
     
     def serialize(self):
         return {
-            "id": self.id,
-            ""
+            "id": self.id
         }
 
     def __repr__(self):
