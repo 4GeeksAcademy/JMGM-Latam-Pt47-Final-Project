@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, CompanyInfo
+from api.models import db, CompanyInfo, Inventory, Clients, Compras
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -72,6 +72,75 @@ def company():
     return (
         jsonify({'data' : all_company})
     )
+
+@app.route('/inventory/stock/<int:id>/<int:quantity>', methods= ['DELETE'])
+def delete_stock(id, quantity):
+    product= Inventory.query.get(id)
+    product.stock= product.stock - quantity
+
+    try: 
+        db.session.commit()
+        return jsonify(product.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error eliminando Stock', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+
+@app.route('/compra/<int:id_client>', methods= ['POST'])
+def compra(id_client):
+    """
+        {
+        "product_ID",
+        "fecha_compra",
+        "cantidad"}
+    """
+    body= request.get_json(silent= True)
+    if not body:
+        return jsonify({'msg': 'Debe enviar informacion en el body'}), 400
+    if 'product_ID' not in body:
+        return jsonify({'msg': 'Debe enviar un el id del producto'}), 400
+    if 'cantidad' not in body:
+        return jsonify({'msg': 'Debe enviar la cantidad solicitada'}), 400
+    if 'fecha_compra' not in body:
+        return jsonify({'msg': 'Debe enviar la fecha'}), 400
+
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'Usuario no encontrado'}), 400
+    
+    producto= Inventory.query.get(body['product_ID'])
+    if producto is None:
+        return jsonify({'msg': 'Producto no encontrado'}), 400
+    
+    if body['cantidad'] > producto.stock:
+        return jsonify({'msg': 'Cantidad no disponible'}), 400
+    
+    new_compra= Compras()
+    new_compra.productsId = body['product_ID']
+    new_compra.cantidad = body['cantidad']
+    new_compra.fecha_compra= body['fecha_compra']
+    new_compra.clientsId= id_client
+    producto.stock = producto.stock - body['cantidad']
+
+    try:
+        db.session.add(new_compra)
+        db.session.commit()
+        return jsonify(new_compra.serialize()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al generar la compra', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+    
+
+    
+ 
+
+
+    
+
+    
     
 
 
