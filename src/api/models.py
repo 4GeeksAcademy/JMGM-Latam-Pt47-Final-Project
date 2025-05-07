@@ -26,14 +26,16 @@ class CompanyInfo(db.Model):
     email: Mapped[str]= mapped_column(String(120), unique= True, nullable= False)
     phone: Mapped[str]= mapped_column(String(20), nullable= False)
     password: Mapped[str]= mapped_column(String(10), nullable= False)
-    inventory: Mapped[list['Inventory']]= relationship(back_populates= 'company')
-    clients: Mapped[list['Clients']]= relationship(back_populates= 'company')
+    inventory: Mapped[list['Inventory']]= relationship(back_populates= 'company', cascade='all')
+    clients: Mapped[list['Clients']]= relationship(back_populates= 'company', cascade='all')
     def serialize(self):
         return {
             "id" : self.id,
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
+
+            "password": self.password,
             "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory)),
             "clients": list(map(lambda clients: clients.serialize(), self.clients))
         }
@@ -54,7 +56,11 @@ class Inventory(db.Model):
     def serialize(self):
         return {
             "id": self.id,
+
             "product_name": self.product_name,
+
+            
+
             "price": self.price,
             "marca": self.marca,
             "stock": self.stock
