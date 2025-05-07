@@ -6,7 +6,11 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, CompanyInfo, Inventory
+
+from api.models import db, CompanyInfo, Inventory, Clients, Compras
+
+
+
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
@@ -79,6 +83,150 @@ def get_company_id(id):
         return jsonify(company.serialize())
     return jsonify({'msg': 'Company not found'}), 404
 
+
+
+
+@app.route('/inventory/stock/<int:id>/<int:quantity>', methods= ['DELETE'])
+def delete_stock(id, quantity):
+    product= Inventory.query.get(id)
+    product.stock= product.stock - quantity
+
+    try: 
+        db.session.commit()
+        return jsonify(product.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error eliminando Stock', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+
+@app.route('/compra/<int:id_client>', methods= ['POST'])
+def compra(id_client):
+    """
+        {
+        "product_ID",
+        "fecha_compra",
+        "cantidad"}
+    """
+    body= request.get_json(silent= True)
+    if not body:
+        return jsonify({'msg': 'Debe enviar informacion en el body'}), 400
+    if 'product_ID' not in body:
+        return jsonify({'msg': 'Debe enviar un el id del producto'}), 400
+    if 'cantidad' not in body:
+        return jsonify({'msg': 'Debe enviar la cantidad solicitada'}), 400
+    if 'fecha_compra' not in body:
+        return jsonify({'msg': 'Debe enviar la fecha'}), 400
+
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'Usuario no encontrado'}), 400
+    
+    producto= Inventory.query.get(body['product_ID'])
+    if producto is None:
+        return jsonify({'msg': 'Producto no encontrado'}), 400
+    
+    if body['cantidad'] > producto.stock:
+        return jsonify({'msg': 'Cantidad no disponible'}), 400
+    
+    new_compra= Compras()
+    new_compra.productsId = body['product_ID']
+    new_compra.cantidad = body['cantidad']
+    new_compra.fecha_compra= body['fecha_compra']
+    new_compra.clientsId= id_client
+    producto.stock = producto.stock - body['cantidad']
+
+    try:
+        db.session.add(new_compra)
+        db.session.commit()
+        return jsonify(new_compra.serialize()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al generar la compra', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+    
+#---- Endpoints de clientes ----- #
+@app.route('/clients', methods= ['GET'])
+def clients():
+    clientes = Clients.query.all()
+    all_clientes = list(map(lambda clientes: clientes.serialize(), clientes))
+    return jsonify({'clientes' : all_clientes})
+
+@app.route('/client/<int:id>', methods=['GET'])
+def client_id(id):
+    cliente= Clients.query.get(id)
+    if cliente is None:
+        return jsonify({'msg': 'Cliente no existe'}), 404
+    return jsonify({'cliente': cliente.serialize()})
+
+@app.route('/client/<int:id_company>', methods=['POST'])
+def add_client(id_company):
+    body= request.get_json(silent= True)
+    """
+    {
+    "nombre",
+    "email",
+    "phone",
+    }
+    """
+    if not body:
+        return jsonify({'msg': 'Debe agregar informacion en el body'}), 400
+    if 'nombre' not in body:
+        return jsonify({'msg': 'Debe agregar el nombre del cliente'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'Debe agregar el correo del cliente'}), 400
+    if 'telefono' not in body:
+        return jsonify({'Debe agregar el numero telefonico del cliente'}), 400
+    verify_client = Clients.query.filter_by(email= body['email']).first()
+    if verify_client:
+        return jsonify({'msg': 'El cliente ya existe'}), 400
+    new_client= Clients()
+    new_client.name= body['nombre']
+    new_client.email= body['email']
+    new_client.phone= body['telefono']
+    new_client.companyId= id_company
+    try:
+        db.session.add(new_client)
+        db.session.commit()
+        return jsonify(new_client.serialize()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al crear nuevo cliente', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+
+@app.route('/client/<int:id_client>', methods=['PUT'])
+def modify_client(id_client):
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'Cliente no existe'}), 400
+    data= request.get_json(silent= True)
+    if 'nombre' in data:
+        client.name= data['nombre']
+    if 'email' in data:
+        client.email= data['email']
+    if 'telefono' in data:
+        client.phone= data['telefono']
+    db.session.commit()
+    return jsonify({'msg': 'Cliente actualizado correctamente', 'cliente': client.serialize()})
+
+@app.route('/client/<int:id_client>', methods=['DELETE'])
+def delete_client(id_client):
+    client= Clients.query.get(id_client)
+    if client is None:
+        return jsonify({'msg': 'El cliente no existe'}), 404
+    try:   
+        db.session.delete(client)
+        db.session.commit()
+        user_delete = Clients.query.all()
+        all_client = list(map(lambda clients: clients.serialize(), user_delete))
+        return jsonify({'msg': 'Cliente eliminado exitosamente', 'data': all_client}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'msg': 'Error al eliminar el cliente', 'error': str(e)}), 400
+    finally:
+        db.session.close()
 @app.route('/companyinfo', methods = ['POST'])
 def create_company():
     data = request.get_json()
@@ -129,7 +277,6 @@ def get_invetory_id( company_id):
     company = db.session.get(CompanyInfo, company_id)
     if not company:
         return jsonify({'msg': 'Company not found'}), 404
-    
     invetory = Inventory.query.filter_by(companyID=company_id).all()
     inventory_serialized = list(map(lambda item: item.serialize(), invetory))
 

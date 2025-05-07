@@ -54,7 +54,11 @@ class Inventory(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "product": self.product_name,
+
+            "product_name": self.product_name,
+
+            
+
             "price": self.price,
             "marca": self.marca,
             "stock": self.stock
@@ -62,6 +66,11 @@ class Inventory(db.Model):
 
     def __repr__(self):
         return self.product_name
+    
+    def delete_stock(self, quantity):
+        self.stock = self.stock - quantity
+        return self.stock
+
 
 class Clients(db.Model):
     __tablename__= 'clients'
@@ -72,6 +81,15 @@ class Clients(db.Model):
     phone: Mapped[str]= mapped_column(String(60), unique= True, nullable= False)
     company: Mapped['CompanyInfo']= relationship(back_populates= 'clients')
     compras: Mapped[list['Compras']]= relationship(back_populates= 'clientes')
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "company": self.company.name
+        }
 
     def __repr__(self):
         return self.name
@@ -85,6 +103,16 @@ class Compras(db.Model):
     cantidad: Mapped[int]= mapped_column(Integer)
     fecha_compra: Mapped[datetime.date] = mapped_column(Date)
     clientes: Mapped['Clients']= relationship(back_populates= 'compras')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "clientsId": self.clientsId,
+            "productsId": self.productsId,
+            "producto": self.producto.serialize(),
+            "cantidad": self.cantidad,
+            "fecha_compra": self.fecha_compra,
+        }
 
     def __repr__(self):
         return self.clientes.name
