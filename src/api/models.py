@@ -54,16 +54,12 @@ class Inventory(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-
             "product_name": self.product_name,
-
-            
-
             "price": self.price,
             "marca": self.marca,
             "stock": self.stock
         }
-
+      
     def __repr__(self):
         return self.product_name
     
