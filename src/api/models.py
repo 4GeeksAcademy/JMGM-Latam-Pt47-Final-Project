@@ -34,7 +34,8 @@ class CompanyInfo(db.Model):
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
-            "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory))
+            "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory)),
+            "clients": list(map(lambda clients: clients.serialize(), self.clients))
         }
     def __repr__(self):
         return self.name
