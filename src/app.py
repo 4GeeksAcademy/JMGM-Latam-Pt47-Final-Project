@@ -12,6 +12,12 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -19,6 +25,9 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -242,17 +251,21 @@ def delete_client(id_client):
 
 #-- Falta la ruta para logearse
 # y debe generar un token-- #
-@app.route('/companyinfo', methods = ['POST'])
+@app.route('/register', methods = ['POST'])
 def create_company():
     data = request.get_json()
     if not  data or not all(key in data for key in ('name', 'email', 'phone', 'password')):
         return jsonify({'msg': 'Missing required field'}), 400
     
+    verify_email= CompanyInfo.query.filter_by(email= data.get('email')).first()
+    if verify_email:
+        return jsonify({'msg': 'Esta compañia ya esta registrada'}), 400
+
     new_company = CompanyInfo(
         name = data.get('name'),
         email=data.get('email'),
         phone=data.get('phone'),
-        password=data.get('password')
+        password= bcrypt.generate_password_hash(data.get('password')).decode('utf-8')
     )
     db.session.add(new_company)
     db.session.commit()
@@ -368,6 +381,24 @@ def delete_inventory_item(id):
     db.session.commit()
     return jsonify({'msg': 'Item deleted'}), 200
 
+@app.route('/login', methods=['POST'])
+def login():
+    body= request.get_json(silent= True)
+    if body is None:
+        return jsonify({'msg': 'Debe agregar informacion en el body'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'El campo email es obligatorio'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+    company= CompanyInfo.query.filter_by(email= body['email']).first()
+    if company is None:
+        return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
+    valid_password = bcrypt.check_password_hash(company.password, body['password'])
+    if not valid_password:
+        return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
+    access_token = create_access_token(identity = company.id)
+    return jsonify({'msg': 'Usuario logeado correctamente', 'token': access_token, 'company' : company.serialize()})
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
