@@ -359,19 +359,27 @@ def actualizar_compra(id):
     return jsonify({'msg': 'Buy update'}), 200
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
-@app.route('/inventory/<int:id>', methods=['PUT'])
-def update_inventory_item(id):
-    item = db.session.get(Inventory, id)
-    if item:
-        data = request.get_json()
-        item.companyID = data.get('companyID', item.companyID)
-        item.product_name = data.get('product_name', item.product_name)
-        item.price = data.get('price', item.price)
-        item.marca = data.get('marca', item.marca)
-        item.stock = data.get('stock', item.stock)
-        db.session.commit()
-        return jsonify(item.serialize()), 200
-    return jsonify({'msg': 'Item not found'}), 404
+@app.route('/compras/<int:id>', methods=['PUT'])
+def actualizar_compra(id):
+    compra_existente = Compras.query.get(id)
+
+    if compra_existente is None:
+        return jsonify({'msg': 'Buy not found'}), 404 
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({'msg': 'necesitas informacion en el body'}), 400
+    if 'clientsId' in data:
+        compra_existente.clientsId = data['clientsId']
+    if 'productsId' in data:
+        compra_existente.productsId = data['productsId']
+    if 'cantidad' in data:
+        compra_existente.cantidad = data['cantidad']
+    if 'fecha_compra' in data:
+        compra_existente.fecha_compra = data['fecha_compra']
+
+    db.session.commit()
+    return jsonify({'msg': 'Buy updated'}), 200
 
 #-- Verificar token y mirar si el id del inventario le corresponde a la compañia del token-- ##
 @app.route('/inventory/<int:id>', methods=['DELETE'])
