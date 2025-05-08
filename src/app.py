@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
+from api.models import db, CompanyInfo, Inventory, Compras
 from api.models import db, CompanyInfo, Inventory, Clients, Compras
 from api.routes import api
 from api.admin import setup_admin
@@ -15,6 +16,7 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 
 # from models import Person
@@ -27,6 +29,7 @@ app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
+CORS(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -333,28 +336,63 @@ def create_inventory():
     db.session.commit()
     return jsonify(new_item.serialize()), 200
 
+@app.route('/compras/<int:id>', methods=['PUT'])
+def actualizar_compra(id):
+    compra_existente= Compras.query.get(id)
+
+    if compra_existente is None:
+        return jsonify({'msg:' 'Buy not found'}), 400
+    
+    data = request.get_json(silent= True)
+    if data is None:
+        return jsonify({'msg': 'debes enviar informacion en el body'}), 400
+    if 'clientsId' in data:
+        compra_existente.clientsId = data['clientsId']
+    if 'productsId' in data:
+        compra_existente.productsId = data['productsId']
+    if 'cantidad' in data:
+        compra_existente.cantidad = data['cantidad']
+    if 'fecha_compra' in data:
+        compra_existente.fecha_compra = data['fecha_compra']
+        
+    db.session.commit()
+    return jsonify({'msg': 'Buy update'}), 200
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
-@app.route('/inventory/<int:id>', methods=['PUT'])
-def update_inventory_item(id):
-    item = db.session.get(Inventory, id)
-    if item:
-        data = request.get_json()
-        item.companyID = data.get('companyID', item.companyID)
-        item.product_name = data.get('product_name', item.product_name)
-        item.price = data.get('price', item.price)
-        item.marca = data.get('marca', item.marca)
-        item.stock = data.get('stock', item.stock)
-        db.session.commit()
-        return jsonify(item.serialize()), 200
-    return jsonify({'msg': 'Item not found'}), 404
+@app.route('/compras/<int:id>', methods=['PUT'])
+def actualizar_compra(id):
+    compra_existente = Compras.query.get(id)
+
+    if compra_existente is None:
+        return jsonify({'msg': 'Buy not found'}), 404 
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({'msg': 'necesitas informacion en el body'}), 400
+    if 'clientsId' in data:
+        compra_existente.clientsId = data['clientsId']
+    if 'productsId' in data:
+        compra_existente.productsId = data['productsId']
+    if 'cantidad' in data:
+        compra_existente.cantidad = data['cantidad']
+    if 'fecha_compra' in data:
+        compra_existente.fecha_compra = data['fecha_compra']
+
+    db.session.commit()
+    return jsonify({'msg': 'Buy updated'}), 200
 
 #-- Verificar token y mirar si el id del inventario le corresponde a la compañia del token-- ##
 @app.route('/inventory/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_inventory_item(id):
+    company_id = get_jwt_identity()
+
     item = db.session.get(Inventory, id)
     if not item:
         return jsonify({'msg': 'Item not found'}), 404
+
+    if item.companyID != company_id:
+        return jsonify({'msg': 'Unauthorized to delete this item'}), 404
     db.session.delete(item)
     db.session.commit()
     return jsonify({'msg': 'Item deleted'}), 200
