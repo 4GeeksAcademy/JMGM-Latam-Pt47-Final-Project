@@ -320,6 +320,7 @@ def get_invetory_id( company_id):
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
 @app.route('/inventory', methods=['POST'])
+@jwt_required()
 def create_inventory():
     data = request.get_json()
     if not  data or not all(key in data for key in ('product_name', 'price', 'marca', 'stock', 'companyID')):
@@ -336,32 +337,12 @@ def create_inventory():
     db.session.commit()
     return jsonify(new_item.serialize()), 200
 
-@app.route('/compras/<int:id>', methods=['PUT'])
-def actualizar_compra(id):
-    compra_existente= Compras.query.get(id)
-
-    if compra_existente is None:
-        return jsonify({'msg:' 'Buy not found'}), 400
-    
-    data = request.get_json(silent= True)
-    if data is None:
-        return jsonify({'msg': 'debes enviar informacion en el body'}), 400
-    if 'clientsId' in data:
-        compra_existente.clientsId = data['clientsId']
-    if 'productsId' in data:
-        compra_existente.productsId = data['productsId']
-    if 'cantidad' in data:
-        compra_existente.cantidad = data['cantidad']
-    if 'fecha_compra' in data:
-        compra_existente.fecha_compra = data['fecha_compra']
-        
-    db.session.commit()
-    return jsonify({'msg': 'Buy update'}), 200
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
 @app.route('/compras/<int:id>', methods=['PUT'])
+@jwt_required()
 def actualizar_compra(id):
-    compra_existente = Compras.query.get(id)
+    compra_existente = Compras.query.filter_by(id).first()
 
     if compra_existente is None:
         return jsonify({'msg': 'Buy not found'}), 404 
@@ -393,6 +374,7 @@ def delete_inventory_item(id):
 
     if item.companyID != company_id:
         return jsonify({'msg': 'Unauthorized to delete this item'}), 404
+    
     db.session.delete(item)
     db.session.commit()
     return jsonify({'msg': 'Item deleted'}), 200
