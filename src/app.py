@@ -337,27 +337,6 @@ def create_inventory():
     db.session.commit()
     return jsonify(new_item.serialize()), 200
 
-@app.route('/compras/<int:id>', methods=['PUT'])
-def actualizar_compra(id):
-    compra_existente= Compras.query.get(id)
-
-    if compra_existente is None:
-        return jsonify({'msg:' 'Buy not found'}), 400
-    
-    data = request.get_json(silent= True)
-    if data is None:
-        return jsonify({'msg': 'debes enviar informacion en el body'}), 400
-    if 'clientsId' in data:
-        compra_existente.clientsId = data['clientsId']
-    if 'productsId' in data:
-        compra_existente.productsId = data['productsId']
-    if 'cantidad' in data:
-        compra_existente.cantidad = data['cantidad']
-    if 'fecha_compra' in data:
-        compra_existente.fecha_compra = data['fecha_compra']
-        
-    db.session.commit()
-    return jsonify({'msg': 'Buy update'}), 200
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
 @app.route('/compras/<int:id>', methods=['PUT'])
