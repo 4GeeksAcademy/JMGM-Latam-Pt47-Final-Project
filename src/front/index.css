@@ -1,7 +1,19 @@
-body {
-  background: url(https://th.bing.com/th/id/R.5894e3a3cdd3e7a6d85bbae2553a33af?rik=3ita5QiqfcVnYw&riu=http%3a%2f%2fwww.mkm-system.com%2fimages%2fconstruccion.jpg&ehk=8XaD90E8RH9SnIzei%2bze2lg5Rc95KB2jl1iyKU3JExU%3d&risl=&pid=ImgRaw&r=0);
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin: 0;
-  height: 100vh;
+.Menu{
+    display: flex;
+    justify-content: start;
+    height: 800px;
+    width: 300px;
+    background-color: rgb(180, 162, 162);
+}
+
+.botones{
+    margin: 30px 0 0 60px
+}
+
+.boton{
+        padding-bottom: 10px;
+}
+
+.boton:hover{
+    background-color: rgba(108, 17, 217, 1) ;
 }
