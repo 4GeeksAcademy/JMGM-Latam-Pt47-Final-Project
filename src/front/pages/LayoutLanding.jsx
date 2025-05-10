@@ -3,7 +3,7 @@ import ScrollToTop from "../components/ScrollToTop"
 import { LandingNavbar } from "../components/LandingNavbar"
 import { Footer } from "../components/Footer"
 
-export const Layout = () => {
+export const LayoutLanding = () => {
     return (
         <ScrollToTop>
             <LandingNavbar />
