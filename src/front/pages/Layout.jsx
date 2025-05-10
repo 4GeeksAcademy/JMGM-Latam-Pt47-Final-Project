@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom/dist"
 import ScrollToTop from "../components/ScrollToTop"
-import { Navbar } from "../components/Navbar"
+import { LandingNavbar } from "../components/LandingNavbar"
 import { Footer } from "../components/Footer"
-import LateralMenu from "../components/LateralMenu"
 
 export const Layout = () => {
     return (
         <ScrollToTop>
-            <Navbar />
-            <LateralMenu />
+            <LandingNavbar />
+            <div style={{paddingTop:"5.5rem"}}>
+            <Outlet />
+            </div>
             <Footer />
         </ScrollToTop>
     )

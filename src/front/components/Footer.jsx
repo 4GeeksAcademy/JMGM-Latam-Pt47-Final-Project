@@ -4,8 +4,7 @@ export const Footer = () => (
 	<footer className="footer mt-auto py-3 text-center border-top">
 		<div className="container-fluid d-flex justify-content-between mb-2">
 			<div className="col-3 d-flex justify-content-start px-4">
-				<img src="https://media.discordapp.net/attachments/873387605981544468/1369481575460241459/
-				LogoMystock.png?ex=681c049b&is=681ab31b&hm=582c044290e6d4ef2b5359786c8da8c3b83d8a4210e484ac75f909242b76109f&=&format=webp&quality=lossless" style={{ width: "7vw", height: "3vw" }} />
+				<img src="src/front/assets/img/logo.png" type="button" alt="Logo" width="105" height="40" className="d-inline-block align-text-top"></img>
 			</div>
 			<div className="d-flex justify-content-end px-5">
 				<button type="button" className="btn" href="/">Homepage</button>
