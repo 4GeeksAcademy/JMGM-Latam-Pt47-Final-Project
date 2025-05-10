@@ -1,21 +1,28 @@
-.Menu{
+.Menu {
+  display: flex;
+  justify-content: start;
+  height: 800px;
+  width: 300px;
+  background-color: rgb(180, 162, 162);
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0 10px 20px;
+}
+
+.texto-boton {
     display: flex;
-    justify-content: start;
-    height: 800px;
-    width: 300px;
-    background-color: rgb(180, 162, 162);
+    align-items: center;
 }
 
-.botones{
-    margin: 30px 0 0 60px
+.boton {
+  padding: 20px 0 10px 0;
 }
 
-.boton{
-        padding-bottom: 10px;
-}
-
-.boton:hover{
-    background-color: rgba(108, 17, 217, 1) ;
+.boton:hover {
+  background-color: rgba(108, 17, 217, 1);
 }
 
 

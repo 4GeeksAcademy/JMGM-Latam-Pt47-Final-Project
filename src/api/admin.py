@@ -5,10 +5,10 @@ from .models import db, User, CompanyInfo, Inventory, Clients, Compras
 from flask_admin.contrib.sqla import ModelView
 
 class UserView(ModelView):
-    column_list= ['id', 'email','password', 'is_active']
+    column_list= ['id', 'email','password', 'is_active', 'role', 'company_id', 'company']
 
 class CompanyInfoView(ModelView):
-    column_list= ['id', 'name', 'email', 'phone', 'password', 'inventory', 'clients']
+    column_list= ['id', 'name', 'email', 'phone', 'inventory', 'clients', 'users']
 
 class InventoryView(ModelView):
     column_list= ['id', 'companyID', 'product_name', 'marca', 'stock', 'company', 'compras', 'price']
