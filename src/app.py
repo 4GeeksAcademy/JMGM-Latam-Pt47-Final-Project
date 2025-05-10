@@ -248,8 +248,9 @@ def delete_client(id_client):
     finally:
         db.session.close()
 
-#-- Falta la ruta para logearse
+
 # y debe generar un token-- #
+#-- Este es el registro de la compañia -- #
 @app.route('/register', methods = ['POST'])
 def create_company():
     data = request.get_json()
@@ -285,6 +286,7 @@ def update_company(id):
     return jsonify({'msg': 'Company not found'}), 400
 
 #-- verifiar el token y obtener el id desde el token --#
+#-- Este para uso de admin -- #
 @app.route('/companyinfo/<int:id>', methods=['DELETE'])
 def delete_company(id):
     company = db.session.get(CompanyInfo, id)
@@ -296,11 +298,12 @@ def delete_company(id):
 
 #----INVENTORY ENDPOINTS----
 #-- Verificar el token y verificar el inventario le pertenezca a la compañia--#
-@app.route('/inventory', methods = ['GET'])
-def get_inventory():
-    inventory = Inventory.query.all()
-    inventory_serialized = list((map(lambda product: product.serialize(), inventory)))
-    return jsonify({'data': inventory_serialized}), 200
+## -- este esta sobrando-- #
+# @app.route('/inventory', methods = ['GET'])
+# def get_inventory():
+#     inventory = Inventory.query.all()
+#     inventory_serialized = list((map(lambda product: product.serialize(), inventory)))
+#     return jsonify({'data': inventory_serialized}), 200
 
 #-- Verificar token y obtener id desde el token-- #
 @app.route('/company/inventory/<int:company_id>', methods = ['GET'])
