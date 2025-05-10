@@ -6,10 +6,18 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, CompanyInfo, Inventory, Clients, Compras
+from api.models import db, CompanyInfo, Inventory, Compras
+from api.models import db, CompanyInfo, Inventory, Clients, Compras, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 
 # from models import Person
 
@@ -18,6 +26,10 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
+CORS(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -75,6 +87,7 @@ def get_companies():
 
 ##-- Colocar token y verificar que el email sea de un admin--#
 @app.route('/companyinfo/<int:id>', methods = ['GET'])
+@jwt_required()
 def get_company_id(id):
     company = db.session.get(CompanyInfo, id)
     if company:
@@ -241,21 +254,71 @@ def delete_client(id_client):
 
 #-- Falta la ruta para logearse
 # y debe generar un token-- #
-@app.route('/companyinfo', methods = ['POST'])
-def create_company():
-    data = request.get_json()
-    if not  data or not all(key in data for key in ('name', 'email', 'phone', 'password')):
-        return jsonify({'msg': 'Missing required field'}), 400
+# @app.route('/register', methods = ['POST'])
+# def create_company():
+#     data = request.get_json()
+#     if not  data or not all(key in data for key in ('name', 'email', 'phone', 'password')):
+#         return jsonify({'msg': 'Missing required field'}), 400
     
+#     verify_email= CompanyInfo.query.filter_by(email= data.get('email')).first()
+#     if verify_email:
+#         return jsonify({'msg': 'Esta compañia ya esta registrada'}), 400
+
+#     new_company = CompanyInfo(
+#         name = data.get('name'),
+#         email=data.get('email'),
+#         phone=data.get('phone'),
+#         password= bcrypt.generate_password_hash(data.get('password')).decode('utf-8')
+#     )
+#     db.session.add(new_company)
+#     db.session.commit()
+#     return jsonify({'msg': 'Company created', 'company': new_company.serialize()}), 200
+@app.route('/register', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    if not data:
+        return jsonify({'msg': 'se requiere informacion en el body'}), 400
+    if 'email' not in data:
+        return jsonify({'msg': 'el email es requerido'}), 400
+    if 'password' not in data:
+        return jsonify({'msg': 'el password es requerido'}), 400
+    if 'company_name' not in data:
+        return jsonify({'msg': 'el nombre de la empresa es requerido'}), 400
+    
+    if User.query.filter_by(email=data['email']).first():
+        return jsonify({'msg': 'el email ya existe'}), 400
+#-- verificar la contraseña es fuerte, minimo 8 caracateres--#
     new_company = CompanyInfo(
-        name = data.get('name'),
-        email=data.get('email'),
-        phone=data.get('phone'),
-        password=data.get('password')
+        name = data.get('company_name')
     )
-    db.session.add(new_company)
-    db.session.commit()
-    return jsonify({'msg': 'Company created', 'company': new_company.serialize()}), 200
+    
+    try:
+        db.session.add(new_company)
+        db.session.commit()
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({'msg': 'error al crear la empresa', 'error': str(e)}), 400
+    
+
+    new_user = User(
+        email = data.get('email'),
+        password= bcrypt.generate_password_hash(data.get('password')).decode('utf-8'),
+        is_active = True,
+        company_id = new_company.id
+    )
+     
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'msg': 'Company created'}), 201
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({'msg': 'error al crear el usuario', 'error': str(e)}), 400
+    finally:
+        db.session.close()
+    
+        
+    
 
 #-- verifiar el token y obtener el id desde el token --#
 @app.route('/companyinfo/<int:id>', methods=['PUT'])
@@ -304,6 +367,7 @@ def get_invetory_id( company_id):
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
 @app.route('/inventory', methods=['POST'])
+@jwt_required()
 def create_inventory():
     data = request.get_json()
     if not  data or not all(key in data for key in ('product_name', 'price', 'marca', 'stock', 'companyID')):
@@ -322,30 +386,69 @@ def create_inventory():
 
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
-@app.route('/inventory/<int:id>', methods=['PUT'])
-def update_inventory_item(id):
-    item = db.session.get(Inventory, id)
-    if item:
-        data = request.get_json()
-        item.companyID = data.get('companyID', item.companyID)
-        item.product_name = data.get('product_name', item.product_name)
-        item.price = data.get('price', item.price)
-        item.marca = data.get('marca', item.marca)
-        item.stock = data.get('stock', item.stock)
-        db.session.commit()
-        return jsonify(item.serialize()), 200
-    return jsonify({'msg': 'Item not found'}), 404
+@app.route('/compras/<int:id>', methods=['PUT'])
+@jwt_required()
+def actualizar_compra(id):
+    compra_existente = Compras.query.filter_by(id).first()
+
+    if compra_existente is None:
+        return jsonify({'msg': 'Buy not found'}), 404 
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return jsonify({'msg': 'necesitas informacion en el body'}), 400
+    if 'clientsId' in data:
+        compra_existente.clientsId = data['clientsId']
+    if 'productsId' in data:
+        compra_existente.productsId = data['productsId']
+    if 'cantidad' in data:
+        compra_existente.cantidad = data['cantidad']
+    if 'fecha_compra' in data:
+        compra_existente.fecha_compra = data['fecha_compra']
+
+    db.session.commit()
+    return jsonify({'msg': 'Buy updated'}), 200
 
 #-- Verificar token y mirar si el id del inventario le corresponde a la compañia del token-- ##
-@app.route('/inventory/<int:id>', methods=['DELETE'])
-def delete_inventory_item(id):
-    item = db.session.get(Inventory, id)
-    if not item:
-        return jsonify({'msg': 'Item not found'}), 404
-    db.session.delete(item)
-    db.session.commit()
-    return jsonify({'msg': 'Item deleted'}), 200
+@app.route('/inventory/<int:product_id>', methods=['DELETE'])
+@jwt_required()
+def delete_inventory_item(product_id):
+    user_email = get_jwt_identity()
 
+    user = User.query.filter_by(email= user_email).first()
+
+    company_id = user.company_id
+
+    product = Inventory.query.filter_by(
+        companyID = company_id,
+        id = product_id
+    ).first()
+    if not product:
+        return jsonify({'msg': 'Product not found'}), 404
+    
+    db.session.delete(product)
+    db.session.commit()
+    #-- try expect--#
+    return jsonify({'msg': 'Product deleted'}), 200
+
+@app.route('/login', methods=['POST'])
+def login():
+    body= request.get_json(silent= True)
+    if body is None:
+        return jsonify({'msg': 'Debe agregar informacion en el body'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'El campo email es obligatorio'}), 400
+    if 'password' not in body:
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
+    user= User.query.filter_by(email= body['email']).first()
+    if user is None:
+        return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
+    valid_password = bcrypt.check_password_hash(user.password, body['password'])
+    if not valid_password:
+        return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
+    access_token = create_access_token(identity = user.email)
+    return jsonify({'msg': 'Usuario logeado correctamente', 'token': access_token, 'company' : user.serialize()})
+    
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

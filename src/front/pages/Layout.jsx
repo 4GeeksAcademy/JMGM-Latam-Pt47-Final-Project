@@ -1,12 +1,16 @@
 import { Outlet } from "react-router-dom/dist"
 import ScrollToTop from "../components/ScrollToTop"
-import { Navbar } from "../components/Navbar"
+import { LandingNavbar } from "../components/LandingNavbar"
 import { Footer } from "../components/Footer"
-import EnConstruccion from "../components/EnConstruccion"
 
-// Base component that maintains the navbar and footer throughout the page and the scroll to top functionality.
 export const Layout = () => {
     return (
-       <EnConstruccion/>
+        <ScrollToTop>
+            <LandingNavbar />
+            <div style={{paddingTop:"5.5rem"}}>
+            <Outlet />
+            </div>
+            <Footer />
+        </ScrollToTop>
     )
 }
