@@ -1,11 +1,37 @@
+import { Link, Navigate } from "react-router-dom";
+
 export const Footer = () => (
-	<footer className="footer mt-auto py-3 text-center">
-		<p>
-			Check the <a target="_blank" href="https://4geeks.com/docs/start/react-flask-template">template documentation</a> <i className="fa-solid fa-file"></i> for help.
-		</p>
-		<p>
-			Made with <i className="fa fa-heart text-danger" /> by{" "}
-			<a href="http://www.4geeksacademy.com">4Geeks Academy</a>
-		</p>
+	<footer className="footer mt-auto py-3 text-center border-top">
+		<div className="container-fluid d-flex justify-content-between mb-2">
+			<div className="col-3 d-flex justify-content-start px-4">
+				<img src="src/front/assets/img/logo.png" type="button" alt="Logo" width="105" height="40" className="d-inline-block align-text-top"></img>
+			</div>
+			<div className="d-flex justify-content-end px-5">
+				<button type="button" className="btn" href="/">Homepage</button>
+				<button type="button" className="btn" href="/">Inicio</button>
+				<button type="button" className="btn" href="/">Configuración</button>
+				<button type="button" className="btn" href="/">Perfil</button>
+				<button type="button" className="btn" href="/">Contáctanos</button>
+			</div>
+		</div>
+		<div className="container-fluid d-flex justify-content-between">
+			<div className="col-3">
+				<p className="text-start px-5">¡Gestiona tu inventario de la mejor manera!
+					<br />
+					Visualiza tu Stock en MyStock</p>
+			</div>
+			<div className="d-flex justify-content-end px-5 fs-4">
+				<button type="button" className="btn btn-link"><i className="fa-brands fa-square-facebook fs-2" /></button>
+				<button type="button" className="btn btn-link"><i className="fa-brands fa-square-instagram fs-2" /></button>
+				<button type="button" className="btn btn-link"><i className="fa-brands fa-square-twitter fs-2" /></button>
+			</div>
+		</div>
+		<div className="container border-top">
+		</div>
+		<div className="d-flex justify-content-between mx-5 my-2">
+			<button type="button" className="btn btn-link">Política de Privacidad</button>
+			<button type="button" className="btn" aria-disabled="true">© 2025 MyStock WebApp S.A.</button>
+			<button type="button" className="btn btn-link">Términos & Condiciones</button>
+		</div>
 	</footer>
 );
