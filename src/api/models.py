@@ -25,7 +25,7 @@ class CompanyInfo(db.Model):
     name: Mapped[str]= mapped_column(String(50), unique= True, nullable= False)
     email: Mapped[str]= mapped_column(String(120), unique= True, nullable= False)
     phone: Mapped[str]= mapped_column(String(20), nullable= False)
-    password: Mapped[str]= mapped_column(String(10), nullable= False)
+    password: Mapped[str]= mapped_column(String(200), nullable= False)
     inventory: Mapped[list['Inventory']]= relationship(back_populates= 'company', cascade='all')
     clients: Mapped[list['Clients']]= relationship(back_populates= 'company', cascade='all')
     def serialize(self):
@@ -34,8 +34,8 @@ class CompanyInfo(db.Model):
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
-            "password": self.password,
-            "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory))
+            "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory)),
+            "clients": list(map(lambda clients: clients.serialize(), self.clients))
         }
     def __repr__(self):
         return self.name
@@ -97,6 +97,7 @@ class Compras(db.Model):
     productsId: Mapped[int]= mapped_column(ForeignKey('inventory.id'))
     producto: Mapped['Inventory']= relationship(back_populates= 'compras')
     cantidad: Mapped[int]= mapped_column(Integer)
+    #- editar en la tabla "fecha y hora" #
     fecha_compra: Mapped[datetime.date] = mapped_column(Date)
     clientes: Mapped['Clients']= relationship(back_populates= 'compras')
 
