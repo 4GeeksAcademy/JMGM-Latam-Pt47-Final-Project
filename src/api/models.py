@@ -1,20 +1,36 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import String, Boolean, ForeignKey, Integer, Date
+from sqlalchemy import String, Boolean, ForeignKey, Integer, Date, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 import datetime
+import enum
 db = SQLAlchemy()
 
+class RoleEnum(str,enum.Enum):  
+    ADMIN = 'admin'
+    USER = 'user'
+
+    @classmethod
+    def get_all(cls):
+        return [role.value for role in cls]
+
 class User(db.Model):
+    __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
+    role: Mapped[enum] = mapped_column(Enum(RoleEnum), default=RoleEnum.USER.value)
+    company_id: Mapped[int] = mapped_column(ForeignKey('company_info.id'))
+    company: Mapped['CompanyInfo'] = relationship(back_populates='users')
 
 
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
+            "is_active": self.is_active,
+            "role": self.role,
+            "company": self.company.name
             # do not serialize the password, its a security breach
         }
     def __repr__(self):
@@ -23,17 +39,18 @@ class CompanyInfo(db.Model):
     __tablename__= 'company_info'
     id: Mapped[int]= mapped_column(primary_key= True)
     name: Mapped[str]= mapped_column(String(50), unique= True, nullable= False)
-    email: Mapped[str]= mapped_column(String(120), unique= True, nullable= False)
-    phone: Mapped[str]= mapped_column(String(20), nullable= False)
-    password: Mapped[str]= mapped_column(String(200), nullable= False)
+    email: Mapped[str]= mapped_column(String(120), unique= True, nullable = True)
+    phone: Mapped[str]= mapped_column(String(20), nullable = True)
     inventory: Mapped[list['Inventory']]= relationship(back_populates= 'company', cascade='all')
     clients: Mapped[list['Clients']]= relationship(back_populates= 'company', cascade='all')
+    users: Mapped[list['User']] = relationship(back_populates= 'company', cascade= 'all')
     def serialize(self):
         return {
             "id" : self.id,
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
+            "users": list(map(lambda user: user.serialize(), self.users)),
             "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory)),
             "clients": list(map(lambda clients: clients.serialize(), self.clients))
         }
