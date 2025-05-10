@@ -5,20 +5,28 @@ const LateralMenu = () => {
         <div className="Menu">
             <div className="row">
                 <div className="col">
-                    <strong>General</strong>
-                    <div className="botones">
+                    <div className="botones container">
                         <div className="btn-group-vertical" role="group">
+                            <strong>General</strong>
                             <button className="boton btn">
-                                 <i className="fa-solid fa-border-all"></i> Inicio
+                                <div className="texto-boton">
+                                <i className="fa-solid fa-border-all"></i>  Inicio
+                                </div>
                             </button>
                             <button className="boton btn">
-                                 <i className="fa-solid fa-border-all"></i> Inicio
+                                <div className="texto-boton">
+                                <i class="fa-solid fa-box"></i> Inventario
+                                </div>
                             </button>
                             <button className="boton btn">
-                                 <i className="fa-solid fa-border-all"></i> Inicio
+                                <div className="texto-boton">
+                            <i class="fa-solid fa-cart-shopping"></i> Ventas & Ordenes
+                                </div>
                             </button>
                             <button className="boton btn">
-                                 <i className="fa-solid fa-border-all"></i> Inicio
+                                <div className="texto-boton">
+                                <i class="fa-solid fa-arrow-trend-up"></i> Reportes
+                                </div>
                             </button>
                         </div>
                     </div>
