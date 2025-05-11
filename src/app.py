@@ -80,6 +80,7 @@ def serve_any_other_file(path):
 #---COMPANY INFO ENDPOINTS---
 ##-- Colocar token y verificar que el email sea de un admin--#
 @app.route('/companyinfo', methods= ['GET'])
+@jwt_required()
 def get_companies():
     companies= CompanyInfo.query.all()
     all_company = list(map(lambda company: company.serialize(), companies))
@@ -92,6 +93,7 @@ def get_company_id(id):
     company = db.session.get(CompanyInfo, id)
     if company:
         return jsonify(company.serialize())
+    
     return jsonify({'msg': 'Company not found'}), 404
 
 ##-- Colocar token y verificar que el inventario le pertenezca a la compañia--#
@@ -320,24 +322,26 @@ def create_user():
         
     
 
-#-- verifiar el token y obtener el id desde el token --#
-@app.route('/companyinfo/<int:id>', methods=['PUT'])
-def update_company(id):
-    company = db.session.get(CompanyInfo, id)
-    if company:
-        data = request.get_json()
-        company.name = data.get('name', company.name)
-        company.email = data.get('email', company.email)
-        company.phone = data.get('phone', company.phone)
-        company.password = data.get('password', company.password)
-        db.session.commit()
-        return jsonify(company.serialize()), 200
-    return jsonify({'msg': 'Company not found'}), 400
+# #-- verifiar el token y obtener el id desde el token --#
+# @app.route('/companyinfo/<int:id>', methods=['PUT'])
+# def update_company(id):
+#     company = db.session.get(CompanyInfo, id)
+#     if company:
+#         data = request.get_json()
+#         company.name = data.get('name', company.name)
+#         company.email = data.get('email', company.email)
+#         company.phone = data.get('phone', company.phone)
+#         company.password = data.get('password', company.password)
+#         db.session.commit()
+#         return jsonify(company.serialize()), 200
+#     return jsonify({'msg': 'Company not found'}), 400
 
 #-- verifiar el token y obtener el id desde el token --#
 @app.route('/companyinfo/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_company(id):
-    company = db.session.get(CompanyInfo, id)
+    company_id = get_jwt_identity()
+    company = CompanyInfo.query.filter_by(id).first()
     if not company:
         return jsonify({'msg': 'Company not found'}), 400
     db.session.delete(company)
@@ -409,7 +413,7 @@ def actualizar_compra(id):
     db.session.commit()
     return jsonify({'msg': 'Buy updated'}), 200
 
-#-- Verificar token y mirar si el id del inventario le corresponde a la compañia del token-- ##
+#-- Ya se hicieron los cambios -- ##
 @app.route('/inventory/<int:product_id>', methods=['DELETE'])
 @jwt_required()
 def delete_inventory_item(product_id):
@@ -426,10 +430,16 @@ def delete_inventory_item(product_id):
     if not product:
         return jsonify({'msg': 'Product not found'}), 404
     
-    db.session.delete(product)
-    db.session.commit()
     #-- try expect--#
-    return jsonify({'msg': 'Product deleted'}), 200
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        return jsonify({'msg': 'Product deleted'}), 200
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({'msg': 'error al eliminar el producto', 'error': str(e)}), 400
+    finally:
+        db.session.close()
 
 @app.route('/login', methods=['POST'])
 def login():
