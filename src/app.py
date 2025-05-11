@@ -100,14 +100,22 @@ def get_company_id(id):
 
 ##-- Colocar token y verificar que el inventario le pertenezca a la compañia--#
 #-- Verificar la cantidad de stock existente --#
+#-- Listo--#
 @app.route('/inventory/stock/<int:id>/<int:quantity>', methods= ['DELETE'])
+@jwt_required()
 def delete_stock(id, quantity):
+    current_user= get_jwt()
+    current_company_id= current_user['company_id']
     product= Inventory.query.get(id)
-    product.stock= product.stock - quantity
-
+    if product.companyID != current_company_id:
+        return jsonify({'msg': 'No tiene permiso para eliminar productos del inventario'}), 400
+    if quantity > product.stock :
+        return ({'msg': 'La cantidad es superior a la solicitada'}), 400
+    
     try: 
+        product.stock= product.stock - quantity
         db.session.commit()
-        return jsonify(product.serialize()), 200
+        return jsonify({'msg': 'Producto rebajado con exito','producto': product.serialize()}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'msg': 'Error eliminando Stock', 'error': str(e)}), 400
@@ -165,11 +173,21 @@ def compra(id_client):
 #---- Endpoints de clientes ----- #
 #-- Verificar token de compañia -- #
 #-- Get de los clientes de la compañia por la llave foranea-- #
+#-- Listo -- #
 @app.route('/clients', methods= ['GET'])
+@jwt_required()
 def clients():
-    clientes = Clients.query.all()
-    all_clientes = list(map(lambda clientes: clientes.serialize(), clientes))
-    return jsonify({'clientes' : all_clientes})
+    try:
+        current_user= get_jwt()
+        current_company_id= current_user['company_id']
+        clientes = Clients.query.filter_by(companyId= current_company_id).all()
+        all_clientes = list(map(lambda clientes: clientes.serialize(), clientes))
+        return jsonify({'clientes' : all_clientes}), 200
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({'msg': 'error al crear el usuario', 'error': str(e)}), 400
+    finally:
+        db.session.close()
 
 #-- Verificar token de compañia -- #
 #-- Get de los clientes de la compañia por la llave foranea-- #
@@ -328,6 +346,7 @@ def delete_company(id):
 
 #----INVENTORY ENDPOINTS----#
 
+
 #-- listo-- #
 @app.route('/company/inventory', methods=['GET'])
 @jwt_required()
@@ -339,6 +358,7 @@ def get_invetory_id():
     inventory_objects = Inventory.query.filter_by(companyID=current_company_id).all()
     inventory_serialized = list(map(lambda item: item.serialize(), inventory_objects))
 
+
     if not company:
         return jsonify({'msg': 'Company not found'}), 404
     company_info = company.serialize()
@@ -348,7 +368,7 @@ def get_invetory_id():
         'company_name': company_info['name'],
         'inventory': inventory_serialized}), 200
 
-#-- Casi listo -- #
+#-- Listo -- #
 @app.route('/inventory', methods=['POST'])
 @jwt_required()
 def create_inventory():
@@ -358,19 +378,29 @@ def create_inventory():
     
     current_user= get_jwt()
     current_company_id= current_user['company_id']
-    
-    new_item = Inventory(
-        companyID = current_company_id,
-        product_name = data.get('product_name'),
-        price = data.get('price'),
-        marca = data.get('marca'),
-        stock = data.get('stock')
-    )
+
+    items= Inventory.query.filter_by(
+        product_name= data.get('product_name'),
+        marca= data.get('marca'),
+        companyID= current_company_id
+    ).first()
     
     try:
+        if items:
+            items.stock += int(data.get('stock'))
+            db.session.commit()
+            return jsonify({'msg': 'Inventario actualizado', 'item': items.serialize()}), 200
+        else:
+            new_item = Inventory(
+            companyID = current_company_id,
+            product_name = data.get('product_name'),
+            price = data.get('price'),
+            marca = data.get('marca'),
+            stock = data.get('stock')
+            )
         db.session.add(new_item)
         db.session.commit()
-        return jsonify({'item creado': new_item.serialize()}), 200
+        return jsonify({'msg': 'Producto creado exitosamente', 'item': new_item.serialize()}), 200
     except Exception as e: 
         db.session.rollback()
         return jsonify({'msg': 'Error al crear un nuevo producto', 'error': str(e)}), 400
