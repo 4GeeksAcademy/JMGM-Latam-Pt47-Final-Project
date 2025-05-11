@@ -13,7 +13,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, get_jwt
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -252,27 +252,6 @@ def delete_client(id_client):
     finally:
         db.session.close()
 
-#-- Falta la ruta para logearse
-# y debe generar un token-- #
-# @app.route('/register', methods = ['POST'])
-# def create_company():
-#     data = request.get_json()
-#     if not  data or not all(key in data for key in ('name', 'email', 'phone', 'password')):
-#         return jsonify({'msg': 'Missing required field'}), 400
-    
-#     verify_email= CompanyInfo.query.filter_by(email= data.get('email')).first()
-#     if verify_email:
-#         return jsonify({'msg': 'Esta compañia ya esta registrada'}), 400
-
-#     new_company = CompanyInfo(
-#         name = data.get('name'),
-#         email=data.get('email'),
-#         phone=data.get('phone'),
-#         password= bcrypt.generate_password_hash(data.get('password')).decode('utf-8')
-#     )
-#     db.session.add(new_company)
-#     db.session.commit()
-#     return jsonify({'msg': 'Company created', 'company': new_company.serialize()}), 200
 @app.route('/register', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -335,6 +314,7 @@ def update_company(id):
     return jsonify({'msg': 'Company not found'}), 400
 
 #-- verifiar el token y obtener el id desde el token --#
+#-- Este para uso de admin -- #
 @app.route('/companyinfo/<int:id>', methods=['DELETE'])
 def delete_company(id):
     company = db.session.get(CompanyInfo, id)
@@ -344,13 +324,7 @@ def delete_company(id):
     db.session.commit()
     return jsonify({'msg': 'Company deleted'}), 200
 
-#----INVENTORY ENDPOINTS----
-#-- Verificar el token y verificar el inventario le pertenezca a la compañia--#
-@app.route('/inventory', methods = ['GET'])
-def get_inventory():
-    inventory = Inventory.query.all()
-    inventory_serialized = list((map(lambda product: product.serialize(), inventory)))
-    return jsonify({'data': inventory_serialized}), 200
+#----INVENTORY ENDPOINTS----#
 
 #-- Verificar token y obtener id desde el token-- #
 @app.route('/company/inventory/<int:company_id>', methods = ['GET'])
@@ -364,25 +338,34 @@ def get_invetory_id( company_id):
     company_info = company.serialize()
     return jsonify({'company_id': company_info['id'], 'company_name': company_info['name'], 'inventory': inventory_serialized}), 200
 
-#-- Verificar token y verificar que el inventario pertenezca a la compañia
-# Y obtener el company id desde el token, y eliminarlo del body-- #
+#-- Casi listo -- #
 @app.route('/inventory', methods=['POST'])
 @jwt_required()
 def create_inventory():
     data = request.get_json()
-    if not  data or not all(key in data for key in ('product_name', 'price', 'marca', 'stock', 'companyID')):
+    if not  data or not all(key in data for key in ('product_name', 'price', 'marca', 'stock')):
         return jsonify({'msg': 'Missing required field'}), 400
     
+    current_user= get_jwt()
+    current_company_id= current_user['company_id']
+    
     new_item = Inventory(
-        companyID = data.get('companyID'),
+        companyID = current_company_id,
         product_name = data.get('product_name'),
         price = data.get('price'),
         marca = data.get('marca'),
         stock = data.get('stock')
     )
-    db.session.add(new_item)
-    db.session.commit()
-    return jsonify(new_item.serialize()), 200
+    
+    try:
+        db.session.add(new_item)
+        db.session.commit()
+        return jsonify({'item creado': new_item.serialize()}), 200
+    except Exception as e: 
+        db.session.rollback()
+        return jsonify({'msg': 'Error al crear un nuevo producto', 'error': str(e)}), 400
+    finally:
+        db.session.close()
 
 #-- Verificar token y verificar que el inventario pertenezca a la compañia
 # Y obtener el company id desde el token, y eliminarlo del body-- #
@@ -446,7 +429,7 @@ def login():
     valid_password = bcrypt.check_password_hash(user.password, body['password'])
     if not valid_password:
         return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
-    access_token = create_access_token(identity = user.email)
+    access_token = create_access_token(identity =user.email, additional_claims={'company_id': user.company_id})
     return jsonify({'msg': 'Usuario logeado correctamente', 'token': access_token, 'company' : user.serialize()})
     
 
