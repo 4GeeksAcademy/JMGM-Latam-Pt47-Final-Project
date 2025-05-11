@@ -190,14 +190,18 @@ def clients():
     finally:
         db.session.close()
 
-#-- Verificar token de compañia -- #
-#-- Get de los clientes de la compañia por la llave foranea-- #
+#-- Listo -- #
 @app.route('/client/<int:id>', methods=['GET'])
+@jwt_required()
 def client_id(id):
-    cliente= Clients.query.get(id)
-    if cliente is None:
-        return jsonify({'msg': 'Cliente no existe'}), 404
-    return jsonify({'cliente': cliente.serialize()})
+    actual_company_id = get_jwt().get('company_id')
+    if not actual_company_id:
+        return jsonify({'msg': 'No se pudo identificar la compañía'}), 401
+
+    client = Clients.query.filter_by(id=id, companyId=actual_company_id).first()
+    if client is None:
+        return jsonify({'msg': 'Cliente no existe o no pertenece a esta compañía'}), 404
+    return jsonify({'cliente': client.serialize()})
 
 #-- Verificar token -- #
 #-- obtener id company desde el token
@@ -274,7 +278,7 @@ def delete_client(id_client):
     finally:
         db.session.close()
 
-#-- listo--#
+#-- listo --#
 @app.route('/register', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -289,7 +293,12 @@ def create_user():
     
     if User.query.filter_by(email=data['email']).first():
         return jsonify({'msg': 'el email ya existe'}), 400
-#-- verificar la contraseña es fuerte, minimo 8 caracateres--#
+    
+    password = data.get('password')
+
+    if len(password) < 8:
+        return jsonify({'msg': 'la contraseña debe tener al menos 8 caracteres'}), 400
+    
     new_company = CompanyInfo(
         name = data.get('company_name')
     )
