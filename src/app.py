@@ -89,6 +89,7 @@ def get_companies():
     return jsonify({'data' : all_company}), 200
 
 ##-- Colocar token y verificar que el email sea de un admin--#
+#-- preguntar como hacerlo--#
 @app.route('/companyinfo/<int:id>', methods = ['GET'])
 @jwt_required()
 def get_company_id(id):
