@@ -92,7 +92,7 @@ def get_companies():
 @app.route('/companyinfo/<int:id>', methods = ['GET'])
 @jwt_required()
 def get_company_id(id):
-    company = db.session.get(CompanyInfo, id)
+    company = CompanyInfo.query.filter_by(id=id).first()
     if company:
         return jsonify(company.serialize())
     
