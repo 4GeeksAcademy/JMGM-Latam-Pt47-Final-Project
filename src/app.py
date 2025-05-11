@@ -338,7 +338,7 @@ def get_invetory_id( company_id):
     company_info = company.serialize()
     return jsonify({'company_id': company_info['id'], 'company_name': company_info['name'], 'inventory': inventory_serialized}), 200
 
-#-- Casi listo -- #
+#-- Listo -- #
 @app.route('/inventory', methods=['POST'])
 @jwt_required()
 def create_inventory():
@@ -348,19 +348,29 @@ def create_inventory():
     
     current_user= get_jwt()
     current_company_id= current_user['company_id']
-    
-    new_item = Inventory(
-        companyID = current_company_id,
-        product_name = data.get('product_name'),
-        price = data.get('price'),
-        marca = data.get('marca'),
-        stock = data.get('stock')
-    )
+
+    items= Inventory.query.filter_by(
+        product_name= data.get('product_name'),
+        marca= data.get('marca'),
+        companyID= current_company_id
+    ).first()
     
     try:
+        if items:
+            items.stock += int(data.get('stock'))
+            db.session.commit()
+            return jsonify({'msg': 'Inventario actualizado', 'item': items.serialize()}), 200
+        else:
+            new_item = Inventory(
+            companyID = current_company_id,
+            product_name = data.get('product_name'),
+            price = data.get('price'),
+            marca = data.get('marca'),
+            stock = data.get('stock')
+            )
         db.session.add(new_item)
         db.session.commit()
-        return jsonify({'item creado': new_item.serialize()}), 200
+        return jsonify({'msg': 'Producto creado exitosamente', 'item': new_item.serialize()}), 200
     except Exception as e: 
         db.session.rollback()
         return jsonify({'msg': 'Error al crear un nuevo producto', 'error': str(e)}), 400
