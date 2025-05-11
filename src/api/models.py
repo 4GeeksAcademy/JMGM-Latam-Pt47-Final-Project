@@ -101,7 +101,8 @@ class Clients(db.Model):
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
-            "company": self.company.name
+            "company": self.company.name,
+            "companyId": self.companyId
         }
 
     def __repr__(self):
