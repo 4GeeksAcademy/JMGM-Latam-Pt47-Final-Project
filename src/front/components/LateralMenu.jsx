@@ -6,7 +6,7 @@ const LateralMenu = () => {
             <div className="row">
                 <div className="col">
                     <div className="botones d-flex flex-column justify-content-between" role="group">
-                        <strong>General</strong>
+                        <h5>General</h5>
                         <button className="boton btn">
                             <div className="texto-boton">
                                 <i className="fa-solid fa-border-all"></i>&nbsp;&nbsp;Inicio
@@ -27,9 +27,40 @@ const LateralMenu = () => {
                                 <i class="fa-solid fa-arrow-trend-up"></i>&nbsp;&nbsp;Reportes
                             </div>
                         </button>
-                    </div>
-                    <div className="botones">
-                        <strong>Soporte</strong>
+                        <br></br>
+                        <h5>Soporte</h5>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Ayuda
+                            </div>
+                        </button>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
+                            </div>
+                        </button>
+                        <div className='border-top border-2 m-4' style={{ borderTopColor: "#6C11D9" }} />
+                        <h5>Acciones Rapidas</h5>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-file-medical"></i>&nbsp;&nbsp;Crear Orden
+                            </div>
+                        </button>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-box"></i>&nbsp;&nbsp;Añadir Producto
+                            </div>
+                        </button>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-truck"></i>&nbsp;&nbsp;Añadir Cliente
+                            </div>
+                        </button>
+                        <button className="boton btn">
+                            <div className="texto-boton">
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>&nbsp;&nbsp;Exportar
+                            </div>
+                        </button>
                     </div>
                 </div>
             </div>
