@@ -21,7 +21,7 @@ class User(db.Model):
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False)
     role: Mapped[enum] = mapped_column(Enum(RoleEnum), default=RoleEnum.USER.value)
     company_id: Mapped[int] = mapped_column(ForeignKey('company_info.id'))
-    company: Mapped['CompanyInfo'] = relationship(back_populates='users')
+    company: Mapped['CompanyInfo'] = relationship(back_populates='user')
 
 
     def serialize(self):
@@ -43,14 +43,14 @@ class CompanyInfo(db.Model):
     phone: Mapped[str]= mapped_column(String(20), nullable = True)
     inventory: Mapped[list['Inventory']]= relationship(back_populates= 'company', cascade='all')
     clients: Mapped[list['Clients']]= relationship(back_populates= 'company', cascade='all')
-    users: Mapped[list['User']] = relationship(back_populates= 'company', cascade= 'all')
+    user: Mapped['User'] = relationship(back_populates= 'company', cascade= 'all')
     def serialize(self):
         return {
             "id" : self.id,
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
-            "users": list(map(lambda user: user.serialize(), self.users)),
+            "user": self.user,
             "inventory": list(map(lambda inventory: inventory.serialize(), self.inventory)),
             "clients": list(map(lambda clients: clients.serialize(), self.clients))
         }
