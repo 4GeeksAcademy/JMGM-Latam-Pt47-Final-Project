@@ -80,7 +80,7 @@ def serve_any_other_file(path):
 #---COMPANY INFO ENDPOINTS---
 ##-- Colocar token y verificar que el email sea de un admin--#
 #-- preguntar como hacer--#
-@app.route('/companyinfo', methods= ['GET'])
+@app.route('/companiesinfo', methods= ['GET'])
 @jwt_required()
 def get_companies():
     company_id = get_jwt()
@@ -206,8 +206,14 @@ def client_id(id):
 #-- Verificar token -- #
 #-- obtener id company desde el token
 # y quitar id_company de la ruta -- #
-@app.route('/client/<int:id_company>', methods=['POST'])
-def add_client(id_company):
+@app.route('/client', methods=['POST'])
+@jwt_required()
+def add_client():
+    current_user= get_jwt()
+    current_company_id= current_user['company_id']
+    company_info= CompanyInfo.query.filter_by(id= current_company_id).first()
+    if current_company_id != company_info.id:
+        return jsonify({'msg': 'No tienes permiso para crear un cliente'}), 400
     body= request.get_json(silent= True)
     """
     {
@@ -231,7 +237,7 @@ def add_client(id_company):
     new_client.name= body['nombre']
     new_client.email= body['email']
     new_client.phone= body['telefono']
-    new_client.companyId= id_company
+    new_client.companyId= current_company_id
     try:
         db.session.add(new_client)
         db.session.commit()
@@ -443,21 +449,16 @@ def actualizar_compra(id):
     return jsonify({'msg': 'Buy updated'}), 200
 
 #-- listo -- ##
-@app.route('/inventory/<int:product_id>', methods=['DELETE'])
+@app.route('/stock/<int:product_id>', methods=['DELETE'])
 @jwt_required()
 def delete_inventory_item(product_id):
-    user_email = get_jwt_identity()
-
-    user = User.query.filter_by(email= user_email).first()
-
-    company_id = user.company_id
-
-    product = Inventory.query.filter_by(
-        companyID = company_id,
-        id = product_id
-    ).first()
-    if not product:
-        return jsonify({'msg': 'Product not found'}), 404
+    current_user = get_jwt()
+    current_company_id= current_user['company_id']
+    product= Inventory.query.filter_by(id =product_id).first()
+    if product.companyID != current_company_id:
+        return({'msg': 'No tienes permiso para eliminar este producto'}), 400
+    if product is None:
+        return jsonify({'msg': 'El producto no existe'}), 400
     
     #-- try expect--#
     try:
