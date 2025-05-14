@@ -39,7 +39,7 @@ const LateralMenu = () => {
                                 <i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
                             </div>
                         </button>
-                        <div className='border-top border-2 m-4' style={{ borderTopColor: "#6C11D9" }} />
+                        <div className='border-top border-2 my-4' style={{ borderTopColor: "#6C11D9" }} />
                         <h5>Acciones Rapidas</h5>
                         <button className="boton btn">
                             <div className="texto-boton">
