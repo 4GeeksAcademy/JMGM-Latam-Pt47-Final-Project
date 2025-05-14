@@ -7,14 +7,13 @@
 }
 
 .botones {
-  display: flex;
-  flex-direction: column;
+  height: 40%;
   margin: 20px 0 10px 20px;
 }
 
 .texto-boton {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .boton {
@@ -24,5 +23,3 @@
 .boton:hover {
   background-color: rgba(108, 17, 217, 1);
 }
-
-

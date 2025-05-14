@@ -5,7 +5,6 @@ import {
     createRoutesFromElements,
     Route,
 } from "react-router-dom";
-import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
@@ -13,6 +12,9 @@ import { Landing } from "./pages/Landing";
 import { DashboardLayout } from "./pages/DashboardLayout";
 import { Dashboard } from "./pages/Dashboard";
 import { InventoryView } from "./pages/InventoryView";
+import { LayoutLanding } from "./pages/LayoutLanding";
+import LoginUser from "./components/LoginUser";
+import PerfilUser from "./components/PerfilUser";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,16 +26,17 @@ export const router = createBrowserRouter(
 
       // Root Route: All navigation will start from here.
       <>
-      <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
+      <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Landing />} />
       </Route>
-
+      <Route path="/loginuser" element={<LoginUser />} />
       <Route path="/app" element={<DashboardLayout />}>
 
         <Route path= "/app" element={<Dashboard />} />
         <Route path= "/app/inventario" element={<InventoryView />} />
+        <Route path= "/app/perfil" element={<PerfilUser/>} />
       </Route>
       </>
     )
