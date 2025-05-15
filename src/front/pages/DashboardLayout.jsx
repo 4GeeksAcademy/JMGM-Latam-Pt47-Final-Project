@@ -17,10 +17,10 @@ export const DashboardLayout = () => {
         <ScrollToTop>
             <Navbar />
             <div className="d-flex row">
-                <div className="col-3">
+                <div className="col-2 p-0">
                     <LateralMenu />
                 </div>
-                <div className="col-9">
+                <div className="col-10 p-0">
                     <Outlet />
                 </div>
             </div>

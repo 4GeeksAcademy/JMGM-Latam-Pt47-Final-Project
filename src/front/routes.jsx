@@ -15,6 +15,7 @@ import { InventoryView } from "./pages/InventoryView";
 import { LayoutLanding } from "./pages/LayoutLanding";
 import LoginUser from "./components/LoginUser";
 import PerfilUser from "./components/PerfilUser";
+import Clientes from "./pages/Clientes";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -37,6 +38,7 @@ export const router = createBrowserRouter(
         <Route path= "/app" element={<Dashboard />} />
         <Route path= "/app/inventario" element={<InventoryView />} />
         <Route path= "/app/perfil" element={<PerfilUser/>} />
+        <Route path= "/app/clientes" element={<Clientes/>} />
       </Route>
       </>
     )

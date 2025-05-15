@@ -2,7 +2,7 @@
   display: flex;
   justify-content: start;
   height: 800px;
-  width: 300px;
+  padding-left: 5px;
   background-color: rgba(244, 245, 252, 1);
 }
 
@@ -17,9 +17,13 @@
 }
 
 .boton {
-  padding: 20px 0 10px 0;
+  margin-top: 22px;
 }
 
 .boton:hover {
   background-color: rgba(108, 17, 217, 1);
+}
+
+.boton-cliente:hover {
+background-color: rgba(108, 17, 217, 1)
 }
