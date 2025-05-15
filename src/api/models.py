@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, ForeignKey, Integer, Date, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-import datetime
+from datetime import datetime
 import enum
 db = SQLAlchemy()
 
@@ -103,7 +103,8 @@ class Clients(db.Model):
             "email": self.email,
             "phone": self.phone,
             "company": self.company.name,
-            "companyId": self.companyId
+            "companyId": self.companyId,
+            "compras": list(map(lambda compras: compras.serialize(), self.compras))
         }
 
     def __repr__(self):
@@ -118,7 +119,7 @@ class Compras(db.Model):
     producto: Mapped['Inventory']= relationship(back_populates= 'compras')
     cantidad: Mapped[int]= mapped_column(Integer)
     #- editar en la tabla "fecha y hora" #
-    fecha_compra: Mapped[datetime.date] = mapped_column(Date)
+    fecha_compra: Mapped[datetime] = mapped_column(default= datetime.now)
     clientes: Mapped['Clients']= relationship(back_populates= 'compras')
     company : Mapped['CompanyInfo'] = relationship(back_populates = 'compras')
 
