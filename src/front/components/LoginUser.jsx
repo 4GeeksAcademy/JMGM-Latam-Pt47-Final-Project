@@ -6,7 +6,7 @@ const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const LoginUser = () => {
     const navigate = useNavigate()
-    const { store, dispatch } = useGlobalReducer()
+    const { dispatch } = useGlobalReducer()
     const [login, setLogin] = useState({
         email: "",
         password: ""
@@ -27,9 +27,9 @@ const LoginUser = () => {
                     localStorage.setItem("token", data.token)
                     dispatch({
                         type: "set_current_user",
-                        payload: data.company
+                        payload: data.user
                     })
-                    console.log("usuario seteado:", data.company);
+                    console.log("usuario seteado:", data.user);
                     
                     navigate("/app/perfil");
                 } else {
