@@ -77,6 +77,16 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+@app.route('/user', methods=['GET'])
+@jwt_required()
+def user_id():
+    current_user_email= get_jwt_identity()
+    user= User.query.filter_by(email= current_user_email).first()
+    if user is None:
+        return jsonify({'msg': 'El usuario no existe'}), 400
+    return jsonify({'msg': 'ok', 'user': user.serialize()}), 200
+
+
 #---COMPANY INFO ENDPOINTS---
 ##-- Colocar token y verificar que el email sea de un admin--#
 #-- preguntar como hacer--#
@@ -487,7 +497,7 @@ def login():
     if not valid_password:
         return jsonify({'msg': 'Usuario o contraseña incorrecta'}), 400
     access_token = create_access_token(identity =user.email, additional_claims={'company_id': user.company_id})
-    return jsonify({'msg': 'Usuario logeado correctamente', 'token': access_token, 'company' : user.serialize()})
+    return jsonify({'msg': 'Usuario logeado correctamente', 'token': access_token, 'user' : user.serialize()})
     
 
 # this only runs if `$ python src/main.py` is executed
