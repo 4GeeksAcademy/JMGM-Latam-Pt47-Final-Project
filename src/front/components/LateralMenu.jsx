@@ -7,7 +7,7 @@ const LateralMenu = () => {
                 <div className="col">
                     <div className="botones d-flex flex-column justify-content-between" role="group">
                         <h5>General</h5>
-                        <button className="boton btn">
+                        <button className="boton btn w-75">
                             <div className="texto-boton">
                                 <i className="fa-solid fa-border-all"></i>&nbsp;&nbsp;Inicio
                             </div>
