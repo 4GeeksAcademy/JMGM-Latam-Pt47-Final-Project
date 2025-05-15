@@ -11,6 +11,7 @@ from api.models import db, CompanyInfo, Inventory, Clients, Compras, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from datetime import datetime
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity, get_jwt
@@ -141,7 +142,12 @@ def delete_stock(id, quantity):
 @jwt_required()
 def compra(id_client):
     token_data = get_jwt()
-    
+    company_id= token_data['company_id']
+    print({'company_id': company_id})
+    client= Clients.query.filter_by(id= id_client).first()
+    print({'client': client.companyId})
+    if company_id != client.companyId:
+        return jsonify({'msg': 'Not found'}), 400
     """
         {
         "product_ID",
@@ -151,16 +157,15 @@ def compra(id_client):
     body= request.get_json(silent= True)
     if not body:
         return jsonify({'msg': 'Debe enviar informacion en el body'}), 400
-    if 'product_ID' not in body:
+    if 'product_id' not in body:
         return jsonify({'msg': 'Debe enviar el id del producto'}), 400
     if 'cantidad' not in body:
         return jsonify({'msg': 'Debe enviar la cantidad solicitada'}), 400
-
     client= Clients.query.get(id_client)
     if client is None:
         return jsonify({'msg': 'Usuario no encontrado'}), 400
     
-    producto= Inventory.query.get(body['product_ID'])
+    producto= Inventory.query.get(body['product_id'])
     if producto is None:
         return jsonify({'msg': 'Producto no encontrado'}), 400
     
@@ -168,10 +173,11 @@ def compra(id_client):
         return jsonify({'msg': 'Cantidad no disponible'}), 400
     
     new_compra= Compras()
-    new_compra.productsId = body['product_ID']
+    new_compra.productsId = body['product_id']
     new_compra.cantidad = body['cantidad']
-    # enviar la fecha y hora a la tabla#
+    new_compra.fecha_compra= datetime.now()
     new_compra.clientsId= id_client
+    new_compra.companyId= company_id
     producto.stock = producto.stock - body['cantidad']
 
     try:
