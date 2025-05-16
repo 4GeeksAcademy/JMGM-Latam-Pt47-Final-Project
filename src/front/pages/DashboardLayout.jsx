@@ -16,7 +16,7 @@ export const DashboardLayout = () => {
 
         <ScrollToTop>
             <Navbar />
-            <div className="d-flex row">
+            <div className="d-flex row me-0">
                 <div className="col-2 p-0">
                     <LateralMenu />
                 </div>
