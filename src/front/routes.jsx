@@ -16,6 +16,7 @@ import { LayoutLanding } from "./pages/LayoutLanding";
 import LoginUser from "./components/LoginUser";
 import PerfilUser from "./components/PerfilUser";
 import Clientes from "./pages/Clientes";
+import AboutUs from "./components/AboutUs";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -26,8 +27,10 @@ export const router = createBrowserRouter(
     // Note: The child paths of the Layout element replace the Outlet component with the elements contained in the "element" attribute of these child paths.
 
       // Root Route: All navigation will start from here.
+      // Pagina que no necesite un usuario logeado van aqui
       <>
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
+      <Route path="/app/aboutus" element={<AboutUs/>} />
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Landing />} />
@@ -39,6 +42,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/inventario" element={<InventoryView />} />
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
+        
       </Route>
       </>
     )
