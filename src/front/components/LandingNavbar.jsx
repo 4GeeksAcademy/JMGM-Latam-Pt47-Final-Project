@@ -25,7 +25,8 @@ export const LandingNavbar = () => {
                 })
              })
             .catch((err) => console.error(err))
-    }, [store.currentUser])
+    }, [])
+
     return (
         <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' }}>
             <div className="container-fluid pb-2 pe-5">

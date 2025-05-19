@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const LateralMenu = () => {
     return (
@@ -7,38 +8,38 @@ const LateralMenu = () => {
                 <div className="col">
                     <div className="botones d-flex flex-column justify-content-between" role="group">
                         <h5>General</h5>
-                        <button className="boton btn w-75">
+                        <Link className="boton btn w-75" to={"/app"}>
                             <div className="texto-boton">
                                 <i className="fa-solid fa-border-all"></i>&nbsp;&nbsp;Inicio
                             </div>
-                        </button>
-                        <button className="boton btn">
+                        </Link>
+                        <Link className="boton btn" to={"/app/inventario"}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-box"></i>&nbsp;&nbsp;Inventario
                             </div>
-                        </button>
-                        <button className="boton btn">
+                        </Link>
+                        <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Ventas & Ordenes
                             </div>
-                        </button>
-                        <button className="boton btn">
+                        </Link>
+                        <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-arrow-trend-up"></i>&nbsp;&nbsp;Reportes
                             </div>
-                        </button>
+                        </Link>
                         <br></br>
                         <h5>Soporte</h5>
-                        <button className="boton btn">
+                        <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Ayuda
                             </div>
-                        </button>
-                        <button className="boton btn">
+                        </Link>
+                        <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
                             </div>
-                        </button>
+                        </Link>
                         <div className='border-top border-2 my-4' style={{ borderTopColor: "#6C11D9" }} />
                         <h5>Acciones Rapidas</h5>
                         <button className="boton btn">
