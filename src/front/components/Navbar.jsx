@@ -14,7 +14,7 @@ export const Navbar = () => {
 					<form className="d-flex" role="search">
 						<img src={profile} alt="Logo" width="50" height="50" className="d-inline-block align-text-top mt-1"></img>
 						<input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-						<button className="btn btn-danger"
+						<button className="btn btn-danger w-75"
 							onClick={() => {
 								localStorage.removeItem("token")
 								dispatch({

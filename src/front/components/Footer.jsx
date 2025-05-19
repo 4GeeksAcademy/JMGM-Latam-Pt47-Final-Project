@@ -1,10 +1,11 @@
 import { Link, Navigate } from "react-router-dom";
+import logo from "./../assets/img/logo.png"
 
 export const Footer = () => (
 	<footer className="footer mt-auto py-3 text-center border-top">
 		<div className="container-fluid d-flex justify-content-between mb-2">
 			<div className="col-3 d-flex justify-content-start px-4">
-				<img src="src/front/assets/img/logo.png" type="button" alt="Logo" width="105" height="40" className="d-inline-block align-text-top"></img>
+				<img src={logo} type="button" alt="Logo" width="105" height="40" className="d-inline-block align-text-top"></img>
 			</div>
 			<div className="d-flex justify-content-end px-5">
 				<button type="button" className="btn" href="/">Homepage</button>

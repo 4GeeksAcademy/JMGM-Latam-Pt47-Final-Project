@@ -2,8 +2,8 @@
   display: flex;
   justify-content: start;
   height: 800px;
-  width: 300px;
-  background-color: rgb(180, 162, 162);
+  padding-left: 5px;
+  background-color: rgba(244, 245, 252, 1);
 }
 
 .botones {
@@ -17,9 +17,18 @@
 }
 
 .boton {
-  padding: 20px 0 10px 0;
+  margin-top: 22px;
 }
 
 .boton:hover {
   background-color: rgba(108, 17, 217, 1);
+}
+
+.boton-cliente:hover {
+background-color: rgba(108, 17, 217, 1)
+}
+
+.clientes-top {
+  height: 40%;
+  margin: 20px 0 10px 5px;
 }

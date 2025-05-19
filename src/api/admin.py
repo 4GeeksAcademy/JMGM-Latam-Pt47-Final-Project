@@ -17,7 +17,7 @@ class ClientsView(ModelView):
     column_list= ['id', 'companyId', 'name', 'email', 'phone', 'company', 'compras']
 
 class ComprasView(ModelView):
-    column_list= ['id', 'clientsId', 'productsId', 'producto', 'cantidad', 'fecha_compra', 'clientes']
+    column_list= ['id', 'clientsId', 'productsId', 'companyId', 'producto', 'cantidad', 'fecha_compra', 'clientes']
 
 def setup_admin(app):
     app.secret_key = os.environ.get('FLASK_APP_KEY', 'sample key')
