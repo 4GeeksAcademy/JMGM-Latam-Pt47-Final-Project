@@ -22,10 +22,12 @@
 
 .boton:hover {
   background-color: rgba(108, 17, 217, 1);
+  color: white;
 }
 
 .boton-cliente:hover {
-background-color: rgba(108, 17, 217, 1)
+  background-color: rgba(108, 17, 217, 1);
+  color: white;
 }
 
 .clientes-top {
