@@ -5,7 +5,7 @@ const Clientes = () => {
   return (
     <div className="row me-0">
       <div className="col-9">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h5>Clientes</h5></a>
             <form className="d-flex" role="search">
@@ -52,6 +52,25 @@ const Clientes = () => {
             </tr>
           </tbody>
         </table>
+        <div className="d-flex justify-content-center" style={{ paddingTop: "39%"}}>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        </div>
       </div>
       {/* Columna de Clientes Top y Actividades Recientes */}
       <div className="col-3">
@@ -74,7 +93,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>12 Ordenes</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">12 Ordenes</b>
                 </div>
               </div>
             </div>
@@ -87,7 +106,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>12 Ordenes</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">12 Ordenes</b>
                 </div>
               </div>
             </div>
@@ -105,7 +124,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>5h atras</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">5h atras</b>
                 </div>
               </div>
             </div>
@@ -119,7 +138,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>1m atras</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">1m atras</b>
                 </div>
               </div>
             </div>
@@ -133,7 +152,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>30m atras</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">30m atras</b>
                 </div>
               </div>
             </div>
@@ -147,7 +166,7 @@ const Clientes = () => {
               </div>
               <div className="col">
                 <div className='py-3 text-start'>
-                  &nbsp;&nbsp;CLIENTNAME - <b className='text-primary'>6m atras</b>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">6m atras</b>
                 </div>
               </div>
             </div>
