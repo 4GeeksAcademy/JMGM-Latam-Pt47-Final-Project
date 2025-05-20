@@ -17,6 +17,7 @@ import LoginUser from "./components/LoginUser";
 import PerfilUser from "./components/PerfilUser";
 import Clientes from "./pages/Clientes";
 import AboutUs from "./components/AboutUs";
+import { EnConstruccion } from "./components/EnConstruccion"
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -43,8 +44,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/inventario" element={<InventoryView />} />
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
-        <Route path="/app/aboutus" element={<AboutUs/>} />
-        
+        <Route path= "/app/notfound" element={<EnConstruccion/>} />  
       </Route>
       </>
     )

@@ -22,8 +22,19 @@
 
 .boton:hover {
   background-color: rgba(108, 17, 217, 1);
+  color: white;
 }
 
 .boton-cliente:hover {
-background-color: rgba(108, 17, 217, 1)
+  background-color: rgba(108, 17, 217, 1);
+  color: white;
+}
+
+.clientes-top {
+  height: 40%;
+  margin: 20px 0 10px 5px;
+}
+
+.Texto-ordenes {
+  color: rgba(108, 17, 217, 1);
 }
