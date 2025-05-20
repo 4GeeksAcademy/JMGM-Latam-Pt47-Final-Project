@@ -5,7 +5,7 @@ const Clientes = () => {
   return (
     <div className="row me-0">
       <div className="col-9">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h5>Clientes</h5></a>
             <form className="d-flex" role="search">
@@ -52,38 +52,127 @@ const Clientes = () => {
             </tr>
           </tbody>
         </table>
+        <div className="d-flex justify-content-center" style={{ paddingTop: "39%"}}>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        </div>
       </div>
       {/* Columna de Clientes Top y Actividades Recientes */}
       <div className="col-3">
         <div className="clientes-top d-flex flex-column justify-content-between" role="group">
-          <h5>Clientes Top</h5>
-          <button class="boton-cliente btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Ultimos 7 Dias
-          </button>
-          <ul className="dropdown-menu dropdown-menu">
-            <li><a className="dropdown-item" href="#">Action</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-          <div className="card mb-3" style={{ maxWidth: "18rem", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)" }}>
-            <img src={placeholder} className="card-img-top" alt="..." />
-            <div className="card-body">
-              <h5 className="card-title fw-bold">Primary card title</h5>
-              <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu viverra sem, in gravida velit. Quisque faucibus rutrum velit, eu molestie dolor interdum sed. Donec elementum tristique vehicula. Nulla consequat laoreet sapien, ac ornare ligula molestie quis.</p>
+          <h4>Clientes Top</h4>
+          <div className='d-flex justify-content-center' style={{ paddingBottom: "5px", paddingTop: "5px" }}>
+            <button className="boton-cliente btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Ultimos 7 Dias
+              <ul className="dropdown-menu dropdown-menu">
+                <li><a className="dropdown-item" href="#">Últimos 7 dias</a></li>
+                <li><a className="dropdown-item" href="#">Último mes</a></li>
+              </ul>
+            </button>
+          </div>
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">12 Ordenes</b>
+                </div>
+              </div>
             </div>
           </div>
-          <br></br>
-          <h5>Soporte</h5>
-          <button className="boton btn">
-            <div className="texto-boton">
-              <i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Ayuda
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">12 Ordenes</b>
+                </div>
+              </div>
             </div>
-          </button>
-          <button className="boton btn">
-            <div className="texto-boton">
-              <i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
+          </div>
+          {/* Barra de Actividad Reciente */}
+          <br />
+          <h4>Actividad Reciente</h4>
+          <br />
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">5h atras</b>
+                </div>
+              </div>
             </div>
-          </button>
+          </div>
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">1m atras</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">30m atras</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+            <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
+            <div className='row'>
+              <div className='col-2' style={{ paddingTop: "3px" }}>
+                <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                  style={{ width: "50px", height: "50px" }} />
+              </div>
+              <div className="col">
+                <div className='py-3 text-start'>
+                  &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">6m atras</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
+          </div>
         </div>
       </div>
     </div>
