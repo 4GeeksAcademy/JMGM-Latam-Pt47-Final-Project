@@ -30,7 +30,8 @@ export const router = createBrowserRouter(
       // Pagina que no necesite un usuario logeado van aqui
       <>
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
-      <Route path="/app/aboutus" element={<AboutUs/>} />
+      
+      
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Landing />} />
@@ -42,6 +43,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/inventario" element={<InventoryView />} />
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
+        <Route path="/app/aboutus" element={<AboutUs/>} />
         
       </Route>
       </>
