@@ -38,7 +38,7 @@ export const LandingNavbar = () => {
                     <Link className='btn btn-success' to='/app'>Dashboard</Link>
                 }
             </div>
-            <div className='container-fluid d-flex row px-5' style={{ backgroundColor: '#6C11D9' }}>
+            <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }}>
                 <button className='col fw-bold text-light btn'>Inicio</button>
                 <button className='col fw-bold text-light btn'>Caracteristicas</button>
                 <button className='col fw-bold text-light btn'>Sobre nosotros</button>
