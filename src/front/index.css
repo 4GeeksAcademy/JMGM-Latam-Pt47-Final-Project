@@ -38,3 +38,16 @@
 .Texto-ordenes {
   color: rgba(108, 17, 217, 1);
 }
+
+.page-link {
+  color: #333 !important; 
+  background-color: #fff !important;
+  border-color: #dee2e6 !important; 
+}
+
+.page-link:hover {
+  color: white !important; 
+  background-color: rgba(108, 17, 217, 1) !important; 
+  border-color: #dee2e6 !important;
+}
+
