@@ -27,7 +27,8 @@ export const LandingNavbar = () => {
                 })
              })
             .catch((err) => console.error(err))
-    }, [store.currentUser])
+    }, [])
+
     return (
         <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' }}>
             <div className="container-fluid pb-2 pe-5">
@@ -48,7 +49,7 @@ export const LandingNavbar = () => {
                 }
                 </div>
             </div>
-            <div className='container-fluid d-flex row px-5' style={{ backgroundColor: '#6C11D9' }}>
+            <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }}>
                 <button className='col fw-bold text-light btn'>Inicio</button>
                 <button className='col fw-bold text-light btn'>Caracteristicas</button>
                 <button className='col fw-bold text-light btn'>Sobre nosotros</button>
