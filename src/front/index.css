@@ -27,3 +27,6 @@
 .boton-cliente:hover {
 background-color: rgba(108, 17, 217, 1)
 }
+.login, .register{
+  margin-top: 120px;
+}
