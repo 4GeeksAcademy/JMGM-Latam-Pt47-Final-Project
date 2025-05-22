@@ -18,6 +18,7 @@ import PerfilUser from "./components/PerfilUser";
 import Clientes from "./pages/Clientes";
 import AboutUs from "./components/AboutUs";
 import { EnConstruccion } from "./components/EnConstruccion"
+import Ventas from "./pages/Ventas";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,6 +45,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/inventario" element={<InventoryView />} />
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
+        <Route path="/app/ventas" element={<Ventas/>} />
         <Route path= "/app/notfound" element={<EnConstruccion/>} />  
       </Route>
       </>
