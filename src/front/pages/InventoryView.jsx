@@ -1,15 +1,60 @@
-import React from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
+const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export const InventoryView = () => {
+  const [products, setProducts] = useState([])
+  const [showNewProductModal, setShowNewProductModal] = useState(false)
+
+  const companyInventory = () => {
+
+    let accessToken = localStorage.getItem("token")
+    if (!accessToken) {
+      setError("No se encontró el token de autenticación. Por favor, inicia sesión.")
+      setLoading(false)
+      return
+    }
+
+    fetch(`${backend_url}/company/inventory`, {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+      .then(resp => resp.json())
+      .then((data) => {
+        console.log("Success!!", data)
+        if (data && Array.isArray(data.inventory)) {
+          setProducts(data.inventory)
+        } else {
+
+          throw new Error("Formato de datos de inventario inesperado del servidor.")
+        }
+      })
+      .catch(error => console.log(error))
+  }
+
+
+  useEffect(() => {
+    companyInventory()
+  }, [])
+
+  const handleNewProductClick = () => {
+    setShowNewProductModal(true);
+    // Aquí puedes abrir un modal o redirigir a un formulario para añadir un nuevo producto
+    console.log("Abrir formulario/modal de nuevo producto");
+  };
   return (
     <div className="row m-0">
       <div className="col-9">
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h5>Inventario</h5></a>
-            <form className="d-flex" role="search">
+            <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-              <button className="boton-cliente btn w-100" type="submit">
+              <button className="boton-cliente btn w-100" 
+              type="button"
+              onClick={handleNewProductClick}>
                 <i className="fa-solid fa-circle-plus"></i>&nbsp;Nuevo producto</button>
             </form>
           </div>
@@ -27,30 +72,28 @@ export const InventoryView = () => {
             </tr>
           </thead>
           <tbody className="table-group-divider">
-            <tr>
-              <td>Mackbook</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>50</td>
-              <td>imagen</td>
-            </tr>
-            <tr>
-              <td>Lenovo</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-              <td>55</td>
-              <td>imagen</td>
-            </tr>
-            <tr>
-              <td>Dell</td>
-              <td>John</td>
-              <td>Doe</td>
-              <td>@social</td>
-              <td>90</td>
-              <td>imagen</td>
-            </tr>
+            {products.length > 0 ? (
+              products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.product_name}</td>
+                  <td>{product.id || 'N/A'}</td>
+                  <td>{product.marca || 'N/A'}</td>
+                  <td>${product.price ? product.price.toFixed(2) : 'N/A'}</td>
+                  <td>{product.stock}</td>
+                  <td>
+                    {product.image_url ? (
+                      <img src={product.image_url} alt={product.name} style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
+                    ) : (
+                      'Sin Imagen'
+                    )}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center">No hay productos en el inventario.</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -66,24 +109,24 @@ export const InventoryView = () => {
           </div>
         </div>
       </div>
-      <div className='d-flex justify-content-center' style={{paddingTop: '40%'}}>
-      <nav aria-label="Page navigation example">
-        <ul className="pagination">
-          <li className="page-item">
-            <a className="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li className="page-item"><a className="page-link" href="#">1</a></li>
-          <li className="page-item"><a className="page-link" href="#">2</a></li>
-          <li className="page-item"><a className="page-link" href="#">3</a></li>
-          <li className="page-item">
-            <a className="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>
+        <nav aria-label="Page navigation example">
+          <ul className="pagination">
+            <li className="page-item">
+              <a className="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item"><a className="page-link" href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+            <li className="page-item">
+              <a className="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   )
