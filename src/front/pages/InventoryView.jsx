@@ -4,7 +4,7 @@ const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export const InventoryView = () => {
   const [products, setProducts] = useState([])
-  const [showNewProductModal, setShowNewProductModal] = useState(false)
+  const [productModal, setProductModal] = useState(false)
 
   const companyInventory = () => {
 
@@ -40,8 +40,7 @@ export const InventoryView = () => {
   }, [])
 
   const handleNewProductClick = () => {
-    setShowNewProductModal(true);
-    // Aquí puedes abrir un modal o redirigir a un formulario para añadir un nuevo producto
+    setProductModal(true);
     console.log("Abrir formulario/modal de nuevo producto");
   };
   return (
