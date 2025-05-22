@@ -10,7 +10,13 @@ export const Navbar = () => {
 		<>
 			<nav className="navbar navbar-expand-lg">
 				<div className="container-fluid">
-					<img src={logo} type="button" alt="Logo" width="105" height="40" className="d-inline-block align-text-top"></img>
+					<img src={logo} 
+					type="button" 
+					onClick={()=>{navigate("/")}}
+					alt="Logo" 
+					width="105" 
+					height="40" 
+					className="d-inline-block align-text-top"></img>
 					<form className="d-flex" role="search">
 						<img src={profile} alt="Logo" width="50" height="50" className="d-inline-block align-text-top mt-1"></img>
 						<input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
