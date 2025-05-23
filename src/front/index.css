@@ -57,3 +57,11 @@ background-color: rgba(108, 17, 217, 1)
   border-color: #dee2e6 !important;
 }
 
+.encabezado-tabla {
+  --bs-table-bg: #F4F5FC !important;
+}
+
+.tabla-resumen th {
+  color: #5C6F88;
+}
+
