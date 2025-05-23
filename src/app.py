@@ -348,7 +348,7 @@ def create_user():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'msg': 'Company created'}), 201
+        return jsonify({'ok': 'Company created'}), 201
     except Exception as e: 
         db.session.rollback()
         return jsonify({'msg': 'error al crear el usuario', 'error': str(e)}), 400
