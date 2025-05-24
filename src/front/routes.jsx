@@ -19,7 +19,11 @@ import Clientes from "./pages/Clientes";
 import Register from "./components/Register";
 import AboutUs from "./components/AboutUs";
 import { EnConstruccion } from "./components/EnConstruccion"
+
+import RecoveryPassword from "./pages/RecoveryPasswrod";
+
 import Ventas from "./pages/Ventas";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +40,29 @@ export const router = createBrowserRouter(
       // Root Route: All navigation will start from here.
       // Pagina que no necesite un usuario logeado van aqui
       <>
+
+        <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
+
+
+
+          {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
+          <Route path="/" element={<Landing />} />
+
+        </Route>
+        <Route path="/recovery" element={<RecoveryPassword/>}/>
+        <Route path="/register" element={<Register />} />
+        <Route path="/loginuser" element={<LoginUser />} />
+        <Route path="/app" element={<DashboardLayout />}>
+        
+        
+          <Route path="/app" element={<Dashboard />} />
+          <Route path="/app/inventario" element={<InventoryView />} />
+          <Route path="/app/perfil" element={<PerfilUser />} />
+          <Route path="/app/clientes" element={<Clientes />} />
+          
+        </Route>
+      </>
+
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
       
       
@@ -60,6 +87,7 @@ export const router = createBrowserRouter(
         <Route path="/app/ventas" element={<Ventas/>} />
         <Route path= "/app/notfound" element={<EnConstruccion/>} />  
       </Route>
+
     </>
   )
 );

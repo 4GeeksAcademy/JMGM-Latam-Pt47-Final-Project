@@ -23,6 +23,7 @@ export const Navbar = () => {
 						<button className="btn btn-danger w-75"
 							onClick={() => {
 								localStorage.removeItem("token")
+								localStorage.removeItem('currentUser')
 								dispatch({
 									type: "set_current_user",
 									payload: null

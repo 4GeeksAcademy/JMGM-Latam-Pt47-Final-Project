@@ -29,11 +29,8 @@
 
 background-color: rgba(108, 17, 217, 1)
 }
-.login, .register{
+.login, .register, .recovery{
   margin-top: 120px;
-}
-  background-color: rgba(108, 17, 217, 1);
-  color: white;
 }
 
 .clientes-top {
