@@ -15,29 +15,34 @@ const LateralMenu = () => {
                         </Link>
                         <Link className="boton btn" to={"/app/inventario"}>
                             <div className="texto-boton">
-                                <i class="fa-solid fa-box"></i>&nbsp;&nbsp;Inventario
+                                <i className="fa-solid fa-box"></i>&nbsp;&nbsp;Inventario
+                            </div>
+                        </Link>
+                        <Link className="boton btn" to={"/app/ventas"}>
+                            <div className="texto-boton">
+                                <i className="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Ventas & Ordenes
+                            </div>
+                        </Link>
+                        <Link className="boton btn" to={"/app/clientes"}>
+                            <div className="texto-boton">
+                                <i className="fa-regular fa-id-badge"></i>&nbsp;&nbsp;Clientes
                             </div>
                         </Link>
                         <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
-                                <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;Ventas & Ordenes
-                            </div>
-                        </Link>
-                        <Link className="boton btn" to={"/app/notfound"}>
-                            <div className="texto-boton">
-                                <i class="fa-solid fa-arrow-trend-up"></i>&nbsp;&nbsp;Reportes
+                                <i className="fa-solid fa-arrow-trend-up"></i>&nbsp;&nbsp;Reportes
                             </div>
                         </Link>
                         <br></br>
                         <h5>Soporte</h5>
                         <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
-                                <i class="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Ayuda
+                                <i className="fa-solid fa-circle-info"></i>&nbsp;&nbsp;Ayuda
                             </div>
                         </Link>
                         <Link className="boton btn" to={"/app/notfound"}>
                             <div className="texto-boton">
-                                <i class="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
+                                <i className="fa-solid fa-gear"></i>&nbsp;&nbsp;Opciones
                             </div>
                         </Link>
                         <div className='border-top border-2 my-4' style={{ borderTopColor: "#6C11D9" }} />

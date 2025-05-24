@@ -1,82 +1,139 @@
 import React from 'react'
 import { SummaryCard } from '../components/SummaryCard'
+import { BarChart } from '@mui/x-charts/BarChart';
+import {
+  blueberryTwilightPalette
+} from '@mui/x-charts/colorPalettes';
 
 export const Dashboard = () => {
+  const entradas = {
+    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
+    color: 'deepskyblue'
+  };
+  const salidas = {
+    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
+    color: 'blueviolet'
+  };
+
   return (
     <>
       <div className='py-3 px-5' style={{ backgroundColor: "#F4F5FC" }}>
         <h3 className='fw-bold'>Resumen general</h3>
-        <div className='d-flex justify-content-around'>
-          <SummaryCard />
-          <SummaryCard />
+        <div className='d-flex justify-content-between'>
+          <div className="card d-flex p-2 text-start px-4" style={{ width: "49%", height: "20%" }}>
+            <div className='d-flex'>
+              <div className='mx-2 my-3 rounded-circle text-center' style={{ width: "50px", height: "50px", backgroundColor: "#E7F8FC" }}>
+                <i class="fa-solid fa-chart-simple my-3" style={{ color: "#04B4FC" }} />
+              </div>
+              <div className="col">
+                <div className='mx-3 py-3 text-start text-body-secondary fw-medium'>
+                  <b className='fw-semibold'>{Math.floor(Math.random() * 10000000)}&nbsp;Bs.D.</b>
+                  <br />
+                  <p className='mb-0'> Ventas de hoy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="card d-flex p-2 text-start px-4" style={{ width: "49%", height: "20%" }}>
+            <div className='d-flex'>
+              <div className='mx-2 my-3 rounded-circle text-center' style={{ width: "50px", height: "50px", backgroundColor: "#FCE0EC" }}>
+                <i class="fa-solid fa-warehouse my-3" style={{ color: "#FB407D" }} />
+              </div>
+              <div className="col">
+                <div className='mx-3 py-3 text-start text-body-secondary fw-medium'>
+                  <b className='fw-semibold'>{Math.floor(Math.random() * 10000)}</b>
+                  <br />
+                  <p className='mb-0'> Productos en inventario</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className='d-flex'>
-        <div className='graph'>
-          <div className='d-flex'>
+      <div className='d-flex p-3'>
+        <div className='graph pe-3 w-75 graph me-auto'>
+          <div className='col me-auto d-flex justify-content-between'>
             <h4 className='fw-bold'>Reporte de inventario</h4>
-            <p> <svg height="50" width="50" xmlns="http://www.w3.org/2000/svg">
-              <circle r="45" cx="50" cy="50" fill="deepskyblue" />
-            </svg> Entradas <svg height="50" width="50" xmlns="http://www.w3.org/2000/svg">
-                <circle r="45" cx="50" cy="50" fill="blueviolet" />
-              </svg> Salidas </p>
+            <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+              <circle r="10" cx="10" cy="10" fill="deepskyblue" />
+            </svg> <b style={{ color: "deepskyblue" }}>Entradas</b> &nbsp;&nbsp; <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+                <circle r="10" cx="10" cy="10" fill="blueviolet" />
+              </svg> <b style={{ color: "blueviolet" }}>Salidas</b> </p>
           </div>
           <div className='the-graph-itself'>
-            {/* No se que habra que hacer aqui para la grafica pero XD */}
+            <BarChart
+              xAxis={[
+                {
+                  id: 'barCategories',
+                  data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                }]}
+              series={[
+                { ...entradas, stack: 'total' },
+                { ...salidas, stack: 'total' }
+              ]}
+              height={300}
+            />
           </div>
         </div>
-        <div className='border-start' />
+        <div className='border-start px-2' />
         <div className='notif col-4'>
           <div>
             <h4 className='fw-bold'>Notificaciones</h4>
           </div>
-          <div>
-            <p><i class="bi bi-bell-fill" style={{ color: "#FF9500" }} /> NOTIFICACION</p>
+          <div className='notification-feed'>
+            <p><i class="fa-solid fa-bell" style={{ color: "#FF9500" }} /> &nbsp; ALERTA DE EJEMPLO ALERTA</p>
           </div>
         </div>
       </div>
       <div className='sales-summary'>
-        <div>
-          <h4 className='fw-bold'>Reporte de inventario</h4>
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Right-aligned menu
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-              <button class="dropdown-item" type="button">Action</button>
-              <button class="dropdown-item" type="button">Another action</button>
-              <button class="dropdown-item" type="button">Something else here</button>
-            </div>
-          </div>
+        <div className='d-flex justify-content-between'>
+          <h4 className='fw-bold px-3'>Reporte de inventario</h4>
+          <select class="form-select w-25 p-1 m-1" aria-label="Default select example">
+            <option value="1">Últimos 7 días</option>
+            <option value="2">Últimos 14 días</option>
+            <option value="3">Último mes</option>
+          </select>
         </div>
         <div>
-          <table class="table">
+          <table class="table table-borderless table-hover" style={{color:"#5C6F88"}}>
             <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+              <tr className='table-secondary encabezado-tabla tabla-resumen px-3'>
+                <th scope="col" className='ps-3'>Canal</th>
+                <th scope="col">Preseleccionadas</th>
+                <th scope="col">Confirmadas</th>
+                <th scope="col">Empacadas</th>
+                <th scope="col">Enviadas</th>
+                <th scope="col">Facturadas</th>
+                <th scope="col">Más vendidas</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td scope="row" className='ps-3'>Venta Directa</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>Banana ICell 2</td>
               </tr>
               <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
+                <td scope="row" className='ps-3'>Mayoristas</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>iPack Earth 12</td>
               </tr>
               <tr>
-                <th scope="row">3</th>
-                <td>John</td>
-                <td>Doe</td>
-                <td>@social</td>
+                <td scope="row" className='ps-3'>Minoristas</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>{Math.floor(Math.random() * 100)}</td>
+                <td>SamZung Universe 2</td>
               </tr>
             </tbody>
           </table>
