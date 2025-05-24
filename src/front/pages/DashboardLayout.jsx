@@ -10,7 +10,7 @@ export const DashboardLayout = () => {
     const navigate= useNavigate()
     const { store }= useGlobalReducer()
     useEffect(()=>{
-        if (!store.currentUser) navigate("/")
+        if (!localStorage.getItem('currentUser')) navigate("/")
     },[])
     return (
 

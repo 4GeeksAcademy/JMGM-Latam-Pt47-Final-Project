@@ -19,7 +19,7 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-
+from flask_mail import Mail, Message
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -30,7 +30,18 @@ app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
+
 CORS(app)
+app.config.update(dict(
+    DEBUG=False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME='mystock4geeks@gmail.com',
+    MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
+))
+mail = Mail(app)
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
@@ -77,6 +88,26 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+@app.route('/send-mail', methods=['POST'])
+def send_mail():
+    body= request.get_json(silent=True)
+    if not body:
+        return jsonify({'msg': 'Debe enviar informacion'}), 400
+    if 'email' not in body:
+        return jsonify({'msg': 'Debe enviar un correo'}), 400
+    user= User.query.filter_by(email= body['email']).first()
+    if user is None:
+        return jsonify({'msg': 'Usuario no existe'}), 400
+    
+    msg = Message(
+        subject='Correo enviado desde el endpoint',
+        sender='mystock4geeks@gmail.com',
+        recipients=[body['email']],
+    )
+    msg.html = '<h1>Enviamos correo y funciona</h1>'
+    mail.send(msg)
+    return jsonify({'msg': 'Correo enviado'}), 200
 
 @app.route('/user', methods=['GET'])
 @jwt_required()
