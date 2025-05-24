@@ -26,14 +26,12 @@
 }
 
 .boton-cliente:hover {
-
-background-color: rgba(108, 17, 217, 1)
-}
-.login, .register{
-  margin-top: 120px;
-}
   background-color: rgba(108, 17, 217, 1);
-  color: white;
+}
+
+.login,
+.register {
+  margin-top: 120px;
 }
 
 .clientes-top {
@@ -46,22 +44,22 @@ background-color: rgba(108, 17, 217, 1)
 }
 
 .page-link {
-  color: #333 !important; 
+  color: #333 !important;
   background-color: #fff !important;
-  border-color: #dee2e6 !important; 
+  border-color: #dee2e6 !important;
 }
 
 .page-link:hover {
-  color: white !important; 
-  background-color: rgba(108, 17, 217, 1) !important; 
+  color: white !important;
+  background-color: rgba(108, 17, 217, 1) !important;
   border-color: #dee2e6 !important;
 }
 
 .encabezado-tabla {
-  --bs-table-bg: #F4F5FC !important;
+  --bs-table-bg: #f4f5fc !important;
 }
 
 .tabla-resumen th {
-  color: #5C6F88;
+  color: #5c6f88;
 }
 
