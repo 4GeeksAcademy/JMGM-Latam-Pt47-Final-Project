@@ -35,7 +35,7 @@ export const router = createBrowserRouter(
 
 
     // Root Route: All navigation will start from here.
-    <>
+    
 
       // Root Route: All navigation will start from here.
       // Pagina que no necesite un usuario logeado van aqui
