@@ -30,9 +30,8 @@
   color:white
 }
 
-.login,
-.register {
-  margin-top: 120px;
+.login, .register, .recovery{
+ margin-top: 120px;
 }
 
 .clientes-top {

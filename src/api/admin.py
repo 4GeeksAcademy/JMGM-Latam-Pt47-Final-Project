@@ -1,11 +1,14 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User, CompanyInfo, Inventory, Clients, Compras
+from .models import db, User, CompanyInfo, Inventory, Clients, Compras, RecoveryPassword
 from flask_admin.contrib.sqla import ModelView
 
 class UserView(ModelView):
     column_list= ['id', 'email','password', 'is_active', 'role', 'company_id', 'company']
+
+class RecoveryPasswordView(ModelView):
+    column_list= ['id', 'uuid', 'email', 'fecha']
 
 class CompanyInfoView(ModelView):
     column_list= ['id', 'name', 'email', 'phone', 'inventory', 'clients', 'users']
@@ -31,6 +34,7 @@ def setup_admin(app):
     admin.add_view(InventoryView(Inventory, db.session))
     admin.add_view(ClientsView(Clients, db.session))
     admin.add_view(ComprasView(Compras, db.session))
+    admin.add_view(RecoveryPasswordView(RecoveryPassword, db.session))
 
 
 

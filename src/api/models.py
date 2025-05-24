@@ -13,6 +13,13 @@ class RoleEnum(str,enum.Enum):
     def get_all(cls):
         return [role.value for role in cls]
 
+class RecoveryPassword(db.Model):
+    __tablename__= 'recovery'
+    id: Mapped[int] = mapped_column(primary_key= True)
+    uuid: Mapped[int]= mapped_column()
+    email: Mapped[str] = mapped_column(String(120))
+    fecha: Mapped[datetime] = mapped_column(default= datetime.now)
+
 class User(db.Model):
     __tablename__ = 'user'
     id: Mapped[int] = mapped_column(primary_key=True)
