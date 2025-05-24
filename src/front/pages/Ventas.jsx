@@ -1,6 +1,19 @@
 import React from 'react'
+import { BarChart } from '@mui/x-charts/BarChart';
+import {
+  blueberryTwilightPalette
+} from '@mui/x-charts/colorPalettes';
 
-const Ventas = () => {
+export const Ventas = () => {
+  const entradas = {
+    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
+    color: 'deepskyblue'
+  };
+  const salidas = {
+    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
+    color: 'blueviolet'
+  };
+
   return (
     <div className="row me-0">
       <div className="col-9 pe-0">
@@ -53,7 +66,7 @@ const Ventas = () => {
             </tr>
           </tbody>
         </table>
-        <div className=" d-flex justify-content-center">
+        <div className="d-flex justify-content-center">
           <nav aria-label="Page navigation example">
             <ul className="pagination">
               <li className="page-item">
@@ -72,6 +85,30 @@ const Ventas = () => {
             </ul>
           </nav>
         </div>
+      <div className='graph pe-3 w-100 graph me-auto'>
+        <div className='col me-auto d-flex justify-content-between'>
+          <h4 className='fw-bold'>&nbsp;&nbsp;Reporte de Ventas</h4>
+          <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+            <circle r="10" cx="10" cy="10" fill="deepskyblue" />
+          </svg> <b style={{ color: "deepskyblue" }}>Entradas</b> &nbsp;&nbsp; <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+              <circle r="10" cx="10" cy="10" fill="blueviolet" />
+            </svg> <b style={{ color: "blueviolet" }}>Salidas</b> </p>
+        </div>
+        <div className='the-graph-itself'>
+          <BarChart
+            xAxis={[
+              {
+                id: 'barCategories',
+                data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+              }]}
+            series={[
+              { ...entradas, stack: 'total' },
+              { ...salidas, stack: 'total' }
+            ]}
+            height={300}
+          />
+        </div>
+      </div>
       </div>
       {/* Columna de Actividades Recientes */}
       <div className="col-3" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
