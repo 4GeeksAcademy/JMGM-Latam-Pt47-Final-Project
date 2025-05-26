@@ -35,7 +35,7 @@ export const router = createBrowserRouter(
 
 
     // Root Route: All navigation will start from here.
-    
+
 
       // Root Route: All navigation will start from here.
       // Pagina que no necesite un usuario logeado van aqui
@@ -61,9 +61,9 @@ export const router = createBrowserRouter(
           <Route path="/app/clientes" element={<Clientes />} />
           
         </Route>
-      </>
+      
 
-      <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} />
+      <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
       
       
 
