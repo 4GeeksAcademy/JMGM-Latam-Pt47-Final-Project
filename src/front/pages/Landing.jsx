@@ -1,6 +1,7 @@
 import React from 'react'
 import LandingBanner from '../components/LandingBanner'
 import FeatureCard from '../components/FeatureCard'
+import AboutUs from '../components/AboutUs'
 
 export const Landing = () => {
     return (
@@ -15,6 +16,7 @@ export const Landing = () => {
                 <FeatureCard className="col-4"/>
                 <FeatureCard className="col-4"/>
             </div>
+            <AboutUs></AboutUs>
         </>
 
     )

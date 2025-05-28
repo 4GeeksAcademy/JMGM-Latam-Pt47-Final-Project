@@ -23,6 +23,7 @@ import { EnConstruccion } from "./components/EnConstruccion"
 import RecoveryPassword from "./pages/RecoveryPasswrod";
 
 import Ventas from "./pages/Ventas";
+import Reportes from "./pages/Reportes";
 
 
 export const router = createBrowserRouter(
@@ -35,8 +36,6 @@ export const router = createBrowserRouter(
 
 
     // Root Route: All navigation will start from here.
-    
-
       // Root Route: All navigation will start from here.
       // Pagina que no necesite un usuario logeado van aqui
       <>
@@ -49,7 +48,7 @@ export const router = createBrowserRouter(
           <Route path="/" element={<Landing />} />
 
         </Route>
-        <Route path="/recovery" element={<RecoveryPassword/>}/>
+        <Route path="/recovery/:uuid" element={<RecoveryPassword/>}/>
         <Route path="/register" element={<Register />} />
         <Route path="/loginuser" element={<LoginUser />} />
         <Route path="/app" element={<DashboardLayout />}>
@@ -61,7 +60,7 @@ export const router = createBrowserRouter(
           <Route path="/app/clientes" element={<Clientes />} />
           
         </Route>
-  
+
 
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
       
@@ -85,6 +84,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
         <Route path="/app/ventas" element={<Ventas/>} />
+        <Route path="/app/reporte" element={<Reportes/>} />
         <Route path= "/app/notfound" element={<EnConstruccion/>} />  
       </Route>
 
