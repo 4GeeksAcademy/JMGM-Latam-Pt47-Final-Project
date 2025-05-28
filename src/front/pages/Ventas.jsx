@@ -1,23 +1,40 @@
-import React from 'react'
-import { BarChart } from '@mui/x-charts/BarChart';
-import {
-  blueberryTwilightPalette
-} from '@mui/x-charts/colorPalettes';
 
-export const Ventas = () => {
-  const ventasDirectas = {
-    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'deepskyblue'
-  };
-  const alDetal = {
-    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
-    color: 'blueviolet'
-  };
-  const alMayor = {
-    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
-    color: 'red'
-  };
+import React, {useEffect} from 'react';
 
+
+const Ventas = () => {
+  // const companyInventory = () => {
+
+  //   const accessToken = localStorage.getItem("token")
+
+  //   if (!accessToken) {
+  //     alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+  //     return
+  //   }
+
+  //   fetch(`${backend_url}/company/inventory`, {
+  //     method: 'GET',
+  //     headers: {
+  //       "Authorization": `Bearer ${accessToken}`
+  //     }
+  //   })
+  //     .then(resp => resp.json())
+  //     .then((data) => {
+  //       console.log("Success!!", data)
+  //       if (data && Array.isArray(data.inventory)) {
+  //         setProducts(data.inventory)
+  //       } else {
+
+  //         throw new Error("Formato de datos de inventario = ERROR.")
+  //       }
+  //     })
+  //     .catch(error => console.log(error))
+  // }
+
+
+  // useEffect(() => {
+  //   companyInventory()
+  // }, [])
   return (
     <div className="row me-0 h-100">
       <div className="col-9 pe-0">

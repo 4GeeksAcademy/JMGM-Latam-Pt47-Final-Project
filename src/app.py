@@ -309,14 +309,14 @@ def add_client():
     body = request.get_json(silent=True)
     """
     {
-    "nombre",
+    "name",
     "email",
     "phone",
     }
     """
     if not body:
         return jsonify({'msg': 'Debe agregar informacion en el body'}), 400
-    if 'nombre' not in body:
+    if 'name' not in body:
         return jsonify({'msg': 'Debe agregar el nombre del cliente'}), 400
     if 'email' not in body:
         return jsonify({'msg': 'Debe agregar el correo del cliente'}), 400
@@ -325,11 +325,11 @@ def add_client():
     verify_client = Clients.query.filter_by(email=body['email']).first()
     if verify_client:
         return jsonify({'msg': 'El cliente ya existe'}), 400
-    new_client = Clients(
-        name=body['nombre'],
-        email=body['email'],
-        phone=body['phone'],
-        companyId=current_company_id
+    new_client= Clients(
+       name = body['name'],
+       email = body['email'],
+       phone = body ['phone'],
+       companyId = current_company_id 
     )
 
     try:

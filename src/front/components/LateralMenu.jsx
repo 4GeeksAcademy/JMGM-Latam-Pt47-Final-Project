@@ -52,16 +52,16 @@ const LateralMenu = () => {
                                 <i class="fa-solid fa-file-medical"></i>&nbsp;&nbsp;Crear Orden
                             </div>
                         </button>
-                        <button className="boton btn">
+                        <Link className="boton btn" to={'/app/inventario?modalIsOpen=true'}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-box"></i>&nbsp;&nbsp;Añadir Producto
                             </div>
-                        </button>
-                        <button className="boton btn">
+                        </Link>
+                        <Link className="boton btn" to={'/app/clientes?modalIsOpen=true'}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-truck"></i>&nbsp;&nbsp;Añadir Cliente
                             </div>
-                        </button>
+                        </Link>
                         <button className="boton btn">
                             <div className="texto-boton">
                                 <i class="fa-solid fa-arrow-up-from-bracket"></i>&nbsp;&nbsp;Exportar
@@ -70,6 +70,7 @@ const LateralMenu = () => {
                     </div>
                 </div>
             </div>
+            
         </div>
     )
 }
