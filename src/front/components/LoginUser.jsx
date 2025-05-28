@@ -13,6 +13,26 @@ const LoginUser = () => {
         email: "",
         password: ""
     })
+    const [email, setEmail]= useState({
+        email: ""
+    })
+    function sendEmail (){
+        fetch(`${backend_url}/send-mail`, {
+            method: 'POST',
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(email)
+        })
+        .then((response)=>{return response.json()})
+        .then((data)=>{
+            console.log("data recibida", data);
+            
+            if (data.ok){
+            }else{
+                alert("Revisa el email")
+            }
+        })
+        .catch((err)=>{return err})
+    }
     const loginUser = () => {
         fetch(`${backend_url}/login`, {
             method: "POST",
@@ -48,6 +68,7 @@ const LoginUser = () => {
                 })
                 console.error("Error en el login:", err);
             })
+    
     };
     return (
         <div>
@@ -97,19 +118,26 @@ const LoginUser = () => {
                 </a><br></br>
 
                 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Recuperar contraseña</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="exampleModalLabel">Recuperar contraseña</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <input className="form-control" placeholder="Ingrese su correo aqui"></input>
+                                <input className="form-control" 
+                                type="text"
+                                value={email.email}
+                                onChange={(e) => setEmail({ ...email, email: e.target.value })}
+                                placeholder="Ingrese su correo aqui"></input>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Enviar correo</button>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" 
+                                data-bs-dismiss="modal"
+                                onClick={()=>{sendEmail()}}
+                                className="btn btn-success">Enviar correo</button>
                             </div>
                         </div>
                     </div>

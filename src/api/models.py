@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import String, Boolean, ForeignKey, Integer, Date, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
+from datetime import datetime, timedelta
 import enum
 db = SQLAlchemy()
 
@@ -16,9 +16,9 @@ class RoleEnum(str,enum.Enum):
 class RecoveryPassword(db.Model):
     __tablename__= 'recovery'
     id: Mapped[int] = mapped_column(primary_key= True)
-    uuid: Mapped[int]= mapped_column()
+    uuid: Mapped[str]= mapped_column(String(120))
     email: Mapped[str] = mapped_column(String(120))
-    fecha: Mapped[datetime] = mapped_column(default= datetime.now)
+    fecha: Mapped[datetime] = mapped_column(default= datetime.now, nullable= False)
 
 class User(db.Model):
     __tablename__ = 'user'

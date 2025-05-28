@@ -1,8 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from './../assets/img/logo.png'
 import { Footer } from '../components/Footer'
+import { useNavigate, useParams } from 'react-router-dom'
+
+const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const RecoveryPassword = () => {
+    const navigate= useNavigate()
+    const params= useParams()
+    console.log(params);
+    
+    const [recovery, setRecovery]= useState({
+        password: "",
+        confirm_password: ""
+    })
+    function recoveryPassword(){
+        fetch(`${backend_url}/recovery/${params.uuid}`,{
+            method: 'PUT',
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(recovery)
+        })
+        .then((response)=> response.json())
+        .then((data)=>{
+            if (data.ok) {
+                    navigate("/loginuser")
+                } else {
+                    alert(data.msg)
+                }
+        })
+        .catch((err)=>{ return err })
+    }
     return (
         <>
         <div className='align-items-start'>
@@ -27,13 +54,30 @@ const RecoveryPassword = () => {
         <form className="container text-center recovery">
             <div className="mb-3">
                 <h3 for="exampleInputEmail1" className="form-label">Nueva Contraseña</h3>
-                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                <input type="password" 
+                value={recovery.password}
+                onChange={(e) => setRecovery({ ...recovery, password: e.target.value })}
+                className="form-control" 
+                id="exampleInputEmail1" 
+                aria-describedby="emailHelp"/>
             </div>
             <div className="mb-3">
                 <h3 for="exampleInputPassword1" className="form-label">Reingrese nueva contraseña</h3>
-                <input type="password" className="form-control" id="exampleInputPassword1"/>
+                <input type="password" 
+                value={recovery.confirm_password}
+                onChange={(e) => setRecovery({ ...recovery, confirm_password: e.target.value })}
+                className="form-control" 
+                id="exampleInputPassword1"/>
+                {recovery.confirm_password.length > 0 && (
+                        <p className='mt-2' style={{ color: recovery.password === recovery.confirm_password ? 'green' : 'red' }}>
+                            {recovery.password === recovery.confirm_password ? 'Las contraseñas coinciden' : 'Las contraseñas no coinciden'}
+                        </p>
+                    )}
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="button" 
+            onClick={recoveryPassword}
+            style={{ backgroundColor: '#6C11D9' }}
+            className="btn">Submit</button>
         </form>
         <div className="mt-5">
             <Footer/>
