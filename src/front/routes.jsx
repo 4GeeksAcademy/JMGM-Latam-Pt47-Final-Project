@@ -23,6 +23,7 @@ import { EnConstruccion } from "./components/EnConstruccion"
 import RecoveryPassword from "./pages/RecoveryPasswrod";
 
 import Ventas from "./pages/Ventas";
+import Reportes from "./pages/Reportes";
 
 
 export const router = createBrowserRouter(
@@ -84,6 +85,7 @@ export const router = createBrowserRouter(
         <Route path= "/app/perfil" element={<PerfilUser/>} />
         <Route path= "/app/clientes" element={<Clientes/>} />
         <Route path="/app/ventas" element={<Ventas/>} />
+        <Route path="/app/reporte" element={<Reportes/>} />
         <Route path= "/app/notfound" element={<EnConstruccion/>} />  
       </Route>
 
