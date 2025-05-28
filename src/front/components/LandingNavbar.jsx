@@ -54,11 +54,12 @@ export const LandingNavbar = () => {
                     }
                 </div>
             </div>
+            {/* Nukear */}
             <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }}>
-                <button className='col fw-bold text-light btn'>Inicio</button>
-                <button className='col fw-bold text-light btn'>Caracteristicas</button>
-                <button className='col fw-bold text-light btn'>Sobre nosotros</button>
-                <button className='col fw-bold text-light btn'>Preguntas Frecuentes</button>
+                <a href="#start" className='col fw-bold text-light btn'>Inicio</a>
+                <a href="#features" className='col fw-bold text-light btn'>Caracteristicas</a>
+                <a href="#about-us" className='col fw-bold text-light btn'>Sobre nosotros</a>
+                <a href="#faq" className='col fw-bold text-light btn'>Preguntas Frecuentes</a>
             </div>
         </nav>
     )

@@ -2,7 +2,7 @@ import React from 'react'
 
 const LandingBanner = () => {
   return (
-    <div className='d-flex m-3 px-4' style={{height:"40%"}}>
+    <div className='d-flex m-3 px-4' id="start" style={{height:"40%"}}>
         <div className='col'>
 
             <div className="mx-5 mt-5">

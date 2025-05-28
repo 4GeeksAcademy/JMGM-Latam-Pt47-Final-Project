@@ -114,6 +114,7 @@ export const Dashboard = () => {
           </div>
         </div>
         <div className='border-start px-2' />
+        {/* Nukear */}
         <div className='notif col-4'>
           <div>
             <h4 className='fw-bold'>Notificaciones</h4>
