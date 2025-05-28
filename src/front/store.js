@@ -13,16 +13,17 @@ export const initialStore=()=>{
         background: null,
       }
     ],
-    currentUser: null
+    inventory:[]
   }
 }
 
 export default function storeReducer(store, action = {}) {
   switch(action.type){
-    case 'set_hello':
+    case 'sync_inventory':
+      const inventoryData = action.payload
       return {
         ...store,
-        message: action.payload
+        inventory: inventoryData
       };
       
     case 'add_task':

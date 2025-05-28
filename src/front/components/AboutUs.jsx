@@ -4,8 +4,6 @@ import { Footer } from './Footer';
 
 function AboutUs() {
     return <>
-        <LandingNavbar />
-
             <div className="container-fluid mt-5 card text-center" style={{background: "#F5FFFA", border: 'solid 3px' }}>
                 <div className="row g-0 align-items-center">
                     <div className="col-md-6">
