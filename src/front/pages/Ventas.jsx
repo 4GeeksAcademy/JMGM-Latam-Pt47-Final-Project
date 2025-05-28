@@ -5,17 +5,21 @@ import {
 } from '@mui/x-charts/colorPalettes';
 
 export const Ventas = () => {
-  const entradas = {
+  const ventasDirectas = {
     data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
     color: 'deepskyblue'
   };
-  const salidas = {
+  const alDetal = {
     data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
     color: 'blueviolet'
   };
+  const alMayor = {
+    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
+    color: 'red'
+  };
 
   return (
-    <div className="row me-0">
+    <div className="row me-0 h-100">
       <div className="col-9 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
@@ -36,7 +40,13 @@ export const Ventas = () => {
               <th className="col table-secondary">Categoria</th>
               <th className="col table-secondary">Cantidad</th>
               <th className="col table-secondary">Precio Total</th>
-              <th className="col table-secondary">Ultimos 7 Días</th>
+              <th className="col table-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Ultimos 7 Dias
+                <ul className="dropdown-menu dropdown-menu">
+                  <li><a className="dropdown-item" href="#">Últimos 7 dias</a></li>
+                  <li><a className="dropdown-item" href="#">Último mes</a></li>
+                </ul>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -45,24 +55,32 @@ export const Ventas = () => {
               <td>manueld@gmail.com</td>
               <td>595532321</td>
               <td>Ordenes Previas</td>
+              <td>500$</td>
+              <td>VISTA</td>
             </tr>
             <tr>
               <th scope="row">Massimo</th>
               <td>Massi59@gmail.com</td>
               <td>052145214</td>
               <td>Ordenes Previas</td>
+              <td>10.000$</td>
+              <td>VISTA</td>
             </tr>
             <tr>
               <th scope="row">Gabriel</th>
               <td>Gabriel78@gmail.com</td>
               <td>5221562</td>
               <td>Ordenes Previas</td>
+              <td>9.000$</td>
+              <td>VISTA</td>
             </tr>
             <tr>
               <th scope="row">Jorge</th>
               <td>Jorgef98@gmail.com</td>
               <td>6325511</td>
               <td>Ordenes Previas</td>
+              <td>858$</td>
+              <td>VISTA</td>
             </tr>
           </tbody>
         </table>
@@ -85,30 +103,37 @@ export const Ventas = () => {
             </ul>
           </nav>
         </div>
-      <div className='graph pe-3 w-100 graph me-auto'>
-        <div className='col me-auto d-flex justify-content-between'>
-          <h4 className='fw-bold'>&nbsp;&nbsp;Reporte de Ventas</h4>
-          <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
-            <circle r="10" cx="10" cy="10" fill="deepskyblue" />
-          </svg> <b style={{ color: "deepskyblue" }}>Entradas</b> &nbsp;&nbsp; <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
-              <circle r="10" cx="10" cy="10" fill="blueviolet" />
-            </svg> <b style={{ color: "blueviolet" }}>Salidas</b> </p>
+        <div className='border-top border-2' style={{ borderTopColor: "#6C11D9" }} />
+        <div className='graph pe-3 w-100 my-4 graph me-auto'>
+          <div className='col me-auto d-flex justify-content-between'>
+            <h4 className='fw-bold' style={{ paddingBottom: "70px" }}>&nbsp;&nbsp;Reporte de Ventas</h4>
+            <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+              <circle r="10" cx="10" cy="10" fill="deepskyblue" />
+            </svg> <b style={{ color: "deepskyblue" }}>Ventas Directas</b> &nbsp;&nbsp;
+              <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+                <circle r="10" cx="10" cy="10" fill="blueviolet" />
+              </svg> <b style={{ color: "blueviolet" }}>Al Detal</b> &nbsp;&nbsp;
+              <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
+                <circle r="10" cx="10" cy="10" fill="red" />
+              </svg> <b style={{ color: "red" }}>Al Mayor</b>
+            </p>
+          </div>
+          <div className='the-graph-itself'>
+            <BarChart
+              xAxis={[
+                {
+                  id: 'barCategories',
+                  data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                }]}
+              series={[
+                { ...ventasDirectas, stack: 'total' },
+                { ...alDetal, stack: 'total' },
+                { ...alMayor, stack: 'total' }
+              ]}
+              height={300}
+            />
+          </div>
         </div>
-        <div className='the-graph-itself'>
-          <BarChart
-            xAxis={[
-              {
-                id: 'barCategories',
-                data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-              }]}
-            series={[
-              { ...entradas, stack: 'total' },
-              { ...salidas, stack: 'total' }
-            ]}
-            height={300}
-          />
-        </div>
-      </div>
       </div>
       {/* Columna de Actividades Recientes */}
       <div className="col-3" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>

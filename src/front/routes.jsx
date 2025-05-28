@@ -61,7 +61,6 @@ export const router = createBrowserRouter(
           <Route path="/app/clientes" element={<Clientes />} />
           
         </Route>
-      </>
 
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
       
