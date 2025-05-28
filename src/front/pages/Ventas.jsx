@@ -1,6 +1,40 @@
-import React from 'react'
+import React, {useEffect} from 'react';
+
 
 const Ventas = () => {
+  // const companyInventory = () => {
+
+  //   const accessToken = localStorage.getItem("token")
+
+  //   if (!accessToken) {
+  //     alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+  //     return
+  //   }
+
+  //   fetch(`${backend_url}/company/inventory`, {
+  //     method: 'GET',
+  //     headers: {
+  //       "Authorization": `Bearer ${accessToken}`
+  //     }
+  //   })
+  //     .then(resp => resp.json())
+  //     .then((data) => {
+  //       console.log("Success!!", data)
+  //       if (data && Array.isArray(data.inventory)) {
+  //         setProducts(data.inventory)
+  //       } else {
+
+  //         throw new Error("Formato de datos de inventario = ERROR.")
+  //       }
+  //     })
+  //     .catch(error => console.log(error))
+  // }
+
+
+  // useEffect(() => {
+  //   companyInventory()
+  // }, [])
+
   return (
     <div className="row me-0">
       <div className="col-9 pe-0">

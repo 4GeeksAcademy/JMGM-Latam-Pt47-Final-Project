@@ -1,23 +1,30 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export const InventoryView = () => {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
+  console.log(modalIsOpen);
+  
   const [products, setProducts] = useState([])
-  const [productModal, setProductModal] = useState(false)
+  const [productModal, setProductModal] = useState(modalIsOpen)
   const [newProductData, setNewProductData] = useState({
     product_name: '',
     marca: '',
     price: '',
     stock: ''
   })
+  
 
   const companyInventory = () => {
 
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
       return
     }
 
@@ -59,7 +66,7 @@ export const InventoryView = () => {
     const accessToken = localStorage.getItem("token");
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
       return
     }
 
@@ -146,7 +153,7 @@ export const InventoryView = () => {
         </div>
       </div>
 
-      <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>
+      {/* <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>
         <nav aria-label="Page navigation example">
           <ul className="pagination">
             <li className="page-item">
@@ -164,7 +171,7 @@ export const InventoryView = () => {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       {/* --- Modal para Nuevo Producto --- */}
       {productModal && (
