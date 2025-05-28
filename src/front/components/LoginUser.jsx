@@ -52,7 +52,7 @@ const LoginUser = () => {
                         payload: data.user
                     })
                     localStorage.setItem('currentUser', JSON.stringify(data.user))
-                    navigate("/app/perfil");
+                    navigate("/app");
                 } else {
                     dispatch({
                         type: "set_current_user",
