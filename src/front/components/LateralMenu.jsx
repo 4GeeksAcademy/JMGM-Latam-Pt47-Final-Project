@@ -28,7 +28,7 @@ const LateralMenu = () => {
                                 <i className="fa-regular fa-id-badge"></i>&nbsp;&nbsp;Clientes
                             </div>
                         </Link>
-                        <Link className="boton btn" to={"/app/notfound"}>
+                        <Link className="boton btn" to={"/app/reporte"}>
                             <div className="texto-boton">
                                 <i className="fa-solid fa-arrow-trend-up"></i>&nbsp;&nbsp;Reportes
                             </div>
