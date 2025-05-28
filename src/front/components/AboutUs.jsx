@@ -4,16 +4,15 @@ import { Footer } from './Footer';
 
 function AboutUs() {
     return <>
-            <div className="container-fluid mt-5 card text-center" style={{background: "#F5FFFA", border: 'solid 3px' }}>
+            <div className="container-fluid mt-5 text-center" style={{background: "#6C11D9"}}>
                 <div className="row g-0 align-items-center">
                     <div className="col-md-6">
-                        <img src="https://cdn.pixabay.com/photo/2018/01/11/06/26/construction-3075498_1280.jpg" className="img-fluid rounded-start" alt="https://cdn.pixabay.com/photo/2018/01/11/06/26/construction-3075498_1280.jpg" />
+                        <img src='src/front/assets/img/aboutus1.png' className="img-fluid" alt="https://cdn.pixabay.com/photo/2018/01/11/06/26/construction-3075498_1280.jpg" />
                     </div>
                     <div className="col-md-6 d-flex align-items-center justify-content-center">
-                        <div className="card-body card-text-center" style={{ minHeight: '200px' }}>
-                            <h1 className="card-title" style={{ fontFamily: 'Geneva' }}>Sobre nuestra empresa</h1>
-                            <p className="card-text" style={{ fontFamily: 'Geneva' }}>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <p className="card-text" style={{ fontFamily: 'Geneva' }}><small className="text-body-secondary">Last updated 3 mins ago</small></p>
+                        <div className="card-body card-text-center text-white" style={{ minHeight: '200px' }}>
+                            <h1 className="card-title fw-bold" >Sobre nuestra empresa</h1>
+                            <p className="card-text" >This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                         </div>
                     </div>
                 </div>

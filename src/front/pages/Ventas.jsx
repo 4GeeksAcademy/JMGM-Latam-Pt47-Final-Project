@@ -1,6 +1,7 @@
 
 import React, {useEffect} from 'react';
-
+import { SummaryCard } from '../components/SummaryCard'
+import { BarChart } from '@mui/x-charts/BarChart';
 
 const Ventas = () => {
   // const companyInventory = () => {
@@ -35,6 +36,20 @@ const Ventas = () => {
   // useEffect(() => {
   //   companyInventory()
   // }, [])
+
+    const ventasDirectas = {
+    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
+    color: 'Yellow'
+  };
+      const alDetal = {
+    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
+    color: 'Red'
+  };
+      const alMayor = {
+    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
+    color: 'Blue'
+  };
+
   return (
     <div className="row me-0 h-100">
       <div className="col-9 pe-0">
