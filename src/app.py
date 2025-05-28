@@ -93,6 +93,24 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+# current_company_id = current_user['company_id']
+#         clientes = Clients.query.filter_by(companyId=current_company_id).all()
+#         all_clientes = list(
+#             map(lambda clientes: clientes.serialize(), clientes))
+#         return jsonify({'clientes': all_clientes}), 200
+
+@app.route('/compras', methods=['GET'])
+@jwt_required()
+def compras():
+    current_user= get_jwt()
+    current_company_id= current_user['company_id']
+    user = Clients.query.filter_by(companyId=current_company_id).first()
+    if user is None:
+        return jsonify({'msg': 'Usuario no existe'}), 400
+    compras= Compras.query.filter_by(companyId= current_company_id).all()
+    all_compras= list(map(lambda compras: compras.serialize(), compras))
+    return jsonify({'compras': all_compras}), 200
+    
 
 
 @app.route('/send-mail', methods=['POST'])
