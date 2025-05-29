@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import placeholder from "./../assets/img/placeholder.png";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Clientes = () => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
-  console.log(modalIsOpen);
-
+  const navigate = useNavigate()
   const [clients, setClients] = useState([])
   const [clientModal, setClientModal] = useState(modalIsOpen)
   const [newClientData, setNewClientData] = useState({
@@ -34,7 +33,17 @@ const Clientes = () => {
         "Authorization": `Bearer ${accessToken}`
       }
     })
-      .then(resp => resp.json())
+      .then(resp => {
+        if (!resp.ok) {
+          if (resp.status === 401) {
+            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            localStorage.removeItem("token")
+            navigate("/")
+          }
+          throw new Error(`Error HTTP: ${resp.status}`)
+        }
+        return resp.json()
+      })
       .then((data) => {
         console.log("Success!!", data)
         if (data && Array.isArray(data.clientes)) {
@@ -70,6 +79,11 @@ const Clientes = () => {
       return
     }
 
+    if (!newClientData.name || !newClientData.email || !newClientData.phone) {
+      alert("Por favor, rellena todos los campos obligatorios: Nombre, Email, Teléfono.")
+      return
+    }
+
     fetch(`${backend_url}/client`, {
       method: 'POST',
       headers: {
@@ -78,16 +92,51 @@ const Clientes = () => {
       },
       body: JSON.stringify(newClientData)
     })
-      .then(resp => resp.json())
+    //preguntar-------------------------
+      .then(resp => {
+        if (!resp.ok) {
+          return resp.json()
+          .then(errorData => {
+            let errorMessage = "Error al crear cliente: ";
+            if (resp.status == 409) {
+              if (errorData.field == 'email') {
+                errorMessage += "El correo electrónico ya está registrado."
+              } else if (errorData.field == 'phone') {
+                errorMessage += "El número de teléfono ya está registrado."
+              } else if (errorData.field == 'name') {
+                errorMessage += "El nombre ya está registrado."
+              } else {
+                errorMessage += errorData
+              }
+              setNewClientData({ name: '', email: '', phone: '' })
+              alert(errorMessage)
+            } else if (resp.status === 401) {
+              alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+              localStorage.removeItem("token")
+            } else {
+              alert(errorMessage + (errorData.msg))
+            }
+            throw new Error("Error en la respuesta del servidor al crear cliente.")
+          })
+        }
+        return resp.json()
+      })
       .then((data) => {
-        console.log(data)
-        setClients([...clients, data.clientes])
+        console.log("Respuesta de creación de cliente:", data)
+        companyClients()
+        alert("Cliente creado exitosamente!")
         setClientModal(false)
+        setNewClientData({ name: '', email: '', phone: '' })
 
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        console.error("Error al crear el cliente:", error)
+        setClientModal(false)
+        setNewClientData({ name: '', email: '', phone: '' })
+      })
 
   }
+
 
   //---------------------------------------------------------------------
 
@@ -98,7 +147,7 @@ const Clientes = () => {
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h5>Clientes</h5></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-              <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
+              {/* <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" /> */}
               <button className="boton-cliente btn w-75"
                 type="button"
                 onClick={() => setClientModal(true)}

@@ -7,7 +7,6 @@ export const InventoryView = () => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
-  console.log(modalIsOpen);
   
   const [products, setProducts] = useState([])
   const [productModal, setProductModal] = useState(modalIsOpen)
@@ -98,7 +97,7 @@ export const InventoryView = () => {
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h5>Inventario</h5></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-              <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
+              {/* <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" /> */}
               <button
                 className="boton-cliente btn w-100"
                 type="button"
