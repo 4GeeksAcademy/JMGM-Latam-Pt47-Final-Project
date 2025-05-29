@@ -39,26 +39,25 @@ const Ventas = () => {
 
     const ventasDirectas = {
     data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Yellow'
+    color: 'deepskyblue'
   };
       const alDetal = {
     data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Red'
+    color: 'blueviolet'
   };
       const alMayor = {
     data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Blue'
+    color: 'red'
   };
 
   return (
     <div className="row me-0 h-100">
-      <div className="col-9 pe-0">
+      <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h5>Ordenes de Venta</h5></a>
+            <a className="navbar-brand" href="#"><h4>Ordenes de Venta</h4></a>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-              <button className="boton-cliente btn w-75" type="submit">
+              <button className="boton-cliente btn w-100" type="submit">
                 <i className="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Nueva Orden</button>
             </form>
           </div>
@@ -167,68 +166,7 @@ const Ventas = () => {
           </div>
         </div>
       </div>
-      {/* Columna de Actividades Recientes */}
-      <div className="col-3" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
-        <br />
-        <h4>Actividad Reciente</h4>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Reabastecer <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">5h atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">1m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">30m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">6m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
 
 
   )

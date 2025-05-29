@@ -18,9 +18,9 @@ export const Navbar = () => {
 					height="40" 
 					className="d-inline-block align-text-top"></img>
 					<form className="d-flex" role="search">
-						<img src={profile} alt="Logo" width="50" height="50" className="d-inline-block align-text-top mt-1"></img>
-						<input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-						<button className="btn btn-danger w-75"
+						<img src={profile} alt="Logo" width="60" height="50" 
+						className="d-inline-block align-text-top mt-1" style={{paddingRight: "10px"}}></img>
+						<button className="btn btn-danger w-70"
 							onClick={() => {
 								localStorage.removeItem("token")
 								localStorage.removeItem('currentUser')
