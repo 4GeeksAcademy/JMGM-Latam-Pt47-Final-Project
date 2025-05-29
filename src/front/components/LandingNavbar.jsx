@@ -35,7 +35,7 @@ export const LandingNavbar = () => {
     }, [])
 
     return (
-        <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' }}>
+        <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' , boxShadow: '0 1px 10px 4px Gainsboro'}}>
             <div className="container-fluid pb-2 pe-5">
                 <img src={logo}
                     type="button"
@@ -54,12 +54,8 @@ export const LandingNavbar = () => {
                     }
                 </div>
             </div>
-            <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }}>
-                <button className='col fw-bold text-light btn'>Inicio</button>
-                <button className='col fw-bold text-light btn'>Caracteristicas</button>
-                <button className='col fw-bold text-light btn'>Sobre nosotros</button>
-                <button className='col fw-bold text-light btn'>Preguntas Frecuentes</button>
-            </div>
+            {/* Nukear */}
+            <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }} />
         </nav>
     )
 }

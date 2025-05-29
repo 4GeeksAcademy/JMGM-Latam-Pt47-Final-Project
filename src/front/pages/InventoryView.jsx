@@ -91,13 +91,12 @@ export const InventoryView = () => {
   // -------------------------------------------------------------------------
 
   return (
-    <div className="row m-0">
-      <div className="col-9">
+    <div className="row me-0">
+      <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h5>Inventario</h5></a>
+            <a className="navbar-brand" href="#"><h4>Inventario</h4></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-              {/* <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" /> */}
               <button
                 className="boton-cliente btn w-100"
                 type="button"
@@ -137,19 +136,6 @@ export const InventoryView = () => {
             )}
           </tbody>
         </table>
-      </div>
-
-      <div className="col-3">
-        <h4>Actividad reciente</h4>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
-          <h6>Reabastecer <b className='text-primary'>x</b> productos</h6>
-          <div className='row '>
-            <div className='col' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} alt="Avatar" />
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>

@@ -89,7 +89,7 @@ export const Dashboard = () => {
         </div>
       </div>
       <div className='d-flex p-3'>
-        <div className='graph pe-3 w-75 graph me-auto'>
+        <div className='graph pe-3 w-100 mx-auto'>
           <div className='col me-auto d-flex justify-content-between'>
             <h4 className='fw-bold'>Reporte de inventario</h4>
             <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +98,7 @@ export const Dashboard = () => {
                 <circle r="10" cx="10" cy="10" fill="blueviolet" />
               </svg> <b style={{ color: "blueviolet" }}>Salidas</b> </p>
           </div>
-          <div className='the-graph-itself'>
+          <div className='the-graph-itself w-75 mx-auto'>
             <BarChart
               xAxis={[
                 {
@@ -113,24 +113,10 @@ export const Dashboard = () => {
             />
           </div>
         </div>
-        <div className='border-start px-2' />
-        <div className='notif col-4'>
-          <div>
-            <h4 className='fw-bold'>Notificaciones</h4>
-          </div>
-          <div className='notification-feed'>
-            <p><i className="fa-solid fa-bell" style={{ color: "#FF9500" }} /> &nbsp; ALERTA DE EJEMPLO ALERTA</p>
-          </div>
-        </div>
       </div>
       <div className='sales-summary'>
         <div className='d-flex justify-content-between'>
-          <h4 className='fw-bold px-3'>Reporte de inventario</h4>
-          <select className="form-select w-25 p-1 m-1" aria-label="Default select example">
-            <option value="1">Últimos 7 días</option>
-            <option value="2">Últimos 14 días</option>
-            <option value="3">Último mes</option>
-          </select>
+          <h4 className='fw-bold px-3'>Resumen de Ventas y Órdenes</h4>
         </div>
         <div>
           <table className="table table-borderless table-hover" style={{ color: "#5C6F88" }}>
