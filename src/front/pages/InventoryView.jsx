@@ -7,7 +7,6 @@ export const InventoryView = () => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
-  console.log(modalIsOpen);
   
   const [products, setProducts] = useState([])
   const [productModal, setProductModal] = useState(modalIsOpen)
