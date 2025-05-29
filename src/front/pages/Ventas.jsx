@@ -1,7 +1,7 @@
 
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { SummaryCard } from '../components/SummaryCard'
-import { BarChart } from '@mui/x-charts/BarChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 
 const Ventas = () => {
   // const companyInventory = () => {
@@ -37,18 +37,23 @@ const Ventas = () => {
   //   companyInventory()
   // }, [])
 
-    const ventasDirectas = {
-    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Yellow'
-  };
-      const alDetal = {
-    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Red'
-  };
-      const alMayor = {
-    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'Blue'
-  };
+  const margin = { right: 24 };
+  const ventasDirectas = [4000, 3000, 2000, 2780, 1890, 2390, 3490, 2780, 1890, 2390, 3490];
+  const alDetal = [2400, 1398, 9800, 3908, 4800, 3800, 4300, 1398, 9800, 3908, 4800];
+  const alMayor = [3908, 4800, 3800, 4300, 2400, 1398, 9800, 3800, 4300, 2400, 1398];
+  const xLabels = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
   return (
     <div className="row me-0 h-100">
@@ -151,18 +156,16 @@ const Ventas = () => {
             </p>
           </div>
           <div className='the-graph-itself'>
-            <BarChart
-              xAxis={[
-                {
-                  id: 'barCategories',
-                  data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                }]}
-              series={[
-                { ...ventasDirectas, stack: 'total' },
-                { ...alDetal, stack: 'total' },
-                { ...alMayor, stack: 'total' }
-              ]}
+            <LineChart
               height={300}
+              series={[
+                { data: ventasDirectas, label: 'Directas' },
+                { data: alMayor, label: 'Mayor' },
+                { data: alDetal, label: 'Detal' },
+              ]}
+              xAxis={[{ scaleType: 'point', data: xLabels }]}
+              yAxis={[{ width: 50 }]}
+              margin={margin}
             />
           </div>
         </div>
