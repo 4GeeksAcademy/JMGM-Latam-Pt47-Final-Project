@@ -4,15 +4,9 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const Dashboard = () => {
-  const entradas = {
-    data: [2, 3, 1, 4, 5, 9, 4, 1, 8, 1, 3, 4],
-    color: 'deepskyblue'
-  };
-  const salidas = {
-    data: [3, 1, 4, 2, 10, 4, 5, 6, 7, 5, 3, 1],
-    color: 'blueviolet'
-  };
+
   const [inventory, setInventory] = useState([])
+  const [invMes, setInvMes] = useState([])
   const { store, dispatch } = useGlobalReducer()
   const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -44,15 +38,49 @@ export const Dashboard = () => {
       .catch(error => console.log(error))
   }
 
+  const comprasMensual = () => {
+
+    let accessToken = localStorage.getItem("token")
+    if (!accessToken) {
+      setError("No se encontró el token de autenticación. Por favor, inicia sesión.")
+      setLoading(false)
+      return
+    }
+
+    fetch(`${backendUrl}/compras`, {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+      .then(resp => resp.json())
+      .then((data) => {
+        console.log("Success!!", data)
+        if (data && Array.isArray(data.mes_compra)) {
+          setInvMes(data.mes_compra)
+        } else {
+
+          throw new Error("Formato de datos de inventario inesperado del servidor.")
+        }
+      })
+      .catch(error => console.log(error))
+  }
+
   useEffect(() => {
     companyInventory()
+    comprasMensual()
   }, []);
   let result = inventory.map(a => a.stock);
   console.log(result);
 
   const invSum = result.reduce((partialSum, a) => partialSum + a, 0);
   console.log(invSum);
+  console.log(invMes);
 
+    const entradas = {
+    data: invMes,
+    color: 'deepskyblue'
+  };
   return (
     <>
       <div className='py-3 px-5' style={{ backgroundColor: "#F4F5FC" }}>
@@ -94,9 +122,7 @@ export const Dashboard = () => {
             <h4 className='fw-bold'>Reporte de inventario</h4>
             <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
               <circle r="10" cx="10" cy="10" fill="deepskyblue" />
-            </svg> <b style={{ color: "deepskyblue" }}>Entradas</b> &nbsp;&nbsp; <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
-                <circle r="10" cx="10" cy="10" fill="blueviolet" />
-              </svg> <b style={{ color: "blueviolet" }}>Salidas</b> </p>
+            </svg> <b style={{ color: "deepskyblue" }}>Compras por mes</b> &nbsp;&nbsp;</p>
           </div>
           <div className='the-graph-itself w-75 mx-auto'>
             <BarChart
@@ -106,8 +132,7 @@ export const Dashboard = () => {
                   data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 }]}
               series={[
-                { ...entradas, stack: 'total' },
-                { ...salidas, stack: 'total' }
+                { ...entradas },
               ]}
               height={300}
             />

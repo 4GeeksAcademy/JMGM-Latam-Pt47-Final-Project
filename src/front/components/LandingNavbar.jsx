@@ -45,9 +45,9 @@ export const LandingNavbar = () => {
                     height="40"
                     className="d-inline-block align-text-top"></img>
                 <div className="justify-content-end">
-                    <Link className="btn btn-info text-light me-2" style={{ backgroundColor: '#6C11D9' }} to='/register'>Registrate aqui</Link>
+                    <Link className="btn text-light me-2" style={{ backgroundColor: '#6C11D9' }} to='/register'>Registrate aqui</Link>
                     {localStorage.getItem('currentUser') == null &&
-                        <Link className="btn btn-info text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i class="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
+                        <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i class="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
                     }
                     {localStorage.getItem('currentUser') &&
                         <Link className='btn' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard</Link>
