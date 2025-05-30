@@ -110,6 +110,8 @@ def compras():
         return jsonify({'msg': 'Usuario no existe'}), 400
     compras = Compras.query.filter_by(companyId=current_company_id).all()
     all_compras = list(map(lambda compras: compras.serialize(), compras))
+
+    # NO TOCAR
     # UNIDADES_MES = [ENERO, FEBRERO, MARZO, ... , DICIEMBRE]
     unidades_mes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for compra in all_compras:
@@ -117,7 +119,7 @@ def compras():
             "fecha_compra").month-1] + compra.get("cantidad")
 
     return jsonify({'compras': all_compras, "mes_compra": unidades_mes}), 200
-
+    #--------------
 
 @app.route('/send-mail', methods=['POST'])
 def send_mail():
