@@ -7,8 +7,9 @@ export const InventoryView = () => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
-  
+
   const [products, setProducts] = useState([])
+  const [productDelete, setProductDelete] = useState(null);
   const [productModal, setProductModal] = useState(modalIsOpen)
   const [newProductData, setNewProductData] = useState({
     product_name: '',
@@ -16,7 +17,11 @@ export const InventoryView = () => {
     price: '',
     stock: ''
   })
-  
+  const accessToken = localStorage.getItem("token")
+  const stockDelete = (product) => {
+    setProductDelete(product);
+  };
+
 
   const companyInventory = () => {
 
@@ -78,14 +83,54 @@ export const InventoryView = () => {
       body: JSON.stringify(newProductData)
     })
       .then(resp => resp.json())
-      .then((data)=> {
+      .then((data) => {
         console.log(data)
-        setProducts([...products, data.item])
+        setProducts(prevProducts => {
+          const index = prevProducts.findIndex(
+            p => p.product_name === data.item.product_name && p.marca === data.item.marca
+          );
+
+
+          if (index !== -1) {
+            const updatedProducts = [...prevProducts];
+            updatedProducts[index] = data.item;
+            return updatedProducts;
+          } else {
+            return [...prevProducts, data.item];
+          }
+        });
         setProductModal(false)
-        
+        setNewProductData({
+          product_name: '',
+          marca: '',
+          price: '',
+          stock: ''
+        });
+
       })
       .catch(error => console.log(error))
 
+  }
+  const deleteStock = () => {
+    if (!productDelete) return;
+    fetch(`${backend_url}stock/${productDelete.id}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": "Bearer " + `${accessToken}`
+      }
+    })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        if (data.ok) {
+          alert("Producto eliminado")
+          setProducts(products.filter(p => p.id !== productDelete.id));
+          setProductDelete(null);
+        } else {
+          return alert("Error al eliminar producto", data.msg)
+        }
+
+      })
+      .catch((err) => { return err })
   }
 
   // -------------------------------------------------------------------------
@@ -111,6 +156,7 @@ export const InventoryView = () => {
         <table className="table">
           <thead>
             <tr>
+              <th className="col table-secondary"></th>
               <th className="col table-secondary">Nombre</th>
               <th className="col table-secondary">Codigo</th>
               <th className="col table-secondary">Tipo</th>
@@ -120,13 +166,23 @@ export const InventoryView = () => {
           </thead>
           <tbody className="table-group-divider">
             {products.length > 0 ? (
-              products.map((product) => (
+              products.map((product, value) => (
                 <tr key={product.id}>
+                  <button
+                    type="button"
+                    onClick={() => stockDelete(product)}
+                    className="btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
                   <td>{product.product_name}</td>
                   <td>{product.id || 'N/A'}</td>
                   <td>{product.marca || 'N/A'}</td>
                   <td>${product.price ? product.price.toFixed(2) : 'N/A'}</td>
                   <td>{product.stock || 'N/A'}</td>
+
                 </tr>
               ))
             ) : (
@@ -135,7 +191,34 @@ export const InventoryView = () => {
               </tr>
             )}
           </tbody>
+
+          <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">Eliminar producto</h1>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  <h4>¿Seguro que desea eliminar este producto?</h4>
+                  <p><strong>Producto:</strong> {productDelete?.product_name}</p>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={deleteStock}
+                    data-bs-dismiss="modal"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </table>
+
       </div>
 
       {/* <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>

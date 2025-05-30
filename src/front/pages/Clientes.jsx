@@ -4,29 +4,60 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Clientes = () => {
+
   const location = useLocation()
+  const accessToken = localStorage.getItem("token")
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
   const navigate = useNavigate()
   const [clients, setClients] = useState([])
+  const [clientDelete, setClientDelete] = useState(null);
   const [clientModal, setClientModal] = useState(modalIsOpen)
   const [newClientData, setNewClientData] = useState({
     name: '',
     email: '',
     phone: ''
   })
+  const [editClient, setEditClient] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  })
+  const editarCliente = (client) => {
+    setEditClient(client)
+  }
 
+  const deleteCLients = (client) => {
+    setClientDelete(client);
+  };
+  function edit() {
+    fetch(`${backend_url}client/${editClient.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(editClient),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + `${accessToken}`
+      }
 
+    }
 
+    )
+      .then((response) => { return response.json() })
+      .then((data) => {
+        if (data.ok) {
+          alert("CLiente actualizado correctamente");
+          companyClients();
+        } else {
+          alert("Error al actualizar cliente")
+        }
+      })
+      .catch(() => { })
+  }
   const companyClients = () => {
-
-    const accessToken = localStorage.getItem("token")
-
     if (!accessToken) {
       alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
       return
     }
-
     fetch(`${backend_url}/clients`, {
       method: 'GET',
       headers: {
@@ -57,9 +88,8 @@ const Clientes = () => {
   }
 
 
-  useEffect(() => {
-    companyClients()
-  }, [])
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -92,32 +122,32 @@ const Clientes = () => {
       },
       body: JSON.stringify(newClientData)
     })
-    //preguntar-------------------------
+      //preguntar-------------------------
       .then(resp => {
         if (!resp.ok) {
           return resp.json()
-          .then(errorData => {
-            let errorMessage = "Error al crear cliente: ";
-            if (resp.status == 409) {
-              if (errorData.field == 'email') {
-                errorMessage += "El correo electrónico ya está registrado."
-              } else if (errorData.field == 'phone') {
-                errorMessage += "El número de teléfono ya está registrado."
-              } else if (errorData.field == 'name') {
-                errorMessage += "El nombre ya está registrado."
+            .then(errorData => {
+              let errorMessage = "Error al crear cliente: ";
+              if (resp.status == 409) {
+                if (errorData.field == 'email') {
+                  errorMessage += "El correo electrónico ya está registrado."
+                } else if (errorData.field == 'phone') {
+                  errorMessage += "El número de teléfono ya está registrado."
+                } else if (errorData.field == 'name') {
+                  errorMessage += "El nombre ya está registrado."
+                } else {
+                  errorMessage += errorData
+                }
+                setNewClientData({ name: '', email: '', phone: '' })
+                alert(errorMessage)
+              } else if (resp.status === 401) {
+                alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+                localStorage.removeItem("token")
               } else {
-                errorMessage += errorData
+                alert(errorMessage + (errorData.msg))
               }
-              setNewClientData({ name: '', email: '', phone: '' })
-              alert(errorMessage)
-            } else if (resp.status === 401) {
-              alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
-              localStorage.removeItem("token")
-            } else {
-              alert(errorMessage + (errorData.msg))
-            }
-            throw new Error("Error en la respuesta del servidor al crear cliente.")
-          })
+              throw new Error("Error en la respuesta del servidor al crear cliente.")
+            })
         }
         return resp.json()
       })
@@ -136,6 +166,31 @@ const Clientes = () => {
       })
 
   }
+  useEffect(() => {
+    companyClients()
+  }, [])
+  const eliminarCliente = () => {
+    if (!clientDelete) return;
+    fetch(`${backend_url}client/${clientDelete.id}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": "Bearer " + `${accessToken}`
+      }
+    })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        if (data.ok) {
+          alert("Cliente eliminado")
+          setClients(clients.filter(p => p.id !== clientDelete.id))
+          setClientDelete(null)
+        } else {
+          return alert("Error al eliminar cliente", data.msg)
+        }
+
+      })
+      .catch((err) => { return err })
+  }
+
 
 
   //---------------------------------------------------------------------
@@ -160,16 +215,32 @@ const Clientes = () => {
         <table className="table">
           <thead>
             <tr>
+              <th className="col table-secondary"></th>
               <th className="col table-secondary">Nombre del Cliente</th>
               <th className="col table-secondary">Correo</th>
               <th className="col table-secondary">Teléfono</th>
-              <th className="col table-secondary">Historial</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
             {clients.length > 0 ? (
               clients.map((clientes) => (
                 <tr key={clientes.id}>
+                  <button
+                    type="button"
+                    onClick={() => deleteCLients(clientes)}
+                    className="btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                  <button type="button"
+                    className="btn"
+                    onClick={() => editarCliente(clientes)}
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal1">
+                    <i className="fa-solid fa-pencil"></i>
+                  </button>
                   <td>{clientes.name || 'N/A'}</td>
                   <td>{clientes.email || 'N/A'}</td>
                   <td>{clientes.phone || 'N/A'}</td>
@@ -183,31 +254,83 @@ const Clientes = () => {
               </tr>
             )}
           </tbody>
+          <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">Eliminar Cliente</h1>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  <h4>¿Seguro que desea eliminar este cliente?</h4>
+                  <p><strong>Cliente:</strong> {clientDelete?.name}</p>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={eliminarCliente}
+                    data-bs-dismiss="modal"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </table>
-
-        {/* modal de paginas/navigation */}
-        {/* <div className=" d-flex justify-content-center" style={{ paddingTop: "49%" }}>
-          <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">1</a></li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">2</a></li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">3</a></li>
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div> */}
+        <div className="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">Editar CLiente</h1>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="container">
+                <label htmlFor="name" className="form-label">Nombre</label>
+                <input
+                  type="text"
+                  value={editClient.name}
+                  onChange={(e) => setEditClient({ ...editClient, name: e.target.value })}
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  required
+                />
+                <label htmlFor="name" className="form-label">Email</label>
+                <input
+                  type="text"
+                  value={editClient.email}
+                  onChange={(e) => setEditClient({ ...editClient, email: e.target.value })}
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  required
+                />
+                <label htmlFor="name" className="form-label">Phone</label>
+                <input
+                  type="text"
+                  value={editClient.phone}
+                  onChange={(e) => setEditClient({ ...editClient, phone: e.target.value })}
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  required
+                />
+              </div>
+              <div className="modal-footer mt-3">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button"
+                  data-bs-dismiss="modal"
+                  onClick={() => edit()}
+                  className="btn boton-cliente">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
-      {/* --- Modal para Nuevo Producto --- */}
       {clientModal && (
         <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }} >
           <div className="modal-dialog">
