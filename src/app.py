@@ -379,14 +379,14 @@ def modify_client(id_client):
     if client is None:
         return jsonify({'msg': 'Cliente no existe'}), 400
     data = request.get_json(silent=True)
-    if 'nombre' in data:
-        client.name = data['nombre']
+    if 'name' in data:
+        client.name = data['name']
     if 'email' in data:
         client.email = data['email']
-    if 'telefono' in data:
-        client.phone = data['telefono']
+    if 'phone' in data:
+        client.phone = data['phone']
     db.session.commit()
-    return jsonify({'msg': 'Cliente actualizado correctamente', 'cliente': client.serialize()})
+    return jsonify({'ok': 'Cliente actualizado correctamente', 'cliente': client.serialize()})
 
 # -- listo --#
 
@@ -403,7 +403,7 @@ def delete_client(id_client):
         user_delete = Clients.query.all()
         all_client = list(
             map(lambda clients: clients.serialize(), user_delete))
-        return jsonify({'msg': 'Cliente eliminado exitosamente', 'data': all_client}), 200
+        return jsonify({'ok': 'Cliente eliminado exitosamente', 'data': all_client}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'msg': 'Error al eliminar el cliente', 'error': str(e)}), 400
@@ -596,7 +596,7 @@ def delete_inventory_item(product_id):
     try:
         db.session.delete(product)
         db.session.commit()
-        return jsonify({'msg': 'Product deleted'}), 200
+        return jsonify({'ok': 'Product deleted'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'msg': 'error al eliminar el producto', 'error': str(e)}), 400

@@ -8,8 +8,6 @@ const backend_url = import.meta.env.VITE_BACKEND_URL;
 const RecoveryPassword = () => {
     const navigate= useNavigate()
     const params= useParams()
-    console.log(params);
-    
     const [recovery, setRecovery]= useState({
         password: "",
         confirm_password: ""
