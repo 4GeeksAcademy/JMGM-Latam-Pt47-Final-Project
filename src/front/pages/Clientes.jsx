@@ -72,7 +72,7 @@ const Clientes = () => {
   const createClientModal = (e) => {
     e.preventDefault()
 
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
       alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
@@ -99,20 +99,15 @@ const Clientes = () => {
           .then(errorData => {
             let errorMessage = "Error al crear cliente: ";
             if (resp.status == 409) {
-              if (errorData.field == 'email') {
-                errorMessage += "El correo electrónico ya está registrado."
-              } else if (errorData.field == 'phone') {
-                errorMessage += "El número de teléfono ya está registrado."
-              } else if (errorData.field == 'name') {
-                errorMessage += "El nombre ya está registrado."
+              if (errorData == 'email') {
+                errorMessage + "El correo electrónico ya está registrado."
+              } else if (errorData == 'phone') {
+                errorMessage + "El número de teléfono ya está registrado."
               } else {
-                errorMessage += errorData
+                errorMessage + errorData
               }
               setNewClientData({ name: '', email: '', phone: '' })
               alert(errorMessage)
-            } else if (resp.status === 401) {
-              alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
-              localStorage.removeItem("token")
             } else {
               alert(errorMessage + (errorData.msg))
             }
