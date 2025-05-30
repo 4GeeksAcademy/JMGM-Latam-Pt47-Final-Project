@@ -13,14 +13,14 @@ import { DashboardLayout } from "./pages/DashboardLayout";
 import { Dashboard } from "./pages/Dashboard";
 import { InventoryView } from "./pages/InventoryView";
 import { LayoutLanding } from "./pages/LayoutLanding";
-import LoginUser from "./components/LoginUser";
-import PerfilUser from "./components/PerfilUser";
+import LoginUser from "./pages/LoginUser";
+import PerfilUser from "./pages/PerfilUser";
 import Clientes from "./pages/Clientes";
-import Register from "./components/Register";
+import Register from "./pages/Register";
 import AboutUs from "./components/AboutUs";
 import { EnConstruccion } from "./components/EnConstruccion"
 
-import RecoveryPassword from "./pages/RecoveryPasswrod";
+import RecoveryPassword from "./pages/RecoveryPassword";
 
 import Ventas from "./pages/Ventas";
 import Reportes from "./pages/Reportes";
@@ -36,42 +36,18 @@ export const router = createBrowserRouter(
 
 
     // Root Route: All navigation will start from here.
-      // Root Route: All navigation will start from here.
-      // Pagina que no necesite un usuario logeado van aqui
-      <>
-
-        <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
-
-
-
-          {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-          <Route path="/" element={<Landing />} />
-
-        </Route>
-        <Route path="/recovery/:uuid" element={<RecoveryPassword/>}/>
-        <Route path="/register" element={<Register />} />
-        <Route path="/loginuser" element={<LoginUser />} />
-        <Route path="/app" element={<DashboardLayout />}>
-        
-        
-          <Route path="/app" element={<Dashboard />} />
-          <Route path="/app/inventario" element={<InventoryView />} />
-          <Route path="/app/perfil" element={<PerfilUser />} />
-          <Route path="/app/clientes" element={<Clientes />} />
-          
-        </Route>
-
+    // Root Route: All navigation will start from here.
+    // Pagina que no necesite un usuario logeado van aqui
+    <>
 
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
-      
-      
+
+
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path="/" element={<Landing />} />
 
       </Route>
-      <Route path="/register" element={<Register />} />
-      <Route path="/loginuser" element={<LoginUser />} />
       <Route path="/app" element={<DashboardLayout />}>
 
 
@@ -79,13 +55,36 @@ export const router = createBrowserRouter(
         <Route path="/app/inventario" element={<InventoryView />} />
         <Route path="/app/perfil" element={<PerfilUser />} />
         <Route path="/app/clientes" element={<Clientes />} />
-        <Route path= "/app" element={<Dashboard />} />
-        <Route path= "/app/inventario" element={<InventoryView />} />
-        <Route path= "/app/perfil" element={<PerfilUser/>} />
-        <Route path= "/app/clientes" element={<Clientes/>} />
-        <Route path="/app/ventas" element={<Ventas/>} />
-        <Route path="/app/reporte" element={<Reportes/>} />
-        <Route path= "/app/notfound" element={<EnConstruccion/>} />  
+
+      </Route>
+
+
+      <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
+
+
+
+        {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/loginuser" element={<LoginUser />} />
+        <Route path="/recovery/:uuid" element={<RecoveryPassword />} />
+
+      </Route>
+
+      <Route path="/app" element={<DashboardLayout />}>
+
+
+        <Route path="/app" element={<Dashboard />} />
+        <Route path="/app/inventario" element={<InventoryView />} />
+        <Route path="/app/perfil" element={<PerfilUser />} />
+        <Route path="/app/clientes" element={<Clientes />} />
+        <Route path="/app" element={<Dashboard />} />
+        <Route path="/app/inventario" element={<InventoryView />} />
+        <Route path="/app/perfil" element={<PerfilUser />} />
+        <Route path="/app/clientes" element={<Clientes />} />
+        <Route path="/app/ventas" element={<Ventas />} />
+        <Route path="/app/reporte" element={<Reportes />} />
+        <Route path="/app/notfound" element={<EnConstruccion />} />
       </Route>
 
     </>

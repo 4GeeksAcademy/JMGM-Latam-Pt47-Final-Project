@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import logo from './../assets/img/logo.png';
-import { Footer } from './Footer';
+import { Footer } from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
@@ -35,19 +35,6 @@ const Register = () => {
     }
     return (
         <>
-            <div className='align-items-start'>
-                <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' }}>
-                    <div className="container-fluid pb-2 pe-5">
-                        <img src={logo}
-                            type="button"
-                            onClick={() => { navigate('/') }}
-                            alt="Logo"
-                            width="105"
-                            height="40"
-                            className="d-inline-block align-text-top"></img>
-                    </div>
-                </nav>
-            </div>
             <div className="register text-center container w-50">
                 <div className="mb-3">
                     <h3 className="form-h3">Email address</h3>
@@ -91,7 +78,6 @@ const Register = () => {
                     style={{ backgroundColor: '#6C11D9' }}>Crear usuario</button>
             </div>
             <div className="mt-5">
-                <Footer />
             </div>
         </>
     )
