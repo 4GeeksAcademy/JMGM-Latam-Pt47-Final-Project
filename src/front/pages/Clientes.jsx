@@ -148,7 +148,6 @@ const Clientes = () => {
             <a className="navbar-brand" href="#"><h4>Clientes</h4></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <button className="boton-cliente btn w-100"
-
                 type="button"
                 onClick={() => setClientModal(true)}
               >
