@@ -301,18 +301,18 @@ def clients():
 # -- Listo -- #
 
 
-@app.route('/client/<int:id>', methods=['GET'])
-@jwt_required()
-def client_id(id):
-    actual_client_id = get_jwt()
-    company_id = actual_client_id['company_id']
-    client = Clients.query.filter_by(id=id, companyId=company_id).first()
-    if not company_id:
-        return jsonify({'msg': 'No se pudo identificar la compañía'}), 401
+# @app.route('/client/<int:id>', methods=['GET'])
+# @jwt_required()
+# def client_id(id):
+#     actual_client_id = get_jwt()
+#     company_id = actual_client_id['company_id']
+#     client = Clients.query.filter_by(id=id, companyId=company_id).first()
+#     if not company_id:
+#         return jsonify({'msg': 'No se pudo identificar la compañía'}), 401
 
-    if client is None:
-        return jsonify({'msg': 'Cliente no existe o no pertenece a esta compañía'}), 404
-    return jsonify({'cliente': client.serialize()})
+#     if client is None:
+#         return jsonify({'msg': 'Cliente no existe o no pertenece a esta compañía'}), 404
+#     return jsonify({'cliente': client.serialize()})
 
 
 # -- listo -- #
