@@ -138,7 +138,7 @@ export const InventoryView = () => {
   return (
     <div className="row me-0">
       <div className="col-12 pe-0">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><h4>Inventario</h4></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>

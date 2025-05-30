@@ -102,7 +102,7 @@ const Clientes = () => {
   const createClientModal = (e) => {
     e.preventDefault()
 
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
       alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
@@ -126,6 +126,23 @@ const Clientes = () => {
       .then(resp => {
         if (!resp.ok) {
           return resp.json()
+          .then(errorData => {
+            let errorMessage = "Error al crear cliente: ";
+            if (resp.status == 409) {
+              if (errorData == 'email') {
+                errorMessage + "El correo electrónico ya está registrado."
+              } else if (errorData == 'phone') {
+                errorMessage + "El número de teléfono ya está registrado."
+              } else {
+                errorMessage + errorData
+              }
+              setNewClientData({ name: '', email: '', phone: '' })
+              alert(errorMessage)
+            } else {
+              alert(errorMessage + (errorData.msg))
+            }
+            throw new Error("Error en la respuesta del servidor al crear cliente.")
+          })
             .then(errorData => {
               let errorMessage = "Error al crear cliente: ";
               if (resp.status == 409) {
@@ -203,7 +220,6 @@ const Clientes = () => {
             <a className="navbar-brand" href="#"><h4>Clientes</h4></a>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <button className="boton-cliente btn w-100"
-
                 type="button"
                 onClick={() => setClientModal(true)}
               >

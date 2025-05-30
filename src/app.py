@@ -110,6 +110,8 @@ def compras():
         return jsonify({'msg': 'Usuario no existe'}), 400
     compras = Compras.query.filter_by(companyId=current_company_id).all()
     all_compras = list(map(lambda compras: compras.serialize(), compras))
+
+    # NO TOCAR
     # UNIDADES_MES = [ENERO, FEBRERO, MARZO, ... , DICIEMBRE]
     unidades_mes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for compra in all_compras:
@@ -117,7 +119,7 @@ def compras():
             "fecha_compra").month-1] + compra.get("cantidad")
 
     return jsonify({'compras': all_compras, "mes_compra": unidades_mes}), 200
-
+    #--------------
 
 @app.route('/send-mail', methods=['POST'])
 def send_mail():
@@ -308,18 +310,18 @@ def clients():
 # -- Listo -- #
 
 
-@app.route('/client/<int:id>', methods=['GET'])
-@jwt_required()
-def client_id(id):
-    actual_client_id = get_jwt()
-    company_id = actual_client_id['company_id']
-    client = Clients.query.filter_by(id=id, companyId=company_id).first()
-    if not company_id:
-        return jsonify({'msg': 'No se pudo identificar la compañía'}), 401
+# @app.route('/client/<int:id>', methods=['GET'])
+# @jwt_required()
+# def client_id(id):
+#     actual_client_id = get_jwt()
+#     company_id = actual_client_id['company_id']
+#     client = Clients.query.filter_by(id=id, companyId=company_id).first()
+#     if not company_id:
+#         return jsonify({'msg': 'No se pudo identificar la compañía'}), 401
 
-    if client is None:
-        return jsonify({'msg': 'Cliente no existe o no pertenece a esta compañía'}), 404
-    return jsonify({'cliente': client.serialize()})
+#     if client is None:
+#         return jsonify({'msg': 'Cliente no existe o no pertenece a esta compañía'}), 404
+#     return jsonify({'cliente': client.serialize()})
 
 
 # -- listo -- #
