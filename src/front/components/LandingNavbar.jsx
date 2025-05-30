@@ -50,7 +50,7 @@ export const LandingNavbar = () => {
                         <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i class="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
                     }
                     {localStorage.getItem('currentUser') &&
-                        <Link className='btn' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard</Link>
+                        <Link className='btn text-light' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard&nbsp;&nbsp;<i class="fa-solid fa-caret-right" /></Link>
                     }
                 </div>
             </div>
