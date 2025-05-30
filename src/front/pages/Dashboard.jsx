@@ -72,7 +72,7 @@ export const Dashboard = () => {
   }, []);
   let result = inventory.map(a => a.stock);
   console.log(result);
-
+// Aqui hace falta: 1-Extraer el monto del inventario[✓] 2-las cantidades de cada compra[✓] 3-sumar todas las del mes[]
   const invSum = result.reduce((partialSum, a) => partialSum + a, 0);
   console.log(invSum);
   console.log(invMes);
