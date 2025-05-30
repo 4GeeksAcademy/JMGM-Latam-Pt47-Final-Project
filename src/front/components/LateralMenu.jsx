@@ -35,11 +35,11 @@ const LateralMenu = () => {
                         </Link>
                         <div className='border-top border-2 my-4' style={{ borderTopColor: "#6C11D9" }} />
                         <h4>Acciones Rapidas</h4>
-                        <button className="boton btn">
+                        <Link className="boton btn" to={'/app/ventas?modalIsOpen=true'}> 
                             <div className="texto-boton">
                                 <i class="fa-solid fa-file-medical"></i>&nbsp;&nbsp;Crear Orden
                             </div>
-                        </button>
+                        </Link>
                         <Link className="boton btn" to={'/app/inventario?modalIsOpen=true'}>
                             <div className="texto-boton">
                                 <i class="fa-solid fa-box"></i>&nbsp;&nbsp;Añadir Producto
