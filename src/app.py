@@ -32,7 +32,7 @@ app.url_map.strict_slashes = False
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_KEY")
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
-url_frontend= os.getenv("VITE_FRONTEND_URL")
+url_frontend = os.getenv("VITE_FRONTEND_URL")
 CORS(app)
 app.config.update(dict(
     DEBUG=False,
@@ -99,18 +99,24 @@ def serve_any_other_file(path):
 #             map(lambda clientes: clientes.serialize(), clientes))
 #         return jsonify({'clientes': all_clientes}), 200
 
+
 @app.route('/compras', methods=['GET'])
 @jwt_required()
 def compras():
-    current_user= get_jwt()
-    current_company_id= current_user['company_id']
+    current_user = get_jwt()
+    current_company_id = current_user['company_id']
     user = Clients.query.filter_by(companyId=current_company_id).first()
     if user is None:
         return jsonify({'msg': 'Usuario no existe'}), 400
-    compras= Compras.query.filter_by(companyId= current_company_id).all()
-    all_compras= list(map(lambda compras: compras.serialize(), compras))
-    return jsonify({'compras': all_compras}), 200
-    
+    compras = Compras.query.filter_by(companyId=current_company_id).all()
+    all_compras = list(map(lambda compras: compras.serialize(), compras))
+    # UNIDADES_MES = [ENERO, FEBRERO, MARZO, ... , DICIEMBRE]
+    unidades_mes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for compra in all_compras:
+        unidades_mes[compra.get("fecha_compra").month-1] = unidades_mes[compra.get(
+            "fecha_compra").month-1] + compra.get("cantidad")
+
+    return jsonify({'compras': all_compras, "mes_compra": unidades_mes}), 200
 
 
 @app.route('/send-mail', methods=['POST'])
@@ -145,19 +151,20 @@ def send_mail():
 @app.route('/recovery/<uuid>', methods=['PUT'])
 def reset(uuid):
 
-    verify_uuid= RecoveryPassword.query.filter_by(uuid= uuid).first()
+    verify_uuid = RecoveryPassword.query.filter_by(uuid=uuid).first()
     print(verify_uuid)
     if verify_uuid is None:
         return jsonify({'msg': 'Sin autorizacion'}), 400
     if not verify_uuid.fecha > datetime.now():
         return jsonify({'msg': 'uuid expirado'}), 400
-    email= verify_uuid.email
-    user= User.query.filter_by(email= email).first()
+    email = verify_uuid.email
+    user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({'msg': 'Usuario no existe'}), 400
-    data= request.get_json(silent= True)
+    data = request.get_json(silent=True)
     if 'password' in data:
-        user.password= bcrypt.generate_password_hash(data['password']).decode('utf-8')
+        user.password = bcrypt.generate_password_hash(
+            data['password']).decode('utf-8')
     db.session.commit()
     return jsonify({'ok': 'Contraseña actualizada.'}), 200
 
@@ -343,11 +350,11 @@ def add_client():
     verify_client = Clients.query.filter_by(email=body['email']).first()
     if verify_client:
         return jsonify({'msg': 'El cliente ya existe'}), 400
-    new_client= Clients(
-       name = body['name'],
-       email = body['email'],
-       phone = body ['phone'],
-       companyId = current_company_id 
+    new_client = Clients(
+        name=body['name'],
+        email=body['email'],
+        phone=body['phone'],
+        companyId=current_company_id
     )
 
     try:

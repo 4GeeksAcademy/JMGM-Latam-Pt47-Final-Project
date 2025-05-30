@@ -1,6 +1,7 @@
 
-import React, {useEffect} from 'react';
-
+import React, { useEffect } from 'react';
+import { SummaryCard } from '../components/SummaryCard'
+import { LineChart } from '@mui/x-charts/LineChart';
 
 const Ventas = () => {
   // const companyInventory = () => {
@@ -35,15 +36,33 @@ const Ventas = () => {
   // useEffect(() => {
   //   companyInventory()
   // }, [])
+
+  const margin = { right: 24 };
+  const ventasDirectas = [4000, 3000, 2000, 2780, 1890, 2390, 3490, 2780, 1890, 2390, 3490];
+  const alDetal = [2400, 1398, 9800, 3908, 4800, 3800, 4300, 1398, 9800, 3908, 4800];
+  const alMayor = [3908, 4800, 3800, 4300, 2400, 1398, 9800, 3800, 4300, 2400, 1398];
+  const xLabels = [
+    'Ene',
+    'Feb',
+    'Mar',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
   return (
     <div className="row me-0 h-100">
-      <div className="col-9 pe-0">
+      <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h5>Ordenes de Venta</h5></a>
+            <a className="navbar-brand" href="#"><h4>Ordenes de Venta</h4></a>
             <form className="d-flex" role="search">
-              <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
-              <button className="boton-cliente btn w-75" type="submit">
+              <button className="boton-cliente btn w-100" type="submit">
                 <i className="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Nueva Orden</button>
             </form>
           </div>
@@ -136,84 +155,21 @@ const Ventas = () => {
             </p>
           </div>
           <div className='the-graph-itself'>
-            <BarChart
-              xAxis={[
-                {
-                  id: 'barCategories',
-                  data: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                }]}
-              series={[
-                { ...ventasDirectas, stack: 'total' },
-                { ...alDetal, stack: 'total' },
-                { ...alMayor, stack: 'total' }
-              ]}
+            <LineChart
               height={300}
+              series={[
+                { data: ventasDirectas, label: 'Directas' },
+                { data: alMayor, label: 'Mayor' },
+                { data: alDetal, label: 'Detal' },
+              ]}
+              xAxis={[{ scaleType: 'point', data: xLabels }]}
+              yAxis={[{ width: 50 }]}
+              margin={margin}
             />
           </div>
         </div>
       </div>
-      {/* Columna de Actividades Recientes */}
-      <div className="col-3" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
-        <br />
-        <h4>Actividad Reciente</h4>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Reabastecer <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">5h atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">1m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">30m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none", backgroundColor: "rgba(244, 245, 252, 1)" }}>
-          <h6 className=''>Ordenó <b className='text-primary'>x</b> productos</h6>
-          <div className='row'>
-            <div className='col-2' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} />
-            </div>
-            <div className="col">
-              <div className='py-3 text-start'>
-                &nbsp;&nbsp;CLIENTNAME - <b className="Texto-ordenes">6m atras</b>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
 
 
   )
