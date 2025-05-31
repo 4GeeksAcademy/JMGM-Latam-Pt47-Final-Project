@@ -113,7 +113,7 @@ export const InventoryView = () => {
   }
   const deleteStock = () => {
     if (!productDelete) return;
-    fetch(`${backend_url}stock/${productDelete.id}`, {
+    fetch(`${backend_url}/stock/${productDelete.id}`, {
       method: 'DELETE',
       headers: {
         "Authorization": "Bearer " + `${accessToken}`
