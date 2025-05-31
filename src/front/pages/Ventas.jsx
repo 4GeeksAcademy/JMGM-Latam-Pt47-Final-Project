@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { SummaryCard } from '../components/SummaryCard'
 import { LineChart } from '@mui/x-charts/LineChart';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Ventas = () => {
@@ -10,6 +10,7 @@ const Ventas = () => {
   const queryParams = new URLSearchParams(location.search)
   const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
 
+  const [clients, setClients] = useState([])
   const navigate = useNavigate()
   const [compras, setCompras] = useState([])
   const [comprasModal, setComprasModal] = useState(modalIsOpen)
@@ -59,13 +60,13 @@ const Ventas = () => {
     companyVentas()
   }, [])
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target
-  //   setNewComprasData(data => ({
-  //     ...data,
-  //     [name]: value
-  //   }))
-  // }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setNewComprasData(data => ({
+      ...data,
+      [name]: value
+    }))
+  }
 
   const createComprasModal = (e) => {
     e.preventDefault()
@@ -76,20 +77,21 @@ const Ventas = () => {
       alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
       return
     }
-
-    const clientId = localStorage.getItem("clientId")
-    if (!clientId) {
-      alert("No hay ID de cliente disponible. Por favor, asegúrate de tener un cliente seleccionado.")
-      return;
+    if (!newComprasData.client_id) { 
+      alert("Por favor, selecciona un cliente.")
+      return
     }
-    fetch(`${backend_url}/compra/${clientId}`, {
+    const clientToUse = newComprasData.client_id
+    console.log(newComprasData);
+    
+    fetch(`${backend_url}/compra/${clientToUse}`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        product_id: newComprasData.product_name, 
+        product_name: newComprasData.product_name,
         cantidad: newComprasData.cantidad
       })
     })
@@ -99,11 +101,11 @@ const Ventas = () => {
         alert("Compra creada exitosamente!");
         setComprasModal(false);
         setNewComprasData({ product_name: '', cantidad: '', fecha_compra: '' })
-
+        companyVentas()
       })
       .catch(error => {
         console.error("Error en la operación de creación de compra:", error)
-        setComprasModal(false);
+        setComprasModal(false)
         setNewComprasData({ product_name: '', cantidad: '', fecha_compra: '' })
         alert("Hubo un error inesperado al crear la compra. Por favor, intenta de nuevo.")
       })
@@ -128,7 +130,48 @@ const Ventas = () => {
     'Dec',
   ];
 
+  const companyClients = () => {
 
+    const accessToken = localStorage.getItem("token")
+
+    if (!accessToken) {
+      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      return
+    }
+
+    fetch(`${backend_url}/clients`, {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      }
+    })
+      .then(resp => {
+        if (!resp.ok) {
+          if (resp.status == 401) {
+            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            localStorage.removeItem("token")
+            navigate("/")
+          }
+          throw new Error(`Error HTTP: ${resp.status}`)
+        }
+        return resp.json()
+      })
+      .then((data) => {
+        console.log("Success!!", data)
+        if (data && Array.isArray(data.clientes)) {
+          setClients(data.clientes)
+        } else {
+
+          throw new Error("Formato de datos de clientes = ERROR.")
+        }
+      })
+      .catch(error => console.log(error))
+  }
+
+
+  useEffect(() => {
+    companyClients()
+  }, [])
 
   //----------------------------------------------------------------------------------------------------
   return (
@@ -182,25 +225,6 @@ const Ventas = () => {
             )}
           </tbody>
         </table>
-        {/* <div className="d-flex justify-content-center">
-          <nav aria-label="Page navigation example">
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">1</a></li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">2</a></li>
-              <li className="page-item"><a className="boton-pagi page-link" href="#">3</a></li>
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div> */}
         <div className='border-top border-2' style={{ borderTopColor: "#6C11D9" }} />
         <div className='graph pe-3 w-100 my-4 graph me-auto'>
           <div className='col me-auto d-flex justify-content-between'>
@@ -240,8 +264,31 @@ const Ventas = () => {
                 <h5 className="modal-title">Añadir Nueva Compra</h5>
                 <button type="button" className="btn-close" onClick={() => setComprasModal(false)} ></button>
               </div>
+
               <div className="modal-body">
                 <form onSubmit={createComprasModal}>
+                  <div className="mb-3">
+                    <label htmlFor="client_id" className="form-label">Seleccionar Cliente</label>
+                    <select
+                      className="form-select"
+                      id="client_id"
+                      name="client_id"
+                      value={newComprasData.client_id}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="">Selecciona un cliente...</option>
+                      {clients.length > 0 ? (
+                        clients.map((client) => (
+                          <option key={client.id} value={client.id}>
+                            {client.name} {client.last_name ? client.last_name : ''}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="" disabled>Cargando clientes o no hay clientes</option>
+                      )}
+                    </select>
+                  </div>
                   <div className="mb-3">
                     <label htmlFor="product_name" className="form-label">Nombre del producto</label>
                     <input

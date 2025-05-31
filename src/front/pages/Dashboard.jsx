@@ -7,6 +7,8 @@ export const Dashboard = () => {
 
   const [inventory, setInventory] = useState([])
   const [invMes, setInvMes] = useState([])
+  const [compras, setCompras] = useState([])
+    const [totalHoy, setTotalHoy] = useState([])
   const { store, dispatch } = useGlobalReducer()
   const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -58,9 +60,11 @@ export const Dashboard = () => {
         console.log("Success!!", data)
         if (data && Array.isArray(data.mes_compra)) {
           setInvMes(data.mes_compra)
+          setCompras(data.compras)
+          setTotalHoy(data.total_hoy)
         } else {
 
-          throw new Error("Formato de datos de inventario inesperado del servidor.")
+          throw new Error("Formato de datos de compras inesperado del servidor.")
         }
       })
       .catch(error => console.log(error))
@@ -70,17 +74,19 @@ export const Dashboard = () => {
     companyInventory()
     comprasMensual()
   }, []);
+
   let result = inventory.map(a => a.stock);
   console.log(result);
-// Aqui hace falta: 1-Extraer el monto del inventario[✓] 2-las cantidades de cada compra[✓] 3-sumar todas las del mes[]
+  // Aqui hace falta: 1-Extraer el monto del inventario[✓] 2-las cantidades de cada compra[✓] 3-sumar todas las del mes[]
   const invSum = result.reduce((partialSum, a) => partialSum + a, 0);
   console.log(invSum);
   console.log(invMes);
 
-    const entradas = {
+  const entradas = {
     data: invMes,
     color: 'deepskyblue'
   };
+
   return (
     <>
       <div className='py-3 px-5' style={{ backgroundColor: "#F4F5FC" }}>
@@ -93,7 +99,7 @@ export const Dashboard = () => {
               </div>
               <div className="col">
                 <div className='mx-3 py-3 text-start text-body-secondary fw-medium'>
-                  <b className='fw-semibold'>{Math.floor(Math.random() * 10000000)}&nbsp;Bs.D.</b>
+                  <b className='fw-semibold'>$&nbsp;{totalHoy}</b>
                   <br />
                   <p className='mb-0'> Ventas de hoy</p>
                 </div>
@@ -140,50 +146,37 @@ export const Dashboard = () => {
         </div>
       </div>
       <div className='sales-summary'>
-        <div className='d-flex justify-content-between'>
-          <h4 className='fw-bold px-3'>Resumen de Ventas y Órdenes</h4>
+        <div className='d-flex ms-auto'>
+          <h4 className='fw-bold px-3'>Ventas y Órdenes recientes (Últimas 4)</h4>
         </div>
         <div>
           <table className="table table-borderless table-hover" style={{ color: "#5C6F88" }}>
             <thead>
               <tr className='table-secondary encabezado-tabla tabla-resumen px-3'>
-                <th scope="col" className='ps-3'>Canal</th>
-                <th scope="col">Preseleccionadas</th>
-                <th scope="col">Confirmadas</th>
-                <th scope="col">Empacadas</th>
-                <th scope="col">Enviadas</th>
-                <th scope="col">Facturadas</th>
-                <th scope="col">Más vendidas</th>
+                <th scope="col" className='ps-3'>Cliente</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">Compra total</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Número de Órden</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row" className='ps-3'>Venta Directa</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>Banana ICell 2</td>
-              </tr>
-              <tr>
-                <td scope="row" className='ps-3'>Mayoristas</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>iPack Earth 12</td>
-              </tr>
-              <tr>
-                <td scope="row" className='ps-3'>Minoristas</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>{Math.floor(Math.random() * 100)}</td>
-                <td>SamZung Universe 2</td>
-              </tr>
+              {
+                compras.slice(0, 4).map((compra) => {
+                  return (<tr>
+                    <td scope="row" className='ps-3'>{compra.cliente.name}</td>
+                    <td>{compra.producto.product_name}</td>
+                    <td>{compra.cantidad}</td>
+                    <td>{compra.producto.price}</td>
+                    <td>{compra.cantidad * compra.producto.price}</td>
+                    <td>{compra.fecha_compra}</td>
+                    <td>{compra.id}</td>
+                  </tr>)
+                })
+              }
+
             </tbody>
           </table>
         </div>
