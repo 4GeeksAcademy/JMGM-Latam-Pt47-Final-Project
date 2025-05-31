@@ -23,7 +23,11 @@ const Ventas = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -36,7 +40,11 @@ const Ventas = () => {
       .then(resp => {
         if (!resp.ok) {
           if (resp.status === 401) {
-            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            Swal.fire({
+              icon: "error",
+              title: "Opps...",
+              text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+            });
             localStorage.removeItem("token")
             navigate("/")
           }
@@ -74,16 +82,20 @@ const Ventas = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
-    if (!newComprasData.client_id) { 
+    if (!newComprasData.client_id) {
       alert("Por favor, selecciona un cliente.")
       return
     }
     const clientToUse = newComprasData.client_id
     console.log(newComprasData);
-    
+
     fetch(`${backend_url}/compra/${clientToUse}`, {
       method: 'POST',
       headers: {
@@ -97,11 +109,23 @@ const Ventas = () => {
     })
       .then(resp => resp.json())
       .then((data) => {
-        console.log(data)
-        alert("Compra creada exitosamente!");
-        setComprasModal(false);
-        setNewComprasData({ product_name: '', cantidad: '', fecha_compra: '' })
-        companyVentas()
+        if (data.ok) {
+          Swal.fire({
+            title: "Compra creada exitosamente!",
+            icon: "success",
+            draggable: true
+          });
+          setComprasModal(false);
+          setNewComprasData({ product_name: '', cantidad: '', fecha_compra: '' })
+          companyVentas()
+        }
+        else {
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: (data.error),
+          });
+        }
       })
       .catch(error => {
         console.error("Error en la operación de creación de compra:", error)
@@ -135,7 +159,11 @@ const Ventas = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -148,7 +176,11 @@ const Ventas = () => {
       .then(resp => {
         if (!resp.ok) {
           if (resp.status == 401) {
-            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            Swal.fire({
+              icon: "error",
+              title: "Opps...",
+              text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+            });
             localStorage.removeItem("token")
             navigate("/")
           }

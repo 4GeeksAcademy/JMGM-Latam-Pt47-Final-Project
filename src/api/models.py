@@ -89,7 +89,7 @@ class Inventory(db.Model):
     marca: Mapped[str] = mapped_column(String(120), nullable=False)
     stock: Mapped[int] = mapped_column(Integer())
     company: Mapped['CompanyInfo'] = relationship(back_populates='inventory')
-    compras: Mapped[list['Compras']] = relationship(back_populates='producto')
+    compras: Mapped[list['Compras']] = relationship(back_populates='producto', cascade='all')
 
     def serialize(self):
         return {
@@ -117,7 +117,7 @@ class Clients(db.Model):
         String(120), unique=True, nullable=False)
     phone: Mapped[str] = mapped_column(String(60), unique=True, nullable=False)
     company: Mapped['CompanyInfo'] = relationship(back_populates='clients')
-    compras: Mapped[list['Compras']] = relationship(back_populates='clientes')
+    compras: Mapped[list['Compras']] = relationship(back_populates='clientes', cascade= 'all')
 
     def serialize(self):
         return {
