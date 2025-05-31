@@ -252,28 +252,28 @@ def compra(id_client):
     body = request.get_json(silent=True)
     if not body:
         return jsonify({'msg': 'Debe enviar informacion en el body'}), 400
-    if 'product_id' not in body:
-        return jsonify({'msg': 'Debe enviar el id del producto'}), 400
+    if 'product_name' not in body:
+        return jsonify({'msg': 'Debe enviar el name del producto'}), 400
     if 'cantidad' not in body:
         return jsonify({'msg': 'Debe enviar la cantidad solicitada'}), 400
     client = Clients.query.get(id_client)
     if client is None:
         return jsonify({'msg': 'Usuario no encontrado'}), 400
 
-    producto = Inventory.query.get(body['product_id'])
+    producto = Inventory.query.filter_by(product_name = body['product_name']).first()
     if producto is None:
         return jsonify({'msg': 'Producto no encontrado'}), 400
 
-    if body['cantidad'] > producto.stock:
+    if int(body['cantidad']) > producto.stock:
         return jsonify({'msg': 'Cantidad no disponible'}), 400
 
     new_compra = Compras()
-    new_compra.productsId = body['product_id']
+    new_compra.productsId = producto.id
     new_compra.cantidad = body['cantidad']
     new_compra.fecha_compra = datetime.now()
     new_compra.clientsId = id_client
     new_compra.companyId = company_id
-    producto.stock = producto.stock - body['cantidad']
+    producto.stock = producto.stock - int(body['cantidad'])
 
     try:
         db.session.add(new_compra)
