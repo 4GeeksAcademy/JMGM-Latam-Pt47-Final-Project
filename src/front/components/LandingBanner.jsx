@@ -11,7 +11,7 @@ const LandingBanner = () => {
             <div className='border-top border-2 m-4' style={{borderTopColor:"#6C11D9"}}/>
             <div className='mx-5'>
                 <p className='' style={{fontSize:"1.4vw"}}>Nuestra plataforma de administración de recursos especializada te ayuda a llevar
-                    tu empresa al siguiente nivel. Registrate de forma rápida y sencilla y empieza a transformar tu negocio hoy.
+                    tu empresa al siguiente nivel. Regístrate de forma rápida y sencilla y empieza a transformar tu negocio hoy.
                 </p>
             </div>
 
