@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import placeholder from "./../assets/img/placeholder.png";
 import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Clientes = () => {
@@ -45,7 +46,11 @@ const Clientes = () => {
       .then((response) => { return response.json() })
       .then((data) => {
         if (data.ok) {
-          alert("CLiente actualizado correctamente");
+          Swal.fire({
+            title: "Cliente actualizado correctamente!",
+            icon: "success",
+            draggable: true
+          });
           companyClients();
         } else {
           alert("Error al actualizar cliente")
@@ -126,23 +131,29 @@ const Clientes = () => {
       .then(resp => {
         if (!resp.ok) {
           return resp.json()
-          .then(errorData => {
-            let errorMessage = "Error al crear cliente: ";
-            if (resp.status == 409) {
-              if (errorData == 'email') {
-                errorMessage + "El correo electrónico ya está registrado."
-              } else if (errorData == 'phone') {
-                errorMessage + "El número de teléfono ya está registrado."
+            .then(errorData => {
+              let errorMessage = "Error al crear cliente: ";
+              if (resp.status == 409) {
+                if (errorData == 'email') {
+                  errorMessage + "El correo electrónico ya está registrado."
+                } else if (errorData == 'phone') {
+                  errorMessage + "El número de teléfono ya está registrado."
+                } else {
+                  errorMessage + errorData
+                }
+                setNewClientData({ name: '', email: '', phone: '' })
+                alert(errorMessage)
               } else {
-                errorMessage + errorData
+                // alert(errorMessage + (errorData.msg))
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente",
+                  text: (errorData.msg)
+                });
+
               }
-              setNewClientData({ name: '', email: '', phone: '' })
-              alert(errorMessage)
-            } else {
-              alert(errorMessage + (errorData.msg))
-            }
-            throw new Error("Error en la respuesta del servidor al crear cliente.")
-          })
+              throw new Error("Error en la respuesta del servidor al crear cliente.")
+            })
             .then(errorData => {
               let errorMessage = "Error al crear cliente: ";
               if (resp.status == 409) {
@@ -161,7 +172,12 @@ const Clientes = () => {
                 alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
                 localStorage.removeItem("token")
               } else {
-                alert(errorMessage + (errorData.msg))
+                // alert(errorMessage + (errorData.msg))
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente",
+                  text: (errorData.msg)
+                });
               }
               throw new Error("Error en la respuesta del servidor al crear cliente.")
             })
@@ -171,7 +187,11 @@ const Clientes = () => {
       .then((data) => {
         console.log("Respuesta de creación de cliente:", data)
         companyClients()
-        alert("Cliente creado exitosamente!")
+        Swal.fire({
+          title: "Cliente creado exitosamente!",
+          icon: "success",
+          draggable: true
+        });
         setClientModal(false)
         setNewClientData({ name: '', email: '', phone: '' })
 
@@ -197,7 +217,11 @@ const Clientes = () => {
       .then((response) => { return response.json() })
       .then((data) => {
         if (data.ok) {
-          alert("Cliente eliminado")
+          Swal.fire({
+            title: "Cliente eliminado!",
+            icon: "success",
+            draggable: true
+          });
           setClients(clients.filter(p => p.id !== clientDelete.id))
           setClientDelete(null)
         } else {
