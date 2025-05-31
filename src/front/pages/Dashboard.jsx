@@ -86,7 +86,6 @@ export const Dashboard = () => {
     data: invMes,
     color: 'deepskyblue'
   };
-
   return (
     <>
       <div className='py-3 px-5' style={{ backgroundColor: "#F4F5FC" }}>

@@ -47,10 +47,10 @@ export const LandingNavbar = () => {
                 <div className="justify-content-end">
                     <Link className="btn text-light me-2" style={{ backgroundColor: '#6C11D9' }} to='/register'>Registrate aqui</Link>
                     {localStorage.getItem('currentUser') == null &&
-                        <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i class="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
+                        <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i className="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
                     }
                     {localStorage.getItem('currentUser') &&
-                        <Link className='btn text-light' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard&nbsp;&nbsp;<i class="fa-solid fa-caret-right" /></Link>
+                        <Link className='btn text-light' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard&nbsp;&nbsp;<i className="fa-solid fa-caret-right" /></Link>
                     }
                 </div>
             </div>

@@ -14,7 +14,7 @@ function AboutUs() {
                             <h1 className="card-title fw-bold" >Sobre nuestra empresa</h1>
                             <div className='border w-50 my-3 mx-auto' />
                             <p className="card-text fs-5 px-3" >En <b>MyStock</b> nuestro propósito es simple, entregar un producto de calidad mediante un desarrollo ético, colaborativo 
-                            y enfocado en el cliente. Trabajamos de la mano con nuestros clientes y aliados para transformar nuestro entorno y convertir obstaculos en progreso.</p>
+                            y enfocado en el cliente. Trabajamos de la mano con nuestros clientes y aliados para transformar nuestro entorno y convertir obstáculos en progreso.</p>
                         </div>
                     </div>
                 </div>

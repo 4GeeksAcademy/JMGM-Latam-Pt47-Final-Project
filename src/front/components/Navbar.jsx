@@ -43,6 +43,7 @@ export const Navbar = () => {
 
 	useEffect(() => {
 		userInfo()
+		document.title = "MyStock"
 	}, []);
 
 	return (
@@ -57,8 +58,8 @@ export const Navbar = () => {
 						height="40"
 						className="d-inline-block align-text-top"></img>
 					<form className="d-flex" role="search">
-						<div class="btn-group">
-							<button class="btn btn-sm d-flex" type="button" onClick={() => { navigate("/app/perfil") }}>
+						<div className="btn-group">
+							<button className="btn btn-sm d-flex" type="button" onClick={() => { navigate("/app/perfil") }}>
 								<img src={profile} alt="Logo" width="60" height="50"
 									className="d-inline-block align-text-top mt-1" style={{ paddingRight: "10px" }}></img>
 								<p className="text-start fw-light mb-0 me-2"><b className="fs-6 fw-bold">{company}</b>
@@ -67,9 +68,9 @@ export const Navbar = () => {
 							</button>
 							<button type="button" className="btn btn-sm dropdown-toggle-split rounded logout" style={{ backgroundColor: '#dc3545', color: "white" }} 
 							data-bs-toggle="dropdown" aria-expanded="false" >
-								<i class="fa-solid fa-right-from-bracket" />
+								<i className="fa-solid fa-right-from-bracket" />
 							</button>
-							<ul class="dropdown-menu dropdown-menu-end" style={{backgroundColor:"#dc3545", color:"white"}}>
+							<ul className="dropdown-menu dropdown-menu-end" style={{backgroundColor:"#dc3545", color:"white"}}>
 								<li>
 									<a className="dropdown-item text-white logout"
 										onClick={() => {
