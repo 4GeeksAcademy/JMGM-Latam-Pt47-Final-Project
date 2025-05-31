@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import placeholder from "./../assets/img/placeholder.png";
 import { useLocation, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Clientes = () => {
@@ -53,14 +52,22 @@ const Clientes = () => {
           });
           companyClients();
         } else {
-          alert("Error al actualizar cliente")
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error al actualizar cliente!",
+          });
         }
       })
       .catch(() => { })
   }
   const companyClients = () => {
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
     fetch(`${backend_url}/clients`, {
@@ -72,7 +79,11 @@ const Clientes = () => {
       .then(resp => {
         if (!resp.ok) {
           if (resp.status === 401) {
-            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            Swal.fire({
+              icon: "error",
+              title: "Opps...",
+              text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+            });
             localStorage.removeItem("token")
             navigate("/")
           }
@@ -110,7 +121,11 @@ const Clientes = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -142,15 +157,17 @@ const Clientes = () => {
                   errorMessage + errorData
                 }
                 setNewClientData({ name: '', email: '', phone: '' })
-                alert(errorMessage)
-              } else {
-                // alert(errorMessage + (errorData.msg))
                 Swal.fire({
                   icon: "error",
-                  title: "Error al crear cliente",
-                  text: (errorData.msg)
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
                 });
-
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
+                });
               }
               throw new Error("Error en la respuesta del servidor al crear cliente.")
             })
@@ -169,14 +186,17 @@ const Clientes = () => {
                 setNewClientData({ name: '', email: '', phone: '' })
                 alert(errorMessage)
               } else if (resp.status === 401) {
-                alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
-                localStorage.removeItem("token")
-              } else {
-                // alert(errorMessage + (errorData.msg))
                 Swal.fire({
                   icon: "error",
-                  title: "Error al crear cliente",
-                  text: (errorData.msg)
+                  title: "Opps...",
+                  text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+                });
+                localStorage.removeItem("token")
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
                 });
               }
               throw new Error("Error en la respuesta del servidor al crear cliente.")
@@ -218,14 +238,20 @@ const Clientes = () => {
       .then((data) => {
         if (data.ok) {
           Swal.fire({
-            title: "Cliente eliminado!",
+            title: "Cliente eliminado correctamente!",
             icon: "success",
             draggable: true
           });
           setClients(clients.filter(p => p.id !== clientDelete.id))
           setClientDelete(null)
         } else {
-          return alert("Error al eliminar cliente", data.msg)
+          return (
+            Swal.fire({
+              icon: "error",
+              title: "Error al eliminar cliente!",
+              text: (data.msg),
+              footer: '<a href="#">Why do I have this issue?</a>'
+            }))
         }
 
       })

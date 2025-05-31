@@ -29,7 +29,6 @@ export const Navbar = () => {
 		})
 			.then(resp => resp.json())
 			.then((data) => {
-				console.log("Success!!", data)
 				if (data) {
 					setCompany(data.user.company)
 					setEmail(data.user.email)

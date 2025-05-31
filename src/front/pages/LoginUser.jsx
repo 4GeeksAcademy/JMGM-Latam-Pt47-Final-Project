@@ -25,11 +25,19 @@ const LoginUser = () => {
         })
             .then((response) => { return response.json() })
             .then((data) => {
-                console.log("data recibida", data);
+                Swal.fire({
+                    title: "Email enviado correctamente!",
+                    icon: "success",
+                    draggable: true
+                });
 
                 if (data.ok) {
                 } else {
-                    alert("Revisa el email")
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops! Algo salió mal.",
+                        text: (data.msg),
+                    });
                 }
             })
             .catch((err) => { return err })
@@ -59,7 +67,11 @@ const LoginUser = () => {
                         type: "set_current_user",
                         payload: null
                     })
-                    alert("Login incorrecto. Revisa tu email o contraseña.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops! Algo salió mal.",
+                        text: "Revisa tu email o contraseña!",
+                    });
                 }
             })
             .catch((err) => {

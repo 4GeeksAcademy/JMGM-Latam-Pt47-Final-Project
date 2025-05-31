@@ -259,7 +259,7 @@ def compra(id_client):
     client = Clients.query.filter_by(id=id_client).first()
     print({'client': client.companyId})
     if company_id != client.companyId:
-        return jsonify({'msg': 'Not found'}), 400
+        return jsonify({'error': 'Not found'}), 400
     """
         {
         "product_ID",
@@ -268,21 +268,21 @@ def compra(id_client):
     """
     body = request.get_json(silent=True)
     if not body:
-        return jsonify({'msg': 'Debe enviar informacion en el body'}), 400
+        return jsonify({'error': 'Debe enviar informacion en el body'}), 400
     if 'product_name' not in body:
-        return jsonify({'msg': 'Debe enviar el name del producto'}), 400
+        return jsonify({'error': 'Debe enviar el name del producto'}), 400
     if 'cantidad' not in body:
-        return jsonify({'msg': 'Debe enviar la cantidad solicitada'}), 400
+        return jsonify({'error': 'Debe enviar la cantidad solicitada'}), 400
     client = Clients.query.get(id_client)
     if client is None:
-        return jsonify({'msg': 'Usuario no encontrado'}), 400
+        return jsonify({'error': 'Usuario no encontrado'}), 400
 
     producto = Inventory.query.filter_by(product_name = body['product_name']).first()
     if producto is None:
-        return jsonify({'msg': 'Producto no encontrado'}), 400
+        return jsonify({'error': 'Producto no encontrado'}), 400
 
     if int(body['cantidad']) > producto.stock:
-        return jsonify({'msg': 'Cantidad no disponible'}), 400
+        return jsonify({'error': 'Cantidad no disponible'}), 400
 
     new_compra = Compras()
     new_compra.productsId = producto.id
@@ -295,10 +295,10 @@ def compra(id_client):
     try:
         db.session.add(new_compra)
         db.session.commit()
-        return jsonify(new_compra.serialize()), 201
+        return jsonify({'ok': 'Compra creada exitosamente', 'compra': new_compra.serialize()}), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({'msg': 'Error al generar la compra', 'error': str(e)}), 400
+        return jsonify({'error': 'Error al generar la compra', 'error': str(e)}), 400
     finally:
         db.session.close()
 
