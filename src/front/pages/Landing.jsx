@@ -23,7 +23,7 @@ export const Landing = () => {
                     <img src="https://images.unsplash.com/photo-1642516303080-431f6681f864?" className="card-img-top" alt="..." style={{ maxHeight: "9.5rem" }} />
                     <div className="card-body">
                         <h5 className="card-title fw-bold">Visualiza tus datos</h5>
-                        <p className="card-text">Nuestra plataforma te ofrece diversidad de gráficas para visualizar los datos de todas tus operaciones de manera facil. Ya quieras conocer tus movimientos o disponibilidad de productos, te lo tenemos.</p>
+                        <p className="card-text">Nuestra plataforma te ofrece diversidad de gráficas para visualizar los datos de todas tus operaciones de manera fácil. Ya quieras conocer tus movimientos o disponibilidad de productos, te lo tenemos.</p>
                     </div>
                 </div>
                 <div className="card mb-3 col-4 text-center" style={{ maxWidth: "18rem", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)" }}>

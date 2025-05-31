@@ -11,7 +11,8 @@ from api.models import db, CompanyInfo, Inventory, Clients, Compras, User, Recov
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity, get_jwt
@@ -111,6 +112,21 @@ def compras():
     compras = Compras.query.filter_by(companyId=current_company_id).all()
     all_compras = list(map(lambda compras: compras.serialize(), compras))
 
+    # SERIALIZA LOS CLIENTES
+    for compra in all_compras:
+        aux = Clients.query.filter_by(id=compra.get("clientsId")).one()
+        compra["cliente"] = aux.serialize()
+
+    # SEPARA LAS COMPRAS DE HOY
+    today = datetime.today()
+    total_hoy = 0
+    for compra in all_compras:
+        if compra["fecha_compra"].date() == today.date():
+            total_hoy += compra["cantidad"]*compra["producto"]["price"]
+
+    # ORDENA LAS COMPRAS FOR FECHA
+    all_compras = sorted(all_compras, key=lambda x: x.get(
+        "fecha_compra"), reverse=True)
     # NO TOCAR
     # UNIDADES_MES = [ENERO, FEBRERO, MARZO, ... , DICIEMBRE]
     unidades_mes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -118,8 +134,9 @@ def compras():
         unidades_mes[compra.get("fecha_compra").month-1] = unidades_mes[compra.get(
             "fecha_compra").month-1] + compra.get("cantidad")
 
-    return jsonify({'compras': all_compras, "mes_compra": unidades_mes}), 200
-    #--------------
+    return jsonify({'compras': all_compras, "mes_compra": unidades_mes, "total_hoy": total_hoy}), 200
+    # --------------
+
 
 @app.route('/send-mail', methods=['POST'])
 def send_mail():
@@ -300,7 +317,9 @@ def clients():
         clientes = Clients.query.filter_by(companyId=current_company_id).all()
         all_clientes = list(
             map(lambda clientes: clientes.serialize(), clientes))
+
         return jsonify({'clientes': all_clientes}), 200
+
     except Exception as e:
         db.session.rollback()
         return jsonify({'msg': 'error al crear el usuario', 'error': str(e)}), 400
