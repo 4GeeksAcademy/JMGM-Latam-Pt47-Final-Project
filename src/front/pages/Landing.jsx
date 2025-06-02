@@ -84,7 +84,7 @@ export const Landing = () => {
                         </h2>
                         <div id="flush-collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                             <div className="accordion-body">Dirígete a la sección de iniciar sesión y selecciona&nbsp;<b>Recuperar contraseña</b>.&nbsp;
-                            Si has perdido el acceso a tu correo contáctanos a <a className='link'>ayuda@mystock.com</a></div>
+                            Si has perdido el acceso a tu correo contáctanos a <a className='link'>mystock4geeks@gmail.com</a></div>
                         </div>
                     </div>
                 </div>

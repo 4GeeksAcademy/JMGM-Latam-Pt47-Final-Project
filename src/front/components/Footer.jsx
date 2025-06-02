@@ -120,7 +120,7 @@ Cambios a esta Política
 
 <br/><br/>Si la ley lo exige, solicitaremos su permiso o le daremos la oportunidad de aceptar o rechazar, según corresponda, cualquier nuevo uso de su información personal. Contáctenos
 
-<br/><br/>Si tiene alguna pregunta o inquietud sobre su privacidad, puede contactarnos a help@mystock.com
+<br/><br/>Si tiene alguna pregunta o inquietud sobre su privacidad, puede contactarnos a mystock4geeks@gmail.com
 
 							</div>
 							<div class="modal-footer">
