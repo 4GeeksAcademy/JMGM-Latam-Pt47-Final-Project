@@ -7,7 +7,7 @@ export const LayoutLanding = () => {
     return (
         <ScrollToTop>
             <LandingNavbar />
-            <div style={{paddingTop:"5.5rem"}}>
+            <div style={{paddingTop:"3.5rem"}}>
             <Outlet />
             </div>
             <Footer />
