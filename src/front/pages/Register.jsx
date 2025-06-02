@@ -37,7 +37,7 @@ const Register = () => {
         <>
 
             <div className='container-fluid pt-0 d-flex bg-image' style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1733176544089-977104046d96)', height: "100vh" }}>
-                <div className='card w-50 m-auto p-4' style={{height:"75%"}}>
+                <div className='card w-25 m-auto p-4 overflow-y-scroll taljeta' style={{height:"70%"}}>
                     <div className="register text-center container">
                         <i class="fa-solid fa-users-line fs-3 m-2" style={{ color: "#6C11D9" }} />
                         <h2 className='fw-bold'>Bienvenido a MyStock</h2>

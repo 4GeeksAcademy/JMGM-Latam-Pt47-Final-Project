@@ -85,7 +85,7 @@ const LoginUser = () => {
     };
     return (
         <div className='container-fluid pt-0 d-flex bg-image' style={{backgroundImage: 'url(https://images.unsplash.com/photo-1642516303080-431f6681f864?)', height:"100vh"}}>
-            <div className='card w-50 m-auto h-75 p-4'>
+            <div className='card w-25 m-auto h-75 p-4 overflow-y-scroll taljeta'>
                     <div className="text-center container login">
                         <i class="fa-solid fa-user fs-3 m-2" style={{color:"#6C11D9"}} />
                         <h2 className='fw-bold'>Bienvenido de vuelta</h2>

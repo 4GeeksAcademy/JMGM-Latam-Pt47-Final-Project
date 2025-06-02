@@ -62,3 +62,11 @@
 .logout:hover {
   background-color: firebrick;
 }
+
+.taljeta {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.taljeta::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
