@@ -28,7 +28,11 @@ export const InventoryView = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente!",
+      });
       return
     }
 
@@ -70,7 +74,11 @@ export const InventoryView = () => {
     const accessToken = localStorage.getItem("token");
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -85,7 +93,7 @@ export const InventoryView = () => {
       .then(resp => resp.json())
       .then((data) => {
         console.log(data)
-        setProducts(prevProducts => {
+        setProducts((prevProducts) => {
           const index = prevProducts.findIndex(
             p => p.product_name === data.item.product_name && p.marca === data.item.marca
           );
@@ -98,6 +106,11 @@ export const InventoryView = () => {
           } else {
             return [...prevProducts, data.item];
           }
+        });
+        Swal.fire({
+          title: "Producto creado correctamente!",
+          icon: "success",
+          draggable: true
         });
         setProductModal(false)
         setNewProductData({
@@ -122,11 +135,21 @@ export const InventoryView = () => {
       .then((response) => { return response.json() })
       .then((data) => {
         if (data.ok) {
-          alert("Producto eliminado")
+          Swal.fire({
+            title: "Producto eliminado correctamente!",
+            icon: "success",
+            draggable: true
+          });
           setProducts(products.filter(p => p.id !== productDelete.id));
           setProductDelete(null);
         } else {
-          return alert("Error al eliminar producto", data.msg)
+          return (
+            Swal.fire({
+              icon: "error",
+              title: "Error al eliminar producto!",
+              text: (data.msg)
+            })
+          )
         }
 
       })

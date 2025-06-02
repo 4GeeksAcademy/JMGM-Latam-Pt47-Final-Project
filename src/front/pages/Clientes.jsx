@@ -45,17 +45,29 @@ const Clientes = () => {
       .then((response) => { return response.json() })
       .then((data) => {
         if (data.ok) {
-          alert("CLiente actualizado correctamente");
+          Swal.fire({
+            title: "Cliente actualizado correctamente!",
+            icon: "success",
+            draggable: true
+          });
           companyClients();
         } else {
-          alert("Error al actualizar cliente")
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Error al actualizar cliente!",
+          });
         }
       })
       .catch(() => { })
   }
   const companyClients = () => {
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
     fetch(`${backend_url}/clients`, {
@@ -67,7 +79,11 @@ const Clientes = () => {
       .then(resp => {
         if (!resp.ok) {
           if (resp.status === 401) {
-            alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+            Swal.fire({
+              icon: "error",
+              title: "Opps...",
+              text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+            });
             localStorage.removeItem("token")
             navigate("/")
           }
@@ -105,7 +121,11 @@ const Clientes = () => {
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.")
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -126,23 +146,31 @@ const Clientes = () => {
       .then(resp => {
         if (!resp.ok) {
           return resp.json()
-          .then(errorData => {
-            let errorMessage = "Error al crear cliente: ";
-            if (resp.status == 409) {
-              if (errorData == 'email') {
-                errorMessage + "El correo electrónico ya está registrado."
-              } else if (errorData == 'phone') {
-                errorMessage + "El número de teléfono ya está registrado."
+            .then(errorData => {
+              let errorMessage = "Error al crear cliente: ";
+              if (resp.status == 409) {
+                if (errorData == 'email') {
+                  errorMessage + "El correo electrónico ya está registrado."
+                } else if (errorData == 'phone') {
+                  errorMessage + "El número de teléfono ya está registrado."
+                } else {
+                  errorMessage + errorData
+                }
+                setNewClientData({ name: '', email: '', phone: '' })
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
+                });
               } else {
-                errorMessage + errorData
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
+                });
               }
-              setNewClientData({ name: '', email: '', phone: '' })
-              alert(errorMessage)
-            } else {
-              alert(errorMessage + (errorData.msg))
-            }
-            throw new Error("Error en la respuesta del servidor al crear cliente.")
-          })
+              throw new Error("Error en la respuesta del servidor al crear cliente.")
+            })
             .then(errorData => {
               let errorMessage = "Error al crear cliente: ";
               if (resp.status == 409) {
@@ -158,10 +186,18 @@ const Clientes = () => {
                 setNewClientData({ name: '', email: '', phone: '' })
                 alert(errorMessage)
               } else if (resp.status === 401) {
-                alert("Tu sesión ha expirado o es inválida. Por favor, inicia sesión de nuevo.")
+                Swal.fire({
+                  icon: "error",
+                  title: "Opps...",
+                  text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+                });
                 localStorage.removeItem("token")
               } else {
-                alert(errorMessage + (errorData.msg))
+                Swal.fire({
+                  icon: "error",
+                  title: "Error al crear cliente!",
+                  text: (errorData.msg),
+                });
               }
               throw new Error("Error en la respuesta del servidor al crear cliente.")
             })
@@ -171,7 +207,11 @@ const Clientes = () => {
       .then((data) => {
         console.log("Respuesta de creación de cliente:", data)
         companyClients()
-        alert("Cliente creado exitosamente!")
+        Swal.fire({
+          title: "Cliente creado exitosamente!",
+          icon: "success",
+          draggable: true
+        });
         setClientModal(false)
         setNewClientData({ name: '', email: '', phone: '' })
 
@@ -197,11 +237,21 @@ const Clientes = () => {
       .then((response) => { return response.json() })
       .then((data) => {
         if (data.ok) {
-          alert("Cliente eliminado")
+          Swal.fire({
+            title: "Cliente eliminado correctamente!",
+            icon: "success",
+            draggable: true
+          });
           setClients(clients.filter(p => p.id !== clientDelete.id))
           setClientDelete(null)
         } else {
-          return alert("Error al eliminar cliente", data.msg)
+          return (
+            Swal.fire({
+              icon: "error",
+              title: "Error al eliminar cliente!",
+              text: (data.msg),
+              footer: '<a href="#">Why do I have this issue?</a>'
+            }))
         }
 
       })

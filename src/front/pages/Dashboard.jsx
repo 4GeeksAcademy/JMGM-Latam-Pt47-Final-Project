@@ -29,7 +29,6 @@ export const Dashboard = () => {
     })
       .then(resp => resp.json())
       .then((data) => {
-        console.log("Success!!", data)
         if (data && Array.isArray(data.inventory)) {
           setInventory(data.inventory)
         } else {
@@ -57,7 +56,6 @@ export const Dashboard = () => {
     })
       .then(resp => resp.json())
       .then((data) => {
-        console.log("Success!!", data)
         if (data && Array.isArray(data.mes_compra)) {
           setInvMes(data.mes_compra)
           setCompras(data.compras)
@@ -76,11 +74,8 @@ export const Dashboard = () => {
   }, []);
 
   let result = inventory.map(a => a.stock);
-  console.log(result);
   // Aqui hace falta: 1-Extraer el monto del inventario[✓] 2-las cantidades de cada compra[✓] 3-sumar todas las del mes[]
   const invSum = result.reduce((partialSum, a) => partialSum + a, 0);
-  console.log(invSum);
-  console.log(invMes);
 
   const entradas = {
     data: invMes,
