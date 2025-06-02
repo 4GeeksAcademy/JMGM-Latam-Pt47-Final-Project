@@ -28,7 +28,7 @@ const LateralMenu = () => {
                                 <i className="fa-regular fa-id-badge"></i>&nbsp;&nbsp;Clientes
                             </div>
                         </Link>
-                        <div className='border-top border-2 my-5' style={{ borderTopColor: "#6C11D9" }} />
+                        <div className='border-top border-2 my-4' style={{ borderTopColor: "#6C11D9" }} />
                         <h4 className="fw-bold">Acciones Rapidas</h4>
                         <Link className="boton btn" to={'/app/ventas?modalIsOpen=true'} style={{marginTop:"1rem"}}> 
                             <div className="texto-boton">
