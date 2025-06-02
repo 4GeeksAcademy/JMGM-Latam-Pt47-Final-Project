@@ -230,13 +230,6 @@ const Ventas = () => {
               <th className="col table-secondary">Categoria</th>
               <th className="col table-secondary">Cantidad</th>
               <th className="col table-secondary">Precio Total</th>
-              <th className="col table-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Ultimos 7 Dias
-                <ul className="dropdown-menu dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Últimos 7 dias</a></li>
-                  <li><a className="dropdown-item" href="#">Último mes</a></li>
-                </ul>
-              </th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
