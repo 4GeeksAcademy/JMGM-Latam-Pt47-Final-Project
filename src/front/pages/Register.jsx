@@ -37,11 +37,11 @@ const Register = () => {
         <>
 
             <div className='container-fluid pt-0 d-flex bg-image' style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1733176544089-977104046d96)', height: "100vh" }}>
-                <div className='card w-25 m-auto p-4' style={{height:"65%"}}>
+                <div className='card w-50 m-auto p-4' style={{height:"75%"}}>
                     <div className="register text-center container">
                         <i class="fa-solid fa-users-line fs-3 m-2" style={{ color: "#6C11D9" }} />
                         <h2 className='fw-bold'>Bienvenido a MyStock</h2>
-                        <div className='border mt-2 mb-4' />
+                        <div className='border mt-2 mb-5' />
                         <div className="mb-3 text-start">
                             <h5 className="form-h3" style={{color:"Grey"}}>E-mail</h5>
                             <input type="email"

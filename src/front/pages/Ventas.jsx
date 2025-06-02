@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { SummaryCard } from '../components/SummaryCard'
-import { LineChart } from '@mui/x-charts/LineChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,6 +13,8 @@ const Ventas = () => {
   const [clients, setClients] = useState([])
   const navigate = useNavigate()
   const [compras, setCompras] = useState([])
+  const [nombreProd, setnombreProd] = useState([])
+  const [cantidadProd, setcantidadProd] = useState([])
   const [comprasModal, setComprasModal] = useState(modalIsOpen)
   const [newComprasData, setNewComprasData] = useState({
     product_name: '',
@@ -56,6 +58,22 @@ const Ventas = () => {
         console.log("Success!!", data)
         if (data && Array.isArray(data.compras)) {
           setCompras(data.compras)
+          let nombres = []
+          let cantidades = []
+          for (let i = 0; i < data.compras.length; i++) {
+            if(!nombres.includes(data.compras[i].producto.product_name)){
+              nombres.push(data.compras[i].producto.product_name)
+              cantidades.push(data.compras[i].cantidad)
+            } else {
+              let currentIndex = nombres.indexOf(data.compras[i].producto.product_name)
+              cantidades[currentIndex] = cantidades[currentIndex] + data.compras[i].cantidad
+            }
+            
+          }
+          setnombreProd(nombres)
+          setcantidadProd(cantidades)
+          console.log(nombres)
+          console.log(cantidades)
         } else {
 
           throw new Error("Formato de datos de compras = ERROR.")
@@ -67,6 +85,8 @@ const Ventas = () => {
   useEffect(() => {
     companyVentas()
   }, [])
+
+  console.log(compras)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -137,22 +157,8 @@ const Ventas = () => {
   //-----------------------------------------------------------
 
   const margin = { right: 24 };
-  const ventasDirectas = [4000, 3000, 2000, 2780, 1890, 2390, 3490, 2780, 1890, 2390, 3490];
-  const alDetal = [2400, 1398, 9800, 3908, 4800, 3800, 4300, 1398, 9800, 3908, 4800];
-  const alMayor = [3908, 4800, 3800, 4300, 2400, 1398, 9800, 3800, 4300, 2400, 1398];
-  const xLabels = [
-    'Ene',
-    'Feb',
-    'Mar',
-    'May',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  const ventas =  cantidadProd;
+  const xLabels = nombreProd;
 
   const companyClients = () => {
 
@@ -211,40 +217,32 @@ const Ventas = () => {
       <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h4>Ordenes de Venta</h4></a>
+            <h3 className='fw-bold pt-2'>Ordenes de Venta</h3>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <button className="boton-cliente btn w-100"
                 type="button"
-                onClick={() => setComprasModal(true)}
-              >
+                onClick={() => setComprasModal(true)}>
                 <i className="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;Nueva Orden</button>
             </form>
           </div>
         </nav>
         {/* Codigo de la Tabla */}
-        <table className="table">
+        <table className="table table-striped table-hover table-borderless">
           <thead>
-            <tr>
-              <th className="col table-secondary">Nombre del Producto</th>
-              <th className="col table-secondary">Codigo Orden</th>
-              <th className="col table-secondary">Categoria</th>
-              <th className="col table-secondary">Cantidad</th>
-              <th className="col table-secondary">Precio Total</th>
-              <th className="col table-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Ultimos 7 Dias
-                <ul className="dropdown-menu dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Últimos 7 dias</a></li>
-                  <li><a className="dropdown-item" href="#">Último mes</a></li>
-                </ul>
-              </th>
+            <tr className='bg-secondary-subtle fs-5'>
+              <th className="col ps-3 tabla-resumen">Nombre del Producto</th>
+              <th className="col tabla-resumen">Cliente</th>
+              <th className="col tabla-resumen">Número de Órden</th>
+              <th className="col tabla-resumen">Fecha</th>
+              <th className="col tabla-resumen">Cantidad productos</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
             {compras.length > 0 ? (
               compras.map((compras) => (
                 <tr key={compras.id}>
-                  <td>{compras.producto && compras.producto.product_name ? compras.producto.product_name : 'N/A'}</td>
-                  <td>{compras.clientsId || 'N/A'}</td>
+                  <td className='ps-3'>{compras.producto && compras.producto.product_name ? compras.producto.product_name : 'N/A'}</td>
+                  <td>{compras.cliente.name || 'N/A'}</td>
                   <td>{compras.id || 'N/A'}</td>
                   <td>{compras.fecha_compra || 'N/A'}</td>
                   <td>{compras.cantidad || 'N/A'}</td>
@@ -263,24 +261,16 @@ const Ventas = () => {
             <h4 className='fw-bold' style={{ paddingBottom: "70px" }}>&nbsp;&nbsp;Reporte de Ventas</h4>
             <p> <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
               <circle r="10" cx="10" cy="10" fill="deepskyblue" />
-            </svg> <b style={{ color: "deepskyblue" }}>Ventas Directas</b> &nbsp;&nbsp;
-              <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
-                <circle r="10" cx="10" cy="10" fill="blueviolet" />
-              </svg> <b style={{ color: "blueviolet" }}>Al Detal</b> &nbsp;&nbsp;
-              <svg height="25" width="25" xmlns="http://www.w3.org/2000/svg">
-                <circle r="10" cx="10" cy="10" fill="red" />
-              </svg> <b style={{ color: "red" }}>Al Mayor</b>
+            </svg> <b style={{ color: "deepskyblue" }}>Ventas totales por cantidad</b> &nbsp;&nbsp;
             </p>
           </div>
           <div className='the-graph-itself'>
-            <LineChart
+            <BarChart
               height={300}
               series={[
-                { data: ventasDirectas, label: 'Directas' },
-                { data: alMayor, label: 'Mayor' },
-                { data: alDetal, label: 'Detal' },
+                { data: ventas, color: 'deepskyblue'},
               ]}
-              xAxis={[{ scaleType: 'point', data: xLabels }]}
+              xAxis={[{ data: xLabels }]}
               yAxis={[{ width: 50 }]}
               margin={margin}
             />
@@ -358,7 +348,7 @@ const Ventas = () => {
                   </div> */}
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" onClick={() => setComprasModal(false)}>Cerrar</button>
-                    <button type="submit" className="boton-cliente btn ">Guardar Crompa</button>
+                    <button type="submit" className="boton-cliente btn ">Registrar Venta</button>
                   </div>
                 </form>
               </div>
