@@ -56,7 +56,7 @@
 }
 
 .tabla-resumen th {
-  color: #5c6f88;
+  color: #5c6f88 !important;
 }
 
 .logout:hover {

@@ -93,7 +93,7 @@ export const Dashboard = () => {
               </div>
               <div className="col">
                 <div className='mx-3 py-3 text-start text-body-secondary fw-medium'>
-                  <b className='fw-semibold'>$&nbsp;{totalHoy}</b>
+                  <b className='fw-semibold'>$&nbsp;{totalHoy || 0}</b>
                   <br />
                   <p className='mb-0'> Ventas de hoy</p>
                 </div>

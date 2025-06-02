@@ -64,8 +64,6 @@ const PerfilUser = () => {
         <p className="fs-5">Administración y Gerencia</p>
                 <b>Teléfono</b>
         <p className="fs-5">0424 000 0000</p>
-        <div className="border w-25 mb-3"/>
-        <button type="button" className="btn btn-success"><i class="fa-brands fa-paypal" disabled/> Gestionar suscripción</button>
       </div>
       <div className="border mx-2"/>
       <div className="col d-flex mx-auto justify-content-center flex-column align-items-center"><i class="fa-solid fa-person-digging" style={{color:"grey",fontSize:"70px"}}/> <b className="fs-3" style={{color:"grey"}}>¡Nuevas funciones pronto!</b></div>
