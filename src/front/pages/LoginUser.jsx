@@ -125,7 +125,7 @@ const LoginUser = () => {
                     </div>
                 </div>
                 <button type="button"
-                    className="btn btn-primary mt-3"
+                    className="btn text-white mt-3"
                     style={{ backgroundColor: '#6C11D9' }}
                     onClick={loginUser}
                 >Iniciar Sesion</button>

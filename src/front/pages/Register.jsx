@@ -73,7 +73,7 @@ const Register = () => {
                         id="exampleInputPassword1" />
                 </div>
                 <button type="buttom"
-                    className="btn btn-primary"
+                    className="btn text-white"
                     onClick={registerUser}
                     style={{ backgroundColor: '#6C11D9' }}>Crear usuario</button>
             </div>
