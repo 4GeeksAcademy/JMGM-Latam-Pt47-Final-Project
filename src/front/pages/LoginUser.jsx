@@ -84,65 +84,72 @@ const LoginUser = () => {
 
     };
     return (
-        <div>
-            <div className="text-center container login w-50">
-                <div className="mb-3">
-                    <h3 htmlFor="exampleInputEmail1" className="form-label">Email address</h3>
-                    <input type="email"
-                        placeholder='Introduce tu email aqui'
-                        value={login.email}
-                        onChange={(e) => setLogin({ ...login, email: e.target.value })}
-                        className="form-control text-center"
-                        id="exampleInputEmail1"
-                        aria-describedby="emailHelp" />
-                </div>
-                <div className="mb-3">
-                    <h3 htmlFor="exampleInputPassword1" className="form-label">Password</h3>
-                    <input type="password"
-                        placeholder='Introduce tu contraseña aqui'
-                        value={login.password}
-                        onChange={(e) => setLogin({ ...login, password: e.target.value })}
-                        className="form-control text-center"
-                        id="exampleInputPassword1" />
+        <div className='container-fluid pt-0 d-flex bg-image' style={{backgroundImage: 'url(https://images.unsplash.com/photo-1642516303080-431f6681f864?)', height:"100vh"}}>
+            <div className='card w-25 m-auto h-50 p-4'>
+                    <div className="text-center container login">
+                        <i class="fa-solid fa-user fs-3 m-2" style={{color:"#6C11D9"}} />
+                        <h2 className='fw-bold'>Bienvenido de vuelta</h2>
+                        <div className='border mt-2 mb-5'/>
+                        <div className="mb-4 text-start fs-6">
+                            <h5 htmlFor="exampleInputEmail1" className="form-label" style={{color:"Grey"}}>E-mail</h5>
+                            <input type="email"
+                                placeholder='Introduce tu email aqui'
+                                value={login.email}
+                                onChange={(e) => setLogin({ ...login, email: e.target.value })}
+                                className="form-control text-center"
+                                id="exampleInputEmail1"
+                                aria-describedby="emailHelp" />
+                        </div>
+                        <div className="mb-1 text-start fs-6">
+                            <h5 htmlFor="exampleInputPassword1" className="form-label" style={{color:"Grey"}}>Contraseña</h5>
+                            <input type="password"
+                                placeholder='Introduce tu contraseña aqui'
+                                value={login.password}
+                                onChange={(e) => setLogin({ ...login, password: e.target.value })}
+                                className="form-control text-center"
+                                id="exampleInputPassword1" />
 
-                </div>
+                        </div>
+                        <div className='d-flex justify-content-md-end' >
+                        <a type="button" className="button" data-bs-toggle="modal" data-bs-target="#recoverPassword" style={{color:"Indigo"}}>
+                            Recuperar contraseña
+                        </a></div><br></br>
 
-                <a type="button" className="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Recuperar contraseña
-                </a><br></br>
 
-
-                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="exampleModalLabel">Recuperar contraseña</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                <input className="form-control"
-                                    type="text"
-                                    value={email.email}
-                                    onChange={(e) => setEmail({ ...email, email: e.target.value })}
-                                    placeholder="Ingrese su correo aqui"></input>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button"
-                                    data-bs-dismiss="modal"
-                                    onClick={() => { sendEmail() }}
-                                    className="btn btn-success">Enviar correo</button>
+                        <div className="modal fade" id="recoverPassword" tabIndex="-1" aria-labelledby="recoverPasswordLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="recoverPasswordLabel">Recuperar contraseña</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <input className="form-control"
+                                            type="text"
+                                            value={email.email}
+                                            onChange={(e) => setEmail({ ...email, email: e.target.value })}
+                                            placeholder="Ingrese su correo aqui"></input>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button"
+                                            data-bs-dismiss="modal"
+                                            onClick={() => { sendEmail() }}
+                                            className="btn btn-success">Enviar correo</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div className='d-grid fw-bold'>
+                        <button type="button"
+                            className="btn text-white mt-3"
+                            style={{ backgroundColor: '#6C11D9' }}
+                            onClick={loginUser}
+                        >Iniciar Sesion</button>
+                        </div>
                     </div>
-                </div>
-                <button type="button"
-                    className="btn btn-primary mt-3"
-                    style={{ backgroundColor: '#6C11D9' }}
-                    onClick={loginUser}
-                >Iniciar Sesion</button>
-            </div>
-            <div className='mt-5'>
+                    <div className='mt-5'>
+                    </div>
             </div>
         </div>
     )
