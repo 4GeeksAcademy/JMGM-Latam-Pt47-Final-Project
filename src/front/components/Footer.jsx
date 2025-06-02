@@ -35,11 +35,11 @@ export const Footer = () => {
 			</div>
 			<div className="d-flex justify-content-between mx-5 my-2">
 								{/* <!-- Privacidad modal --> */}
-				<button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Política de Privacidad</button>
+				<button type="button" className="btn btn-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Política de Privacidad</button>
 
 
 				{/* <!-- Modal --> */}
-				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="TerminosModalLabel" aria-hidden="true">
+				<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="TerminosModalLabel" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 						<div class="modal-content">
 							<div class="modal-header">
