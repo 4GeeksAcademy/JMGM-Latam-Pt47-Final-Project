@@ -2,7 +2,7 @@ import React from 'react'
 
 const LandingBanner = () => {
   return (
-    <div className='d-flex m-3 px-4' style={{height:"40%"}}>
+    <div className='d-flex m-3 px-4' id="start" style={{height:"40%"}}>
         <div className='col'>
 
             <div className="mx-5 mt-5">
@@ -10,9 +10,9 @@ const LandingBanner = () => {
             </div>
             <div className='border-top border-2 m-4' style={{borderTopColor:"#6C11D9"}}/>
             <div className='mx-5'>
-                <p className='' style={{fontSize:"1.4vw"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu  viverra sem, in gravida velit. Quisque 
-                    faucibus rutrum velit, eu  molestie dolor interdum sed. Donec elementum tristique vehicula. Nulla  consequat
-                     laoreet sapien, ac ornare ligula molestie quis.</p>
+                <p className='' style={{fontSize:"1.4vw"}}>Nuestra plataforma de administración de recursos especializada te ayuda a llevar
+                    tu empresa al siguiente nivel. Regístrate de forma rápida y sencilla y empieza a transformar tu negocio hoy.
+                </p>
             </div>
 
         </div>

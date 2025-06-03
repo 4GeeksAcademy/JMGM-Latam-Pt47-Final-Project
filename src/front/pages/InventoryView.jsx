@@ -1,23 +1,38 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export const InventoryView = () => {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const modalIsOpen = JSON.parse(queryParams.get('modalIsOpen')) || false
+
   const [products, setProducts] = useState([])
-  const [productModal, setProductModal] = useState(false)
+  const [productDelete, setProductDelete] = useState(null);
+  const [productModal, setProductModal] = useState(modalIsOpen)
   const [newProductData, setNewProductData] = useState({
     product_name: '',
     marca: '',
     price: '',
     stock: ''
   })
+  const accessToken = localStorage.getItem("token")
+  const stockDelete = (product) => {
+    setProductDelete(product);
+  };
+
 
   const companyInventory = () => {
 
     const accessToken = localStorage.getItem("token")
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente!",
+      });
       return
     }
 
@@ -59,7 +74,11 @@ export const InventoryView = () => {
     const accessToken = localStorage.getItem("token");
 
     if (!accessToken) {
-      alert("No hay token de autenticación. Por favor, inicia sesión para añadir productos.");
+      Swal.fire({
+        icon: "error",
+        title: "Opps...",
+        text: "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+      });
       return
     }
 
@@ -72,26 +91,80 @@ export const InventoryView = () => {
       body: JSON.stringify(newProductData)
     })
       .then(resp => resp.json())
-      .then((data)=> {
+      .then((data) => {
         console.log(data)
-        setProducts([...products, data.item])
+        setProducts((prevProducts) => {
+          const index = prevProducts.findIndex(
+            p => p.product_name === data.item.product_name && p.marca === data.item.marca
+          );
+
+
+          if (index !== -1) {
+            const updatedProducts = [...prevProducts];
+            updatedProducts[index] = data.item;
+            return updatedProducts;
+          } else {
+            return [...prevProducts, data.item];
+          }
+        });
+        Swal.fire({
+          title: "Producto creado correctamente!",
+          icon: "success",
+          draggable: true
+        });
         setProductModal(false)
-        
+        setNewProductData({
+          product_name: '',
+          marca: '',
+          price: '',
+          stock: ''
+        });
+
       })
       .catch(error => console.log(error))
 
+  }
+  const deleteStock = () => {
+    if (!productDelete) return;
+    fetch(`${backend_url}/stock/${productDelete.id}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": "Bearer " + `${accessToken}`
+      }
+    })
+      .then((response) => { return response.json() })
+      .then((data) => {
+        if (data.ok) {
+          Swal.fire({
+            title: "Producto eliminado correctamente!",
+            icon: "success",
+            draggable: true
+          });
+          setProducts(products.filter(p => p.id !== productDelete.id));
+          setProductDelete(null);
+        } else {
+          return (
+            Swal.fire({
+              icon: "error",
+              title: "Error al eliminar producto!",
+              text: (data.msg)
+            })
+          )
+        }
+
+      })
+      .catch((err) => { return err })
   }
 
   // -------------------------------------------------------------------------
 
   return (
-    <div className="row m-0">
-      <div className="col-9">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <div className="row me-0">
+      <div className="col-12 pe-0">
+        <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h5>Inventario</h5></a>
+            <h3 className='fw-bold pt-2'>Inventario</h3>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
-              <input className="form-control me-2" type="search" placeholder="Buscar" aria-label="Search" />
               <button
                 className="boton-cliente btn w-100"
                 type="button"
@@ -103,25 +176,38 @@ export const InventoryView = () => {
           </div>
         </nav>
         {/* Código de la Tabla */}
-        <table className="table">
+        <table className="table table-striped table-hover table-borderless">
           <thead>
-            <tr>
-              <th className="col table-secondary">Nombre</th>
-              <th className="col table-secondary">Codigo</th>
-              <th className="col table-secondary">Tipo</th>
-              <th className="col table-secondary">Precio</th>
-              <th className="col table-secondary">Cantidad</th>
+            <tr className='bg-secondary-subtle fs-5'>
+              <th className="col"></th>
+              <th className="col">Nombre</th>
+              <th className="col">Codigo</th>
+              <th className="col">Tipo</th>
+              <th className="col">Precio</th>
+              <th className="col">Cantidad</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
             {products.length > 0 ? (
-              products.map((product) => (
+              products.map((product, value) => (
                 <tr key={product.id}>
+                  <td className='p-0 text-center'>
+                  <button
+                    type="button"
+                    onClick={() => stockDelete(product)}
+                    className="btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                  </td>
                   <td>{product.product_name}</td>
                   <td>{product.id || 'N/A'}</td>
                   <td>{product.marca || 'N/A'}</td>
                   <td>${product.price ? product.price.toFixed(2) : 'N/A'}</td>
-                  <td>{product.stock || 'N/A'}</td>
+                  <td>{product.stock || <span className='fw-bold' style={{color:'red'}}>Fuera de Stock</span>}</td>
+
                 </tr>
               ))
             ) : (
@@ -130,23 +216,37 @@ export const InventoryView = () => {
               </tr>
             )}
           </tbody>
-        </table>
-      </div>
 
-      <div className="col-3">
-        <h4>Actividad reciente</h4>
-        <div className="card d-flex p-2 text-start px-3" style={{ border: "none" }}>
-          <h6>Reabastecer <b className='text-primary'>x</b> productos</h6>
-          <div className='row '>
-            <div className='col' style={{ paddingTop: "3px" }}>
-              <img className='rounded-circle' src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                style={{ width: "50px", height: "50px" }} alt="Avatar" />
+          <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">Eliminar producto</h1>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                  <h4>¿Seguro que desea eliminar este producto?</h4>
+                  <p><strong>Producto:</strong> {productDelete?.product_name}</p>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={deleteStock}
+                    data-bs-dismiss="modal"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </table>
+
       </div>
 
-      <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>
+      {/* <div className='d-flex justify-content-center' style={{ paddingTop: '40%' }}>
         <nav aria-label="Page navigation example">
           <ul className="pagination">
             <li className="page-item">
@@ -164,7 +264,7 @@ export const InventoryView = () => {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       {/* --- Modal para Nuevo Producto --- */}
       {productModal && (

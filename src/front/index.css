@@ -8,7 +8,7 @@
 
 .botones {
   height: 40%;
-  margin: 20px 0 10px 20px;
+  margin: 20px 0 0 20px;
 }
 
 .texto-boton {
@@ -17,7 +17,7 @@
 }
 
 .boton {
-  margin-top: 15px;
+  margin-top: 40px;
 }
 
 .boton:hover {
@@ -28,10 +28,6 @@
 .boton-cliente:hover {
   background-color: rgba(108, 17, 217, 1);
   color:white
-}
-
-.login, .register, .recovery{
- margin-top: 120px;
 }
 
 .clientes-top {
@@ -60,6 +56,17 @@
 }
 
 .tabla-resumen th {
-  color: #5c6f88;
+  color: #5c6f88 !important;
 }
 
+.logout:hover {
+  background-color: firebrick;
+}
+
+.taljeta {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.taljeta::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
