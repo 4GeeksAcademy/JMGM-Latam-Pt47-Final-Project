@@ -35,8 +35,8 @@ export const LandingNavbar = () => {
     }, [])
 
     return (
-        <nav className="navbar fixed-top pb-0" style={{ backgroundColor: 'white' , boxShadow: '0 1px 10px 4px Gainsboro'}}>
-            <div className="container-fluid pb-2 pe-5">
+        <nav className="navbar fixed-top pb-0 navbar-expand-lg container-fluid" style={{ backgroundColor: 'white', boxShadow: '0 1px 10px 4px Gainsboro' }}>
+            <div className="container-fluid ms-0 ms-0 pb-2 pe-3 pe-md-4 d-flex" style={{width:"max(100vw, 25%)"}}>
                 <img src={logo}
                     type="button"
                     onClick={() => { navigate("/app") }}
@@ -44,18 +44,22 @@ export const LandingNavbar = () => {
                     width="105"
                     height="40"
                     className="d-inline-block align-text-top"></img>
-                <div className="justify-content-end">
-                    <Link className="btn text-light me-2" style={{ backgroundColor: '#6C11D9' }} to='/register'>Registrate aqui</Link>
-                    {localStorage.getItem('currentUser') == null &&
-                        <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i className="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
-                    }
-                    {localStorage.getItem('currentUser') &&
-                        <Link className='btn text-light' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard&nbsp;&nbsp;<i className="fa-solid fa-caret-right" /></Link>
-                    }
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo02">
+                    <div className="d-flex justify-content-end pt-3 pt-md-0">
+                        <Link className="btn text-light me-2" style={{ backgroundColor: '#6C11D9' }} to='/register'>Registrate aqui</Link>
+                        {localStorage.getItem('currentUser') == null &&
+                            <Link className="btn text-light" style={{ backgroundColor: '#6C11D9' }} to='/loginuser'><i className="fa-solid fa-right-to-bracket" />&nbsp;&nbsp;Acceso</Link>
+                        }
+                        {localStorage.getItem('currentUser') &&
+                            <Link className='btn text-light' style={{ backgroundColor: '#6C11D9' }} to='/app/perfil'>Dashboard&nbsp;&nbsp;<i className="fa-solid fa-caret-right" /></Link>
+                        }
+                    </div>
                 </div>
             </div>
             {/* Nukear */}
-            <div className='container-fluid d-flex row px-5 m-0' style={{ backgroundColor: '#6C11D9' }} />
         </nav>
     )
 }
