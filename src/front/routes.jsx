@@ -34,39 +34,9 @@ export const router = createBrowserRouter(
 
 
     // Root Route: All navigation will start from here.
-<<<<<<< HEAD
-
-
-      // Root Route: All navigation will start from here.
-      // Pagina que no necesite un usuario logeado van aqui
-      <>
-
-        <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
-
-
-
-          {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-          <Route path="/" element={<Landing />} />
-
-        </Route>
-        <Route path="/recovery" element={<RecoveryPassword/>}/>
-        <Route path="/register" element={<Register />} />
-        <Route path="/loginuser" element={<LoginUser />} />
-        <Route path="/app" element={<DashboardLayout />}>
-        
-        
-          <Route path="/app" element={<Dashboard />} />
-          <Route path="/app/inventario" element={<InventoryView />} />
-          <Route path="/app/perfil" element={<PerfilUser />} />
-          <Route path="/app/clientes" element={<Clientes />} />
-          
-        </Route>
-      
-=======
     // Root Route: All navigation will start from here.
     // Pagina que no necesite un usuario logeado van aqui
     <>
->>>>>>> dev
 
       <Route path="/" element={<LayoutLanding />} errorElement={<h1>Not found!</h1>} >
 
