@@ -19,7 +19,7 @@ const LandingBanner = () => {
         </div>
         <div className='d-flex col'>
             <div className='col' />
-            <img className="col-8 img-fluid" src='src/front/assets/img/bannerpic.png' />
+            <img className="col-8 img-fluid" src={img} />
             <div className='col' />
         </div>
     </div>
