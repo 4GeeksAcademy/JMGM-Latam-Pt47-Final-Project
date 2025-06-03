@@ -103,10 +103,6 @@ const Clientes = () => {
       .catch(error => console.log(error))
   }
 
-
-
-
-
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setNewClientData(data => ({
