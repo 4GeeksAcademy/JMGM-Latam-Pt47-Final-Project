@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import LandingBanner from '../components/LandingBanner'
 import AboutUs from '../components/AboutUs'
-import img from './../assets/img/bannerpic.png'
 
 export const Landing = () => {
     useEffect(()=>{
@@ -17,7 +16,7 @@ export const Landing = () => {
             {/* cards */}
             <div className='d-flex p-4 mx-2 justify-content-evenly'>
                 <div className="card mb-3 col-4 text-center" style={{ maxWidth: "18rem", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)" }}>
-                    <img src={img} className="card-img-top" alt="..." style={{ maxHeight: "9.5rem" }} />
+                    <img src="https://images.unsplash.com/photo-1663018241379-2438babc8638" className="card-img-top" alt="..." style={{ maxHeight: "9.5rem" }} />
                     <div className="card-body">
                         <h5 className="card-title fw-bold">Gestiona tu inventario</h5>
                         <p className="card-text">Como lo dice nuestro nombre, en MyStock puedes gestionar tu inventario de manera sencilla. En nuestra aplicación web accede de manera inmediata a tu inventario y conoce todos sus movimientos, estatus y procesos.</p>

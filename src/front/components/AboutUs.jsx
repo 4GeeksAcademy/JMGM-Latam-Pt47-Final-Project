@@ -1,13 +1,14 @@
 import React from 'react';
 import { LandingNavbar } from './LandingNavbar';
 import { Footer } from './Footer';
+import img2 from './../assets/img/aboutus1.png'
 
 function AboutUs() {
     return <>
             <div className="container-fluid mt-3 text-center" style={{background: "#6C11D9"}}>
                 <div className="row g-0 align-items-center">
                     <div className="col-md-6">
-                        <img src='src/front/assets/img/aboutus1.png' className="img-fluid" alt="https://cdn.pixabay.com/photo/2018/01/11/06/26/construction-3075498_1280.jpg" />
+                        <img src={img2} className="img-fluid" alt="https://cdn.pixabay.com/photo/2018/01/11/06/26/construction-3075498_1280.jpg" />
                     </div>
                     <div className="col-md-6 d-flex align-items-center justify-content-center">
                         <div className="card-body card-text-center text-white" style={{ minHeight: '200px' }}>
