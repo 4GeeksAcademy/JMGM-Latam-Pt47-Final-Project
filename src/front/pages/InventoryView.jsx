@@ -163,7 +163,7 @@ export const InventoryView = () => {
       <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h4>Inventario</h4></a>
+            <h3 className='fw-bold pt-2'>Inventario</h3>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <button
                 className="boton-cliente btn w-100"
@@ -176,21 +176,22 @@ export const InventoryView = () => {
           </div>
         </nav>
         {/* Código de la Tabla */}
-        <table className="table">
+        <table className="table table-striped table-hover table-borderless">
           <thead>
-            <tr>
-              <th className="col table-secondary"></th>
-              <th className="col table-secondary">Nombre</th>
-              <th className="col table-secondary">Codigo</th>
-              <th className="col table-secondary">Tipo</th>
-              <th className="col table-secondary">Precio</th>
-              <th className="col table-secondary">Cantidad</th>
+            <tr className='bg-secondary-subtle fs-5'>
+              <th className="col"></th>
+              <th className="col">Nombre</th>
+              <th className="col">Codigo</th>
+              <th className="col">Tipo</th>
+              <th className="col">Precio</th>
+              <th className="col">Cantidad</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
             {products.length > 0 ? (
               products.map((product, value) => (
                 <tr key={product.id}>
+                  <td className='p-0 text-center'>
                   <button
                     type="button"
                     onClick={() => stockDelete(product)}
@@ -200,11 +201,12 @@ export const InventoryView = () => {
                   >
                     <i className="fa-solid fa-trash"></i>
                   </button>
+                  </td>
                   <td>{product.product_name}</td>
                   <td>{product.id || 'N/A'}</td>
                   <td>{product.marca || 'N/A'}</td>
                   <td>${product.price ? product.price.toFixed(2) : 'N/A'}</td>
-                  <td>{product.stock || 'N/A'}</td>
+                  <td>{product.stock || <span className='fw-bold' style={{color:'red'}}>Fuera de Stock</span>}</td>
 
                 </tr>
               ))

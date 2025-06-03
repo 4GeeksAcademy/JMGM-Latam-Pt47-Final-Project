@@ -267,7 +267,7 @@ const Clientes = () => {
       <div className="col-12 pe-0">
         <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "rgba(244, 245, 252, 1)" }}>
           <div className="container-fluid">
-            <a className="navbar-brand" href="#"><h4>Clientes</h4></a>
+            <h3 className='fw-bold pt-2'>Clientes</h3>
             <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
               <button className="boton-cliente btn w-100"
                 type="button"
@@ -278,19 +278,23 @@ const Clientes = () => {
           </div>
         </nav>
         {/* Codigo de la Tabla */}
-        <table className="table">
+        <table className="table table-striped table-hover table-borderless">
           <thead>
-            <tr>
-              <th className="col table-secondary"></th>
-              <th className="col table-secondary">Nombre del Cliente</th>
-              <th className="col table-secondary">Correo</th>
-              <th className="col table-secondary">Teléfono</th>
+            <tr className='bg-secondary-subtle fs-5'>
+              <th className="ps-3 col tabla-resumen">Nombre del Cliente</th>
+              <th className="col tabla-resumen">Correo</th>
+              <th className="col tabla-resumen">Teléfono</th>
+              <th className="col tabla-resumen"></th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
             {clients.length > 0 ? (
               clients.map((clientes) => (
                 <tr key={clientes.id}>
+                  <td className=' ps-3'>{clientes.name || 'N/A'}</td>
+                  <td>{clientes.email || 'N/A'}</td>
+                  <td>{clientes.phone || 'N/A'}</td>
+                                    <td className='p-0 text-center'>
                   <button
                     type="button"
                     onClick={() => deleteCLients(clientes)}
@@ -307,9 +311,7 @@ const Clientes = () => {
                     data-bs-target="#exampleModal1">
                     <i className="fa-solid fa-pencil"></i>
                   </button>
-                  <td>{clientes.name || 'N/A'}</td>
-                  <td>{clientes.email || 'N/A'}</td>
-                  <td>{clientes.phone || 'N/A'}</td>
+                  </td>
                   {/* <td>{clients.price ||'N/A'}</td>
                   <td>{product.stock || 'N/A'}</td> */}
                 </tr>

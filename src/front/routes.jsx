@@ -17,13 +17,11 @@ import LoginUser from "./pages/LoginUser";
 import PerfilUser from "./pages/PerfilUser";
 import Clientes from "./pages/Clientes";
 import Register from "./pages/Register";
-import AboutUs from "./components/AboutUs";
 import { EnConstruccion } from "./components/EnConstruccion"
 
 import RecoveryPassword from "./pages/RecoveryPassword";
 
 import Ventas from "./pages/Ventas";
-import Reportes from "./pages/Reportes";
 
 
 export const router = createBrowserRouter(
@@ -83,7 +81,6 @@ export const router = createBrowserRouter(
         <Route path="/app/perfil" element={<PerfilUser />} />
         <Route path="/app/clientes" element={<Clientes />} />
         <Route path="/app/ventas" element={<Ventas />} />
-        <Route path="/app/reporte" element={<Reportes />} />
         <Route path="/app/notfound" element={<EnConstruccion />} />
       </Route>
 
