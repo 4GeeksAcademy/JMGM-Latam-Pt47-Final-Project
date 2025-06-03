@@ -31,7 +31,7 @@ const Clientes = () => {
     setClientDelete(client);
   };
   function edit() {
-    fetch(`${backend_url}client/${editClient.id}`, {
+    fetch(`${backend_url}/client/${editClient.id}`, {
       method: 'PUT',
       body: JSON.stringify(editClient),
       headers: {
