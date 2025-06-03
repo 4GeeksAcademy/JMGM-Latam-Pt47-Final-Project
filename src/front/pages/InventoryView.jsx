@@ -182,7 +182,7 @@ export const InventoryView = () => {
               <th className="col"></th>
               <th className="col">Nombre</th>
               <th className="col">Codigo</th>
-              <th className="col">Tipo</th>
+              <th className="col">Marca</th>
               <th className="col">Precio</th>
               <th className="col">Cantidad</th>
             </tr>

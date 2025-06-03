@@ -31,7 +31,7 @@ const Clientes = () => {
     setClientDelete(client);
   };
   function edit() {
-    fetch(`${backend_url}client/${editClient.id}`, {
+    fetch(`${backend_url}/client/${editClient.id}`, {
       method: 'PUT',
       body: JSON.stringify(editClient),
       headers: {
@@ -102,10 +102,6 @@ const Clientes = () => {
       })
       .catch(error => console.log(error))
   }
-
-
-
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -228,7 +224,7 @@ const Clientes = () => {
   }, [])
   const eliminarCliente = () => {
     if (!clientDelete) return;
-    fetch(`${backend_url}client/${clientDelete.id}`, {
+    fetch(`${backend_url}/client/${clientDelete.id}`, {
       method: 'DELETE',
       headers: {
         "Authorization": "Bearer " + `${accessToken}`
