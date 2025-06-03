@@ -404,7 +404,7 @@ const Clientes = () => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Añadir Nuevo Producto</h5>
+                <h5 className="modal-title">Añadir Nuevo Cliente</h5>
                 <button type="button" className="btn-close" onClick={() => setClientModal(false)} ></button>
               </div>
               <div className="modal-body">
