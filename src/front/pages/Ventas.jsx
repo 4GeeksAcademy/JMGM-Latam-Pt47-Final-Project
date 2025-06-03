@@ -229,12 +229,12 @@ const Ventas = () => {
         {/* Codigo de la Tabla */}
         <table className="table table-striped table-hover table-borderless">
           <thead>
-            <tr className='bg-secondary-subtle fs-5'>
-              <th className="col ps-3 tabla-resumen">Nombre del Producto</th>
-              <th className="col tabla-resumen">Cliente</th>
-              <th className="col tabla-resumen">Número de Órden</th>
-              <th className="col tabla-resumen">Fecha</th>
-              <th className="col tabla-resumen">Cantidad productos</th>
+            <tr>
+              <th className="col table-secondary">Nombre del Producto</th>
+              <th className="col table-secondary">Codigo Orden</th>
+              <th className="col table-secondary">Categoria</th>
+              <th className="col table-secondary">Cantidad</th>
+              <th className="col table-secondary">Precio Total</th>
             </tr>
           </thead>
           <tbody className="table-group-divider">
