@@ -39,7 +39,7 @@ export const Landing = () => {
                     </div>
                 </div>
             </div>
-            <div id="about-us">
+            <div id="about-us" className='mb-4 mb-md-0'>
                 <AboutUs></AboutUs>
             </div>
             <h1 className='text-center pb-3 pt-3 mb-0 fw-bold' style={{backgroundColor:"GhostWhite"}}>Preguntas Frecuentes</h1>
