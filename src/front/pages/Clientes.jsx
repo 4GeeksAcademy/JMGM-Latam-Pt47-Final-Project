@@ -224,7 +224,7 @@ const Clientes = () => {
   }, [])
   const eliminarCliente = () => {
     if (!clientDelete) return;
-    fetch(`${backend_url}client/${clientDelete.id}`, {
+    fetch(`${backend_url}/client/${clientDelete.id}`, {
       method: 'DELETE',
       headers: {
         "Authorization": "Bearer " + `${accessToken}`
