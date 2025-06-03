@@ -18,7 +18,7 @@ const LoginUser = () => {
         email: ""
     })
     function sendEmail() {
-        fetch(`${backend_url}send-mail`, {
+        fetch(`${backend_url}/send-mail`, {
             method: 'POST',
             headers: { "Content-type": "application/json" },
             body: JSON.stringify(email)
